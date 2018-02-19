@@ -9,9 +9,9 @@
 void lanzarExecl(char *comm){
 	int pid;
 	int status;
-	char *commp;
+	char *commp, *commp2;
 
-	commp = (char *)malloc(sizeof(char)*(strlen("/bin/")+strlen(comm)));
+	commp = (char *)malloc(sizeof(char)*(strlen("/bin/")+strlen(comm)+1));
 	if(commp == NULL){
 		printf("Error al reservar memoria\n");
 		return;
@@ -19,10 +19,22 @@ void lanzarExecl(char *comm){
 	strcpy(commp, "/bin/");
 	strcat(commp, comm);
 
+	commp2 = (char *)malloc(sizeof(char)*(strlen("/usr/bin/")+strlen(comm)+1));
+	if(commp2 == NULL){
+		printf("Error al reservar memoria\n");
+		return;
+	}
+	strcpy(commp2, "/usr/bin/");
+	strcat(commp2, comm);
+
 	if((pid = fork()) < 0){
 		printf("Error al crear el primer hijo\n");
 	}else if(pid == 0){
 		execl(commp, comm, NULL);
+		/* Solo nse ejecuta si el anterior ha fallado, con lo que nos 
+		aseguramos de que al menos, los tres del ejemplo, se ejecuten,
+		pues están en los dos directorios*/
+		execl(commp2, comm, NULL);
 		perror("Fallo en execl\n");
 	}else{
 		while(wait(&status) != pid);
@@ -30,6 +42,9 @@ void lanzarExecl(char *comm){
 			printf("Fallo en execl\n");
 		}
 	}
+
+	free(commp);
+	free(commp2);
 }
 
 void lanzarExeclp(char *comm){
@@ -52,10 +67,10 @@ void lanzarExeclp(char *comm){
 void lanzarExecv(char *comm){
 	int pid;
 	int status;
-	char *commp;
+	char *commp, *commp2;
 	char *cv[] = {comm, NULL};
 
-	commp = (char *)malloc(sizeof(char)*(strlen("/bin/")+strlen(comm)));
+	commp = (char *)malloc(sizeof(char)*(strlen("/bin/")+strlen(comm)+1));
 	if(commp == NULL){
 		printf("Error al reservar memoria\n");
 		return;
@@ -63,10 +78,22 @@ void lanzarExecv(char *comm){
 	strcpy(commp, "/bin/");
 	strcat(commp, comm);
 
+	commp2 = (char *)malloc(sizeof(char)*(strlen("/usr/bin/")+strlen(comm)+1));
+	if(commp2 == NULL){
+		printf("Error al reservar memoria\n");
+		return;
+	}
+	strcpy(commp2, "/usr/bin/");
+	strcat(commp2, comm);
+
 	if((pid = fork()) < 0){
 		printf("Error al crear el tercer hijo\n");
 	}else if(pid == 0){
 		execv(commp, cv);
+		/* Solo nse ejecuta si el anterior ha fallado, con lo que nos 
+		aseguramos de que al menos, los tres del ejemplo, se ejecuten,
+		pues están en los dos directorios*/
+		execv(commp2, cv);
 		perror("Fallo en execv\n");
 	}else{
 		while(wait(&status) != pid);
@@ -74,6 +101,9 @@ void lanzarExecv(char *comm){
 			printf("Fallo en execv\n");
 		}
 	}
+
+	free(commp);
+	free(commp2);
 }
 
 void lanzarExecvp(char *comm){

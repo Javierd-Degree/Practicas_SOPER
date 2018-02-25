@@ -41,155 +41,134 @@ double sumaAbsoluta(int a, int b){
 	
 int	main(void){	
 	int	fd[2], fe[2], ff[2], fg[2], fh[2], fi[2], fj[2], fk[2];
-	int pipe_status1, pipe_status2, pipe_status3, pipe_status4, pipe_status5, pipe_status6, pipe_status7, pipe_status8;
-	int a, b;	
-	pid_t pid1, pid2, pid3, pid4;	
+	int a, b;
+	int i;	
+	pid_t pid[4];	
 	char string[20];	
-	char readbuffer[80];
+	char readbuffer[256];
 	double result;
 
-	/*Creamos las pipes*/			
-	pipe_status1 = pipe(fd);
-	if(pipe_status1 == -1){	
+	/*Creamos las pipes*/
+	if(pipe(fd) == -1){	
 		perror("Error creando la tuberia\n");	
 		exit(EXIT_FAILURE);	
 	}
 
-	pipe_status2 = pipe(fe);
-	if(pipe_status2 == -1){	
+	if(pipe(fe) == -1){	
 		perror("Error creando la tuberia\n");	
 		exit(EXIT_FAILURE);	
 	}
 
-	pipe_status3 = pipe(ff);
-	if(pipe_status3 == -1){	
+	if(pipe(ff) == -1){	
 		perror("Error creando la tuberia\n");	
 		exit(EXIT_FAILURE);	
 	}
 
-	pipe_status4 = pipe(fg);
-	if(pipe_status4 == -1){	
+	if(pipe(fg) == -1){	
 		perror("Error creando la tuberia\n");	
 		exit(EXIT_FAILURE);	
 	}
 
-	pipe_status5 = pipe(fh);
-	if(pipe_status5 == -1){	
+	if(pipe(fh) == -1){	
 		perror("Error creando la tuberia\n");	
 		exit(EXIT_FAILURE);	
 	}
 
-	pipe_status6 = pipe(fi);
-	if(pipe_status6 == -1){	
+	if(pipe(fi) == -1){	
 		perror("Error creando la tuberia\n");	
 		exit(EXIT_FAILURE);	
 	}
 
-	pipe_status7 = pipe(fj);
-	if(pipe_status7 == -1){	
+	if(pipe(fj) == -1){	
 		perror("Error creando la tuberia\n");	
 		exit(EXIT_FAILURE);	
 	}
 
-	pipe_status8 = pipe(fk);
-	if(pipe_status8 == -1){	
+	if(pipe(fk) == -1){	
 		perror("Error creando la tuberia\n");	
 		exit(EXIT_FAILURE);	
-	}	
+	}
+
 
 	/*Pedimos por pantalla los valores de O1 y O2*/
 	printf("Introduzca 2 enteros separados por una coma: ");
 	scanf("%s", string);
 
-	/*Hacemos los fork para lanzar los procesos hijo*/	
-	if((pid1 = fork())	==	-1){	
-		perror("Error al hacer fork");	
-		exit(EXIT_FAILURE);	
-	}
-
-	if( pid1 != 0 && ((pid2 = fork())	==	-1)){	
-		perror("Error al hacer fork");	
-		exit(EXIT_FAILURE);	
-	}
-
-	if(pid1 != 0 && pid2 != 0 &&((pid3 = fork())	==	-1)){	
-		perror("Error al hacer fork");	
-		exit(EXIT_FAILURE);	
-	}
-
-
-	if(pid1 != 0 && pid2 != 0 && pid3 != 0 && ((pid4 = fork())	==	-1)){	
-		perror("Error al hacer fork");	
-		exit(EXIT_FAILURE);	
+	/*Hacemos los fork para lanzar los procesos hijo*/
+	for(i = 0; i < 4; i++){
+		if((pid[i] = fork()) == -1){
+			perror("Error al hacer fork");
+			exit(EXIT_FAILURE);
+		}else if(pid[i] == 0){
+			break;
+		}
 	}
 	
+	
 	/*El primer hijo realiza la potencia*/	
-	if(pid1 == 0){		
+	if(pid[0] == 0){		
 		close(fd[1]);
 		/*Leer los datos del pipe e imprimirlos*/	
 		read(fd[0], readbuffer, sizeof(readbuffer));
-		printf("PID = %d.\tHe recibido el string: %s", getpid(), readbuffer);	
 		/*Separar la cadena obtenida para separar los 2 datos y pasarlos a ints*/
-		a=atoi(strtok(readbuffer, ","));
-		b=atoi(strtok(NULL, ","));
+		sscanf(readbuffer, "%d,%d", &a, &b);
 		/*Calcular la operación*/
-		result=potencia(a, b);
+		result = potencia(a, b);
 		/*Crear la cadena con el resultado*/
-		sprintf(readbuffer, "Resultado de la potencia: %lf", result);
+
+		sprintf(readbuffer, "Datos enviados a traves de la tuberia por el proceso PID=%d.\n\tOperando 1: %d. Operando 2: %d. Potencia: %lf\n", getpid(), a, b, result);
 		close(fh[0]);
 		/*Escribir la nueva cadena en el pipe*/
-		write(fh[1], readbuffer, strlen(readbuffer));
-		exit(0);	
+		write(fh[1], readbuffer, strlen(readbuffer)+1);
+		exit(0);
+
 	/*El segundo hijo realiza el factorial*/	
-	}else if(pid2 == 0){	
+	}else if(pid[1] == 0){	
 		close(fe[1]);	
 		/*Leer los datos del pipe e imprimirlos*/	
 		read(fe[0], readbuffer, sizeof(readbuffer));
-		printf("PID = %d.\tHe recibido el string: %s\n", getpid(), readbuffer);
 		/*Separar la cadena obtenida para separar los 2 datos y pasarlos a ints*/
-		a=atoi(strtok(readbuffer, ","));
-		b=atoi(strtok(NULL, ","));	
+		sscanf(readbuffer, "%d,%d", &a, &b);
 		/*Calcular la operación*/
 		result=factorial(a, b);
 		/*Crear la cadena con el resultado*/
-		sprintf(readbuffer, "Resultado de O1!/O2: %lf", result);
+
+		sprintf(readbuffer, "Datos enviados a traves de la tuberia por el proceso PID=%d.\n\tOperando 1: %d. Operando 2: %d. Factorial: %lf\n", getpid(), a, b, result);
 		close(fi[0]);
 		/*Escribir la nueva cadena en el pipe*/
-		write(fi[1], readbuffer, strlen(readbuffer));
+		write(fi[1], readbuffer, strlen(readbuffer)+1);
 		exit(0);
+
 	/*El tercer hijo realiza el número combinatorio*/ 
-	}else if(pid3 == 0){	
+	}else if(pid[2] == 0){	
 		close(ff[1]);	
 		/*Leer los datos del pipe e imprimirlos*/	
 		read(ff[0], readbuffer, sizeof(readbuffer));	
-		printf("PID = %d.\tHe recibido el string: %s\n", getpid(), readbuffer);
 		/*Separar la cadena obtenida para separar los 2 datos y pasarlos a ints*/
-		a=atoi(strtok(readbuffer, ","));
-		b=atoi(strtok(NULL, ","));	
+		sscanf(readbuffer, "%d,%d", &a, &b);
 		/*Calcular la operación*/
 		result=numCombinatorio(a, b);
 		/*Crear la cadena con el resultado*/
-		sprintf(readbuffer, "Resultado del numero combinatorio: %lf", result);
+		sprintf(readbuffer, "Datos enviados a traves de la tuberia por el proceso PID=%d.\n\tOperando 1: %d. Operando 2: %d. Numero combinatorio: %lf\n", getpid(), a, b, result);
 		close(fj[0]);
 		/*Escribir la nueva cadena en el pipe*/
-		write(fj[1], readbuffer , strlen(readbuffer));
+		write(fj[1], readbuffer , strlen(readbuffer)+1);
 		exit(0);
+
 	/*El último hijo realiza la suma de valores absolutos*/
-	}else if(pid4 == 0){
+	}else if(pid[3] == 0){
 		close(fg[1]);	
 		/*Leer los datos del pipe e imprimirlos*/	
 		read(fg[0], readbuffer, sizeof(readbuffer));	
-		printf("PID = %d.\tHe recibido el string: %s\n", getpid(), readbuffer);
 		/*Separar la cadena obtenida para separar los 2 datos y pasarlos a ints*/
-		a=atoi(strtok(readbuffer, ","));
-		b=atoi(strtok(NULL, ","));
+		sscanf(readbuffer, "%d,%d", &a, &b);
 		/*Calcular la operación*/	
 		result=sumaAbsoluta(a, b);
 		/*Crear la cadena con el resultado*/
-		sprintf(readbuffer, "Resultado de la suma de valores absolutos: %lf", result);
+		sprintf(readbuffer, "Datos enviados a traves de la tuberia por el proceso PID=%d.\n\tOperando 1: %d. Operando 2: %d. Suma absoluta: %lf\n", getpid(), a, b, result);
 		close(fk[0]);
 		/*Escribir la nueva cadena en el pipe*/
-		write(fk[1], readbuffer , strlen(readbuffer));
+		write(fk[1], readbuffer , strlen(readbuffer)+1);
 		exit(0);
 	/*El proceso padre escribe los datos y lee el resultado de las pipes*/	
 	}else{	
@@ -206,10 +185,10 @@ int	main(void){
 		close(fk[1]);	
 
 		/*Escribir en las tuberías la sitring con O1 y O2*/
-		write(fd[1], string, strlen(string));
-		write(fe[1], string, strlen(string));	
-		write(ff[1], string, strlen(string));
-		write(fg[1], string, strlen(string));
+		write(fd[1], string, strlen(string)+1);
+		write(fe[1], string, strlen(string)+1);	
+		write(ff[1], string, strlen(string)+1);
+		write(fg[1], string, strlen(string)+1);
 
 		/*Leer de las tuberías las stings con los resultados e imprimirlas*/
 
@@ -228,7 +207,6 @@ int	main(void){
 		/*Suma de valores absolutos*/
 		read(fk[0], readbuffer, sizeof(readbuffer));	
 		printf("%s\n", readbuffer);
-
 	}
 
 	return 0;	

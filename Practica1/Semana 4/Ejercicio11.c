@@ -12,7 +12,7 @@ void *slowprintf (void *arg) {
 	for ( i = 0 ; i < strlen(msg) ; i++ ) { 	
 		printf(" %c", msg[i]); 	
 		fflush(stdout); 	
-		usleep (1000000) ; 	
+		usleep (1000000); 	
 	}
 
 	pthread_exit(NULL); 

@@ -1,3 +1,13 @@
+/**
+* @brief Ejercicio 13b
+* Queremos crear dos hilos para que multipliquen simultaneamente una 
+* matriz por un entero cada uno, y que se comuniquen usando variables
+* globales de forma que cada hilo sepa por donde va el otro.
+*
+* @file Ejercicio13b.c
+* @author Javier.delgadod@estudiante.uam.es Javier.lopezcano@estudiante.uam.es
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,21 +16,43 @@
 #include <time.h>
 #include <pthread.h>
 
-/*Para compartir informacion entre hilos, usamos dos variables globales.*/
-int pos1, pos2;
+int pos1, pos2; /*<! Variables globales usadas para la comunicacion entre hilos*/
 
-
+/**
+* @brief Estructura para representar una matriz cuadrada
+* de hasta cinco por cinco enteros.
+*
+* Compuesta por un doble array y un entero que indica su tamaño.
+*/
 typedef struct _matriz{
 	int matriz[5][5];
 	int size;
 }matriz;
 
+
+/**
+* @brief Estructura para pasar como argumento a los distintos hilos.
+* 
+* Compuesta por una matriz y un entero que indica el numero de hilo,
+* y otro que indica el numero por el que queremos multiplicar la matriz.
+*/
 typedef struct _multiplicacion{
 	matriz mat;
 	int multiplicador;
 	int hilo;
 }multiplicacion;
 
+
+/**
+* @brief multiplica una matriz cuadrada por un entero.
+* 
+* multiplicarMatriz(void *args) mutiplica una matriz por un numero
+* fila por fila, imprimiendo el resultado y el numero del hilo.
+* 
+* @param args un puntero a multiplicacion pasado como puntero a void.
+* en el se pasa la matriz y el multiplicador.
+* @return void* 0 siempre a NULL.
+*/
 void* multiplicarMatriz(void *args){
 	int i, j;
 	multiplicacion *mul = (multiplicacion *) args;
@@ -46,6 +78,18 @@ void* multiplicarMatriz(void *args){
 	return NULL;
 }
 
+/**
+* @brief crea dos hilos para multiplicar dos matrices por dos enteros
+* respectivamente.
+* 
+* main (int argc, char* argv[]) obtiene dos matrices cuadradas y dos
+* multiplicadores mediante la entrada del teclado, y crea un hilo
+* para mutiplicar cada una de estas matrices por el multiplicador.
+* @param argc numero de argumentos recibidos en la entrada.
+* @param argv array de strings de argumentos recibidos en la entrada.
+* 
+* @return int que determina si el programa se ha ejecutado o no con exito.
+*/
 int main(int argc , char *argv[]) { 	
 	matriz mat, mat2;
 	multiplicacion mu1, mu2;

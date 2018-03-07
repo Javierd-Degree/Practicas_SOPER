@@ -1,0 +1,129 @@
+\hypertarget{Ejercicio13b_8c}{}\section{Ejercicio13b.\+c File Reference}
+\label{Ejercicio13b_8c}\index{Ejercicio13b.\+c@{Ejercicio13b.\+c}}
+
+
+Ejercicio 13b Queremos crear dos hilos para que multipliquen simultaneamente una matriz por un entero cada uno, y que se comuniquen usando variables globales de forma que cada hilo sepa por donde va el otro.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$math.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$time.\+h$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
+Include dependency graph for Ejercicio13b.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Ejercicio13b_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct__matriz}{\+\_\+matriz}
+\begin{DoxyCompactList}\small\item\em Estructura para representar una matriz cuadrada de hasta cinco por cinco enteros. \end{DoxyCompactList}\item 
+struct \hyperlink{struct__multiplicacion}{\+\_\+multiplicacion}
+\begin{DoxyCompactList}\small\item\em Estructura para pasar como argumento a los distintos hilos. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{struct__matriz}{\+\_\+matriz} \hyperlink{Ejercicio13b_8c_ac63a9b0c7cf4cdbaba641e8f59c29a51}{matriz}
+\begin{DoxyCompactList}\small\item\em Estructura para representar una matriz cuadrada de hasta cinco por cinco enteros. \end{DoxyCompactList}\item 
+typedef struct \hyperlink{struct__multiplicacion}{\+\_\+multiplicacion} \hyperlink{Ejercicio13b_8c_ad1b3bf648d6b4a06bc703025cce83b58}{multiplicacion}
+\begin{DoxyCompactList}\small\item\em Estructura para pasar como argumento a los distintos hilos. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void $\ast$ \hyperlink{Ejercicio13b_8c_a897014abd1504939e716e633e68d2788}{multiplicar\+Matriz} (void $\ast$args)
+\begin{DoxyCompactList}\small\item\em multiplica una matriz cuadrada por un entero. \end{DoxyCompactList}\item 
+int \hyperlink{Ejercicio13b_8c_a0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em crea dos hilos para multiplicar dos matrices por dos enteros respectivamente. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int {\bfseries pos1}\hypertarget{Ejercicio13b_8c_a363774778a5ad0ef78e6e4ca79a3bc11}{}\label{Ejercicio13b_8c_a363774778a5ad0ef78e6e4ca79a3bc11}
+
+\item 
+int \hyperlink{Ejercicio13b_8c_a1b3a85917a11704027ecd416ffa736fc}{pos2}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Ejercicio 13b Queremos crear dos hilos para que multipliquen simultaneamente una matriz por un entero cada uno, y que se comuniquen usando variables globales de forma que cada hilo sepa por donde va el otro. 
+
+\begin{DoxyAuthor}{Author}
+\href{mailto:Javier.delgadod@estudiante.uam.es}{\tt Javier.\+delgadod@estudiante.\+uam.\+es} \href{mailto:Javier.lopezcano@estudiante.uam.es}{\tt Javier.\+lopezcano@estudiante.\+uam.\+es} 
+\end{DoxyAuthor}
+
+
+\subsection{Typedef Documentation}
+\index{Ejercicio13b.\+c@{Ejercicio13b.\+c}!matriz@{matriz}}
+\index{matriz@{matriz}!Ejercicio13b.\+c@{Ejercicio13b.\+c}}
+\subsubsection[{\texorpdfstring{matriz}{matriz}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf \+\_\+matriz} {\bf matriz}}\hypertarget{Ejercicio13b_8c_ac63a9b0c7cf4cdbaba641e8f59c29a51}{}\label{Ejercicio13b_8c_ac63a9b0c7cf4cdbaba641e8f59c29a51}
+
+
+Estructura para representar una matriz cuadrada de hasta cinco por cinco enteros. 
+
+Compuesta por un doble array y un entero que indica su tamaño. \index{Ejercicio13b.\+c@{Ejercicio13b.\+c}!multiplicacion@{multiplicacion}}
+\index{multiplicacion@{multiplicacion}!Ejercicio13b.\+c@{Ejercicio13b.\+c}}
+\subsubsection[{\texorpdfstring{multiplicacion}{multiplicacion}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf \+\_\+multiplicacion} {\bf multiplicacion}}\hypertarget{Ejercicio13b_8c_ad1b3bf648d6b4a06bc703025cce83b58}{}\label{Ejercicio13b_8c_ad1b3bf648d6b4a06bc703025cce83b58}
+
+
+Estructura para pasar como argumento a los distintos hilos. 
+
+Compuesta por una matriz y un entero que indica el numero de hilo, y otro que indica el numero por el que queremos multiplicar la matriz. 
+
+\subsection{Function Documentation}
+\index{Ejercicio13b.\+c@{Ejercicio13b.\+c}!main@{main}}
+\index{main@{main}!Ejercicio13b.\+c@{Ejercicio13b.\+c}}
+\subsubsection[{\texorpdfstring{main(int argc, char $\ast$argv[])}{main(int argc, char *argv[])}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio13b_8c_a0ddf1224851353fc92bfbff6f499fa97}{}\label{Ejercicio13b_8c_a0ddf1224851353fc92bfbff6f499fa97}
+
+
+crea dos hilos para multiplicar dos matrices por dos enteros respectivamente. 
+
+main (int argc, char$\ast$ argv\mbox{[}\mbox{]}) obtiene dos matrices cuadradas y dos multiplicadores mediante la entrada del teclado, y crea un hilo para mutiplicar cada una de estas matrices por el multiplicador. 
+\begin{DoxyParams}{Parameters}
+{\em argc} & numero de argumentos recibidos en la entrada. \\
+\hline
+{\em argv} & array de strings de argumentos recibidos en la entrada.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int que determina si el programa se ha ejecutado o no con exito. 
+\end{DoxyReturn}
+\index{Ejercicio13b.\+c@{Ejercicio13b.\+c}!multiplicar\+Matriz@{multiplicar\+Matriz}}
+\index{multiplicar\+Matriz@{multiplicar\+Matriz}!Ejercicio13b.\+c@{Ejercicio13b.\+c}}
+\subsubsection[{\texorpdfstring{multiplicar\+Matriz(void $\ast$args)}{multiplicarMatriz(void *args)}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ multiplicar\+Matriz (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{args}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio13b_8c_a897014abd1504939e716e633e68d2788}{}\label{Ejercicio13b_8c_a897014abd1504939e716e633e68d2788}
+
+
+multiplica una matriz cuadrada por un entero. 
+
+\hyperlink{Ejercicio13b_8c_a897014abd1504939e716e633e68d2788}{multiplicar\+Matriz(void $\ast$args)} mutiplica una matriz por un numero fila por fila, imprimiendo el resultado y el numero del hilo.
+
+
+\begin{DoxyParams}{Parameters}
+{\em args} & un puntero a multiplicacion pasado como puntero a void. en el se pasa la matriz y el multiplicador. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ 0 siempre a N\+U\+LL. 
+\end{DoxyReturn}
+
+
+\subsection{Variable Documentation}
+\index{Ejercicio13b.\+c@{Ejercicio13b.\+c}!pos2@{pos2}}
+\index{pos2@{pos2}!Ejercicio13b.\+c@{Ejercicio13b.\+c}}
+\subsubsection[{\texorpdfstring{pos2}{pos2}}]{\setlength{\rightskip}{0pt plus 5cm}int pos2}\hypertarget{Ejercicio13b_8c_a1b3a85917a11704027ecd416ffa736fc}{}\label{Ejercicio13b_8c_a1b3a85917a11704027ecd416ffa736fc}
+Variables globales usadas para la comunicacion entre hilos 

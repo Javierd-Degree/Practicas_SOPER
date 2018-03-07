@@ -1,0 +1,123 @@
+\hypertarget{Ejercicio12b_8c}{}\section{Ejercicio12b.\+c File Reference}
+\label{Ejercicio12b_8c}\index{Ejercicio12b.\+c@{Ejercicio12b.\+c}}
+
+
+Apartado b del ejercicio 12 Queremos medir el tiempo aproximdo que se tarda en crear y destruir cien hilos, y en que cada uno de estos calcule los N primeros numeros primos, donde N es un parametro introducido por el usuario.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$math.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
+{\ttfamily \#include $<$sys/time.\+h$>$}\\*
+{\ttfamily \#include $<$time.\+h$>$}\\*
+Include dependency graph for Ejercicio12b.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Ejercicio12b_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct__estructura}{\+\_\+estructura}
+\begin{DoxyCompactList}\small\item\em Estructura para guardar un texto aleatorio y el numero N de primos que tenemos que calcular. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{struct__estructura}{\+\_\+estructura} \hyperlink{Ejercicio12b_8c_a958d30924884ac1bf0044585c8bc825c}{estructura}
+\begin{DoxyCompactList}\small\item\em Estructura para guardar un texto aleatorio y el numero N de primos que tenemos que calcular. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{Ejercicio12b_8c_ae09682ef27c72bab20d8ab298c7b090f}{es\+\_\+primo} (int n)
+\begin{DoxyCompactList}\small\item\em determina si un numero es primo o no. \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{Ejercicio12b_8c_af47ddf18fdd009c7039d7ec241f4d4e5}{calcular\+\_\+primos} (void $\ast$arg)
+\begin{DoxyCompactList}\small\item\em calcula todos los primos hasta un N pasado como parte de una estructura estructura. \end{DoxyCompactList}\item 
+int \hyperlink{Ejercicio12b_8c_a0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em crea cien hilos, llama a calcular primos en cad uno de ellos y los espera. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Apartado b del ejercicio 12 Queremos medir el tiempo aproximdo que se tarda en crear y destruir cien hilos, y en que cada uno de estos calcule los N primeros numeros primos, donde N es un parametro introducido por el usuario. 
+
+\begin{DoxyAuthor}{Author}
+\href{mailto:Javier.delgadod@estudiante.uam.es}{\tt Javier.\+delgadod@estudiante.\+uam.\+es} \href{mailto:Javier.lopezcano@estudiante.uam.es}{\tt Javier.\+lopezcano@estudiante.\+uam.\+es} 
+\end{DoxyAuthor}
+
+
+\subsection{Typedef Documentation}
+\index{Ejercicio12b.\+c@{Ejercicio12b.\+c}!estructura@{estructura}}
+\index{estructura@{estructura}!Ejercicio12b.\+c@{Ejercicio12b.\+c}}
+\subsubsection[{\texorpdfstring{estructura}{estructura}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf \+\_\+estructura} {\bf estructura}}\hypertarget{Ejercicio12b_8c_a958d30924884ac1bf0044585c8bc825c}{}\label{Ejercicio12b_8c_a958d30924884ac1bf0044585c8bc825c}
+
+
+Estructura para guardar un texto aleatorio y el numero N de primos que tenemos que calcular. 
+
+Compuesta con un string de 100 caracteres y un entero. 
+
+\subsection{Function Documentation}
+\index{Ejercicio12b.\+c@{Ejercicio12b.\+c}!calcular\+\_\+primos@{calcular\+\_\+primos}}
+\index{calcular\+\_\+primos@{calcular\+\_\+primos}!Ejercicio12b.\+c@{Ejercicio12b.\+c}}
+\subsubsection[{\texorpdfstring{calcular\+\_\+primos(void $\ast$arg)}{calcular_primos(void *arg)}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ calcular\+\_\+primos (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio12b_8c_af47ddf18fdd009c7039d7ec241f4d4e5}{}\label{Ejercicio12b_8c_af47ddf18fdd009c7039d7ec241f4d4e5}
+
+
+calcula todos los primos hasta un N pasado como parte de una estructura estructura. 
+
+\hyperlink{Ejercicio12b_8c_af47ddf18fdd009c7039d7ec241f4d4e5}{calcular\+\_\+primos(void $\ast$arg)} calcula todos los primos hasta un N. 
+\begin{DoxyParams}{Parameters}
+{\em void} & $\ast$args un puntero a estructura pasado como puntero a void. en el se pasa el numero N. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ 0 siempre a N\+U\+LL. 
+\end{DoxyReturn}
+\index{Ejercicio12b.\+c@{Ejercicio12b.\+c}!es\+\_\+primo@{es\+\_\+primo}}
+\index{es\+\_\+primo@{es\+\_\+primo}!Ejercicio12b.\+c@{Ejercicio12b.\+c}}
+\subsubsection[{\texorpdfstring{es\+\_\+primo(int n)}{es_primo(int n)}}]{\setlength{\rightskip}{0pt plus 5cm}int es\+\_\+primo (
+\begin{DoxyParamCaption}
+\item[{int}]{n}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio12b_8c_ae09682ef27c72bab20d8ab298c7b090f}{}\label{Ejercicio12b_8c_ae09682ef27c72bab20d8ab298c7b090f}
+
+
+determina si un numero es primo o no. 
+
+\hyperlink{Ejercicio12b_8c_ae09682ef27c72bab20d8ab298c7b090f}{es\+\_\+primo(int n)} determina si n es o no primo. 
+\begin{DoxyParams}{Parameters}
+{\em n} & numero que queremos saber si es primo. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 0 si no es primo, 1 si si lo es. 
+\end{DoxyReturn}
+\index{Ejercicio12b.\+c@{Ejercicio12b.\+c}!main@{main}}
+\index{main@{main}!Ejercicio12b.\+c@{Ejercicio12b.\+c}}
+\subsubsection[{\texorpdfstring{main(int argc, char $\ast$argv[])}{main(int argc, char *argv[])}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio12b_8c_a0ddf1224851353fc92bfbff6f499fa97}{}\label{Ejercicio12b_8c_a0ddf1224851353fc92bfbff6f499fa97}
+
+
+crea cien hilos, llama a calcular primos en cad uno de ellos y los espera. 
+
+main (int argc, char$\ast$ argv\mbox{[}\mbox{]}) cronometra el tiempo que tarda en crear cien hilos que calculan los N primeros primos, donde N se pasa en la entrada, y en destruirlos. Imprime dicho tiempo. 
+\begin{DoxyParams}{Parameters}
+{\em argc} & numero de argumentos recibidos en la entrada. \\
+\hline
+{\em argv} & array de strings de argumentos recibidos en la entrada.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int que determina si el programa se ha ejecutado o no con exito. 
+\end{DoxyReturn}

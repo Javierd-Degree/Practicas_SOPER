@@ -1,3 +1,13 @@
+/**
+* @brief Apartado b del ejercicio 12
+* Queremos medir el tiempo aproximdo que se tarda en crear y destruir
+* cien hilos, y en que cada uno de estos calcule los N primeros 
+* numeros primos, donde N es un parametro introducido por el usuario.
+*
+* @file Ejercicio12b.c
+* @author Javier.delgadod@estudiante.uam.es Javier.lopezcano@estudiante.uam.es
+*/
+
 #include <stdio.h> 	
 #include <stdlib.h> 	
 #include <string.h>
@@ -7,11 +17,24 @@
 #include <sys/time.h>
 #include <time.h> 
 
+/**
+* @brief Estructura para guardar un texto aleatorio y el 
+* numero N de primos que tenemos que calcular.
+*
+* Compuesta con un string de 100 caracteres y un entero.
+*/
 typedef struct _estructura{
 	char cad[100];
 	int num;
 }estructura;
 
+/**
+* @brief determina si un numero es primo o no.
+* 
+* es_primo(int n) determina si n es o no primo.
+* @param n numero que queremos saber si es primo.
+* @return int 0 si no es primo, 1 si si lo es.
+*/
 int es_primo(int n){
 	int i;
 	for(i=2; i < sqrt(n); i++){
@@ -22,6 +45,15 @@ int es_primo(int n){
 	return 1;
 }
 
+/**
+* @brief calcula todos los primos hasta un N pasado
+* como parte de una estructura estructura.
+* 
+* calcular_primos(void *arg) calcula todos los primos hasta un N.
+* @param args un puntero a estructura pasado como puntero a void.
+* en el se pasa el numero N.
+* @return void* 0 siempre a NULL.
+*/
 void* calcular_primos(void *arg){
 	estructura *est;
 	int numPrimos;
@@ -39,6 +71,17 @@ void* calcular_primos(void *arg){
 	return NULL;
 }	
 
+/**
+* @brief crea cien hilos, llama a calcular primos en cad uno de ellos y los espera.
+* 
+* main (int argc, char* argv[]) cronometra el tiempo que tarda
+* en crear cien hilos que calculan los N primeros primos, donde 
+* N se pasa en la entrada, y en destruirlos. Imprime dicho tiempo.
+* @param argc numero de argumentos recibidos en la entrada.
+* @param argv array de strings de argumentos recibidos en la entrada.
+* 
+* @return int que determina si el programa se ha ejecutado o no con exito.
+*/
 int main(int argc , char *argv[]) { 	
 	pthread_t h[100];
 	estructura est;

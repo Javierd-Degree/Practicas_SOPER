@@ -1,0 +1,68 @@
+\hypertarget{Ejercicio6__dem_8c}{}\section{Ejercicio6\+\_\+dem.\+c File Reference}
+\label{Ejercicio6__dem_8c}\index{Ejercicio6\+\_\+dem.\+c@{Ejercicio6\+\_\+dem.\+c}}
+
+
+Demostracion de la respuesta aportada en el ejercicio 6. Queremos demostrar que al hacer fork el hijo recibe una copia exacta, pero independiente, de la informaciion que el padre tiene guardada.  
+
+
+{\ttfamily \#include $<$sys/wait.\+h$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+Include dependency graph for Ejercicio6\+\_\+dem.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Ejercicio6__dem_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct__estructura}{\+\_\+estructura}
+\begin{DoxyCompactList}\small\item\em Estructura para guardar un texto aleatorio y el numero N de primos que tenemos que calcular. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{struct__estructura}{\+\_\+estructura} \hyperlink{Ejercicio6__dem_8c_a958d30924884ac1bf0044585c8bc825c}{estructura}
+\begin{DoxyCompactList}\small\item\em Estructura para duplicar en un proceso y su hijo. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{Ejercicio6__dem_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\begin{DoxyCompactList}\small\item\em Creamos dos procesos e intentamos compartir una variable. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Demostracion de la respuesta aportada en el ejercicio 6. Queremos demostrar que al hacer fork el hijo recibe una copia exacta, pero independiente, de la informaciion que el padre tiene guardada. 
+
+\begin{DoxyAuthor}{Author}
+\href{mailto:Javier.delgadod@estudiante.uam.es}{\tt Javier.\+delgadod@estudiante.\+uam.\+es} \href{mailto:Javier.lopezcano@estudiante.uam.es}{\tt Javier.\+lopezcano@estudiante.\+uam.\+es} 
+\end{DoxyAuthor}
+
+
+\subsection{Typedef Documentation}
+\index{Ejercicio6\+\_\+dem.\+c@{Ejercicio6\+\_\+dem.\+c}!estructura@{estructura}}
+\index{estructura@{estructura}!Ejercicio6\+\_\+dem.\+c@{Ejercicio6\+\_\+dem.\+c}}
+\subsubsection[{\texorpdfstring{estructura}{estructura}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf \+\_\+estructura} {\bf estructura}}\hypertarget{Ejercicio6__dem_8c_a958d30924884ac1bf0044585c8bc825c}{}\label{Ejercicio6__dem_8c_a958d30924884ac1bf0044585c8bc825c}
+
+
+Estructura para duplicar en un proceso y su hijo. 
+
+Compuesta con un string de 80 caracteres y un entero. 
+
+\subsection{Function Documentation}
+\index{Ejercicio6\+\_\+dem.\+c@{Ejercicio6\+\_\+dem.\+c}!main@{main}}
+\index{main@{main}!Ejercicio6\+\_\+dem.\+c@{Ejercicio6\+\_\+dem.\+c}}
+\subsubsection[{\texorpdfstring{main()}{main()}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio6__dem_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{}\label{Ejercicio6__dem_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}
+
+
+Creamos dos procesos e intentamos compartir una variable. 
+
+\hyperlink{Ejercicio6__dem_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main()} Reservamos memoria para una estructura y la inicializamos. Hacemos fork, cambiamos la estructura en el proceso hijo y lo acabamos. Una vez acabado el proceso hijo intenamos aceder a la informacion desde el padre, y podemos ver que el padre no puede acceder a lo modificado por el hijo. 

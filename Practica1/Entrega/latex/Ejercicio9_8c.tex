@@ -1,0 +1,150 @@
+\hypertarget{Ejercicio9_8c}{}\section{Ejercicio9.\+c File Reference}
+\label{Ejercicio9_8c}\index{Ejercicio9.\+c@{Ejercicio9.\+c}}
+
+
+Ejercicio 9. Dados dos numeros pasados en la entrada, calculamos el factorial de uno partido del otro, uno elevado al otro, la suma con valores absolutos y el numero combinatorio de uno sobre todo. Cada operacion se realiza en un proceso distinto, que se comunica con el padre mediante pipes.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$math.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$sys/wait.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+Include dependency graph for Ejercicio9.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Ejercicio9_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{Ejercicio9_8c_a1e86e884e71a85fdafe94dc3ee7f77f8}{potencia} (int a, int b)
+\begin{DoxyCompactList}\small\item\em hacemos la operacion matematica a$^\wedge$b \end{DoxyCompactList}\item 
+double \hyperlink{Ejercicio9_8c_a5cf432a7c889fe75dffc281247cb867e}{factorial} (int a, int b)
+\begin{DoxyCompactList}\small\item\em hacemos la operacion matematica a!/b \end{DoxyCompactList}\item 
+double \hyperlink{Ejercicio9_8c_ab13db5a54377e7e55eb6db91185af27e}{num\+Combinatorio} (int a, int b)
+\begin{DoxyCompactList}\small\item\em hallamos el numero combinatorio a sobre b de forma recursiva \end{DoxyCompactList}\item 
+double \hyperlink{Ejercicio9_8c_a7d7edaebcf72f07f2ca29c75e69460e1}{suma\+Absoluta} (int a, int b)
+\begin{DoxyCompactList}\small\item\em hallamos la suma de a y b en valores absolutos \end{DoxyCompactList}\item 
+int \hyperlink{Ejercicio9_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\begin{DoxyCompactList}\small\item\em Hacemos distintas operaciones matemáticas sobre dos numeros en procesos independientes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Ejercicio 9. Dados dos numeros pasados en la entrada, calculamos el factorial de uno partido del otro, uno elevado al otro, la suma con valores absolutos y el numero combinatorio de uno sobre todo. Cada operacion se realiza en un proceso distinto, que se comunica con el padre mediante pipes. 
+
+\begin{DoxyAuthor}{Author}
+\href{mailto:Javier.delgadod@estudiante.uam.es}{\tt Javier.\+delgadod@estudiante.\+uam.\+es} \href{mailto:Javier.lopezcano@estudiante.uam.es}{\tt Javier.\+lopezcano@estudiante.\+uam.\+es} 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{Ejercicio9.\+c@{Ejercicio9.\+c}!factorial@{factorial}}
+\index{factorial@{factorial}!Ejercicio9.\+c@{Ejercicio9.\+c}}
+\subsubsection[{\texorpdfstring{factorial(int a, int b)}{factorial(int a, int b)}}]{\setlength{\rightskip}{0pt plus 5cm}double factorial (
+\begin{DoxyParamCaption}
+\item[{int}]{a, }
+\item[{int}]{b}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio9_8c_a5cf432a7c889fe75dffc281247cb867e}{}\label{Ejercicio9_8c_a5cf432a7c889fe75dffc281247cb867e}
+
+
+hacemos la operacion matematica a!/b 
+
+\hyperlink{Ejercicio9_8c_a5cf432a7c889fe75dffc281247cb867e}{factorial(int a, int b)} hacemos factorial 
+\begin{DoxyParams}{Parameters}
+{\em a} & numero sobre el que hacemos el factorial \\
+\hline
+{\em b} & cociente de la opercion \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double a!/b 
+\end{DoxyReturn}
+\index{Ejercicio9.\+c@{Ejercicio9.\+c}!main@{main}}
+\index{main@{main}!Ejercicio9.\+c@{Ejercicio9.\+c}}
+\subsubsection[{\texorpdfstring{main()}{main()}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio9_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{}\label{Ejercicio9_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}
+
+
+Hacemos distintas operaciones matemáticas sobre dos numeros en procesos independientes. 
+
+Creamos cuatro procesos y ocho pipes (una de escritura y otra de lectura para cada proceso), de forma que desde el padre enviamos los dos operandos y desde los hijos los resultados para que el padre los imprima.
+
+\begin{DoxyReturn}{Returns}
+int que determina si el programa se ha ejecutado o no con exito. 
+\end{DoxyReturn}
+\index{Ejercicio9.\+c@{Ejercicio9.\+c}!num\+Combinatorio@{num\+Combinatorio}}
+\index{num\+Combinatorio@{num\+Combinatorio}!Ejercicio9.\+c@{Ejercicio9.\+c}}
+\subsubsection[{\texorpdfstring{num\+Combinatorio(int a, int b)}{numCombinatorio(int a, int b)}}]{\setlength{\rightskip}{0pt plus 5cm}double num\+Combinatorio (
+\begin{DoxyParamCaption}
+\item[{int}]{a, }
+\item[{int}]{b}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio9_8c_ab13db5a54377e7e55eb6db91185af27e}{}\label{Ejercicio9_8c_ab13db5a54377e7e55eb6db91185af27e}
+
+
+hallamos el numero combinatorio a sobre b de forma recursiva 
+
+\hyperlink{Ejercicio9_8c_a5cf432a7c889fe75dffc281247cb867e}{factorial(int a, int b)} hacemos el numero combinatorio a sobre b 
+\begin{DoxyParams}{Parameters}
+{\em a} & numero de elementos del conjunto \\
+\hline
+{\em b} & numero de elementos a escoger del conjunto \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double numero combinatorio a sobre b 
+\end{DoxyReturn}
+\index{Ejercicio9.\+c@{Ejercicio9.\+c}!potencia@{potencia}}
+\index{potencia@{potencia}!Ejercicio9.\+c@{Ejercicio9.\+c}}
+\subsubsection[{\texorpdfstring{potencia(int a, int b)}{potencia(int a, int b)}}]{\setlength{\rightskip}{0pt plus 5cm}double potencia (
+\begin{DoxyParamCaption}
+\item[{int}]{a, }
+\item[{int}]{b}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio9_8c_a1e86e884e71a85fdafe94dc3ee7f77f8}{}\label{Ejercicio9_8c_a1e86e884e71a85fdafe94dc3ee7f77f8}
+
+
+hacemos la operacion matematica a$^\wedge$b 
+
+\hyperlink{Ejercicio9_8c_a1e86e884e71a85fdafe94dc3ee7f77f8}{potencia(int a, int b)} hacemos a$^\wedge$b 
+\begin{DoxyParams}{Parameters}
+{\em a} & base de la operacion \\
+\hline
+{\em b} & exponente de la operacion \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double a$^\wedge$b 
+\end{DoxyReturn}
+\index{Ejercicio9.\+c@{Ejercicio9.\+c}!suma\+Absoluta@{suma\+Absoluta}}
+\index{suma\+Absoluta@{suma\+Absoluta}!Ejercicio9.\+c@{Ejercicio9.\+c}}
+\subsubsection[{\texorpdfstring{suma\+Absoluta(int a, int b)}{sumaAbsoluta(int a, int b)}}]{\setlength{\rightskip}{0pt plus 5cm}double suma\+Absoluta (
+\begin{DoxyParamCaption}
+\item[{int}]{a, }
+\item[{int}]{b}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio9_8c_a7d7edaebcf72f07f2ca29c75e69460e1}{}\label{Ejercicio9_8c_a7d7edaebcf72f07f2ca29c75e69460e1}
+
+
+hallamos la suma de a y b en valores absolutos 
+
+\hyperlink{Ejercicio9_8c_a5cf432a7c889fe75dffc281247cb867e}{factorial(int a, int b)} hacemos el numero combinatorio a sobre b 
+\begin{DoxyParams}{Parameters}
+{\em a} & primer operando \\
+\hline
+{\em b} & segundo operando \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+double valor absoluto de a mas valor absoluto de b 
+\end{DoxyReturn}

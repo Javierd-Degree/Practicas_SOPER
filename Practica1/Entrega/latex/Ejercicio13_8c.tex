@@ -1,0 +1,114 @@
+\hypertarget{Ejercicio13_8c}{}\section{Ejercicio13.\+c File Reference}
+\label{Ejercicio13_8c}\index{Ejercicio13.\+c@{Ejercicio13.\+c}}
+
+
+Ejercicio 13 Queremos crear dos hilos para que multipliquen simultaneamente una matriz por un entero cada uno.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$math.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$time.\+h$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
+Include dependency graph for Ejercicio13.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Ejercicio13_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct__matriz}{\+\_\+matriz}
+\begin{DoxyCompactList}\small\item\em Estructura para representar una matriz cuadrada de hasta cinco por cinco enteros. \end{DoxyCompactList}\item 
+struct \hyperlink{struct__multiplicacion}{\+\_\+multiplicacion}
+\begin{DoxyCompactList}\small\item\em Estructura para pasar como argumento a los distintos hilos. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{struct__matriz}{\+\_\+matriz} \hyperlink{Ejercicio13_8c_ac63a9b0c7cf4cdbaba641e8f59c29a51}{matriz}
+\begin{DoxyCompactList}\small\item\em Estructura para representar una matriz cuadrada de hasta cinco por cinco enteros. \end{DoxyCompactList}\item 
+typedef struct \hyperlink{struct__multiplicacion}{\+\_\+multiplicacion} \hyperlink{Ejercicio13_8c_ad1b3bf648d6b4a06bc703025cce83b58}{multiplicacion}
+\begin{DoxyCompactList}\small\item\em Estructura para pasar como argumento a los distintos hilos. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void $\ast$ \hyperlink{Ejercicio13_8c_a897014abd1504939e716e633e68d2788}{multiplicar\+Matriz} (void $\ast$args)
+\begin{DoxyCompactList}\small\item\em multiplica una matriz cuadrada por un entero. \end{DoxyCompactList}\item 
+int \hyperlink{Ejercicio13_8c_a0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em crea dos hilos para multiplicar dos matrices por dos enteros respectivamente. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Ejercicio 13 Queremos crear dos hilos para que multipliquen simultaneamente una matriz por un entero cada uno. 
+
+\begin{DoxyAuthor}{Author}
+\href{mailto:Javier.delgadod@estudiante.uam.es}{\tt Javier.\+delgadod@estudiante.\+uam.\+es} \href{mailto:Javier.lopezcano@estudiante.uam.es}{\tt Javier.\+lopezcano@estudiante.\+uam.\+es} 
+\end{DoxyAuthor}
+
+
+\subsection{Typedef Documentation}
+\index{Ejercicio13.\+c@{Ejercicio13.\+c}!matriz@{matriz}}
+\index{matriz@{matriz}!Ejercicio13.\+c@{Ejercicio13.\+c}}
+\subsubsection[{\texorpdfstring{matriz}{matriz}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf \+\_\+matriz} {\bf matriz}}\hypertarget{Ejercicio13_8c_ac63a9b0c7cf4cdbaba641e8f59c29a51}{}\label{Ejercicio13_8c_ac63a9b0c7cf4cdbaba641e8f59c29a51}
+
+
+Estructura para representar una matriz cuadrada de hasta cinco por cinco enteros. 
+
+Compuesta por un doble array y un entero que indica su tamaño. \index{Ejercicio13.\+c@{Ejercicio13.\+c}!multiplicacion@{multiplicacion}}
+\index{multiplicacion@{multiplicacion}!Ejercicio13.\+c@{Ejercicio13.\+c}}
+\subsubsection[{\texorpdfstring{multiplicacion}{multiplicacion}}]{\setlength{\rightskip}{0pt plus 5cm}typedef struct {\bf \+\_\+multiplicacion} {\bf multiplicacion}}\hypertarget{Ejercicio13_8c_ad1b3bf648d6b4a06bc703025cce83b58}{}\label{Ejercicio13_8c_ad1b3bf648d6b4a06bc703025cce83b58}
+
+
+Estructura para pasar como argumento a los distintos hilos. 
+
+Compuesta por una matriz y un entero que indica el numero de hilo, y otro que indica el numero por el que queremos multiplicar la matriz. 
+
+\subsection{Function Documentation}
+\index{Ejercicio13.\+c@{Ejercicio13.\+c}!main@{main}}
+\index{main@{main}!Ejercicio13.\+c@{Ejercicio13.\+c}}
+\subsubsection[{\texorpdfstring{main(int argc, char $\ast$argv[])}{main(int argc, char *argv[])}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio13_8c_a0ddf1224851353fc92bfbff6f499fa97}{}\label{Ejercicio13_8c_a0ddf1224851353fc92bfbff6f499fa97}
+
+
+crea dos hilos para multiplicar dos matrices por dos enteros respectivamente. 
+
+main (int argc, char$\ast$ argv\mbox{[}\mbox{]}) obtiene dos matrices cuadradas y dos multiplicadores mediante la entrada del teclado, y crea un hilo para mutiplicar cada una de estas matrices por el multiplicador. 
+\begin{DoxyParams}{Parameters}
+{\em argc} & numero de argumentos recibidos en la entrada. \\
+\hline
+{\em argv} & array de strings de argumentos recibidos en la entrada.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int que determina si el programa se ha ejecutado o no con exito. 
+\end{DoxyReturn}
+\index{Ejercicio13.\+c@{Ejercicio13.\+c}!multiplicar\+Matriz@{multiplicar\+Matriz}}
+\index{multiplicar\+Matriz@{multiplicar\+Matriz}!Ejercicio13.\+c@{Ejercicio13.\+c}}
+\subsubsection[{\texorpdfstring{multiplicar\+Matriz(void $\ast$args)}{multiplicarMatriz(void *args)}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ multiplicar\+Matriz (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{args}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio13_8c_a897014abd1504939e716e633e68d2788}{}\label{Ejercicio13_8c_a897014abd1504939e716e633e68d2788}
+
+
+multiplica una matriz cuadrada por un entero. 
+
+\hyperlink{Ejercicio13_8c_a897014abd1504939e716e633e68d2788}{multiplicar\+Matriz(void $\ast$args)} mutiplica una matriz por un numero fila por fila, imprimiendo el resultado y el numero del hilo.
+
+
+\begin{DoxyParams}{Parameters}
+{\em args} & un puntero a multiplicacion pasado como puntero a void. en el se pasa la matriz y el multiplicador. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ 0 siempre a N\+U\+LL. 
+\end{DoxyReturn}

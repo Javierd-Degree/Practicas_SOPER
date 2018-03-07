@@ -1,0 +1,130 @@
+\hypertarget{Ejercicio8_8c}{}\section{Ejercicio8.\+c File Reference}
+\label{Ejercicio8_8c}\index{Ejercicio8.\+c@{Ejercicio8.\+c}}
+
+
+Ejercicio 8. Creamos distintos hijos para sustituirlos por los procesos indicados en la entrada del programa, usando tambien el exec indicado en la entrada.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$sys/wait.\+h$>$}\\*
+Include dependency graph for Ejercicio8.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Ejercicio8_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{Ejercicio8_8c_ae3cd50640971637d51ab451488927f31}{lanzar\+Execl} (char $\ast$comm)
+\begin{DoxyCompactList}\small\item\em Lanzamos un comando execl sobre un hijo creado. \end{DoxyCompactList}\item 
+void \hyperlink{Ejercicio8_8c_ac237ead9a3c8d1c8f15f9791401e67d6}{lanzar\+Execlp} (char $\ast$comm)
+\begin{DoxyCompactList}\small\item\em Lanzamos un comando execlp sobre un hijo creado. \end{DoxyCompactList}\item 
+void \hyperlink{Ejercicio8_8c_a146802df68af952071c48f77afcb738a}{lanzar\+Execv} (char $\ast$comm)
+\begin{DoxyCompactList}\small\item\em Lanzamos un comando execv sobre un hijo creado. \end{DoxyCompactList}\item 
+void \hyperlink{Ejercicio8_8c_acb5421e2b741622737535bf48ae90703}{lanzar\+Execvp} (char $\ast$comm)
+\begin{DoxyCompactList}\small\item\em Lanzamos un comando execvp sobre un hijo creado. \end{DoxyCompactList}\item 
+int \hyperlink{Ejercicio8_8c_a0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Llamamos a las funciones lanzar\+Execv, lanzar\+Execvp, lanzar\+Execl o lanzar\+Execlp segun lo introducido en la entrada, y para cada uno de los comandos introducidos. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Ejercicio 8. Creamos distintos hijos para sustituirlos por los procesos indicados en la entrada del programa, usando tambien el exec indicado en la entrada. 
+
+\begin{DoxyAuthor}{Author}
+\href{mailto:Javier.delgadod@estudiante.uam.es}{\tt Javier.\+delgadod@estudiante.\+uam.\+es} \href{mailto:Javier.lopezcano@estudiante.uam.es}{\tt Javier.\+lopezcano@estudiante.\+uam.\+es} 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{Ejercicio8.\+c@{Ejercicio8.\+c}!lanzar\+Execl@{lanzar\+Execl}}
+\index{lanzar\+Execl@{lanzar\+Execl}!Ejercicio8.\+c@{Ejercicio8.\+c}}
+\subsubsection[{\texorpdfstring{lanzar\+Execl(char $\ast$comm)}{lanzarExecl(char *comm)}}]{\setlength{\rightskip}{0pt plus 5cm}void lanzar\+Execl (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{comm}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio8_8c_ae3cd50640971637d51ab451488927f31}{}\label{Ejercicio8_8c_ae3cd50640971637d51ab451488927f31}
+
+
+Lanzamos un comando execl sobre un hijo creado. 
+
+\hyperlink{Ejercicio8_8c_ae3cd50640971637d51ab451488927f31}{lanzar\+Execl(char $\ast$comm)} lanza el proceso comm usando execl. Usamos dos directorios, \textquotesingle{}/bin/\textquotesingle{} y \textquotesingle{}/usr/bien/\textquotesingle{}. 
+\begin{DoxyParams}{Parameters}
+{\em comm} & proceso por el que se pretende lanzar usando execl. \\
+\hline
+\end{DoxyParams}
+\index{Ejercicio8.\+c@{Ejercicio8.\+c}!lanzar\+Execlp@{lanzar\+Execlp}}
+\index{lanzar\+Execlp@{lanzar\+Execlp}!Ejercicio8.\+c@{Ejercicio8.\+c}}
+\subsubsection[{\texorpdfstring{lanzar\+Execlp(char $\ast$comm)}{lanzarExeclp(char *comm)}}]{\setlength{\rightskip}{0pt plus 5cm}void lanzar\+Execlp (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{comm}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio8_8c_ac237ead9a3c8d1c8f15f9791401e67d6}{}\label{Ejercicio8_8c_ac237ead9a3c8d1c8f15f9791401e67d6}
+
+
+Lanzamos un comando execlp sobre un hijo creado. 
+
+\hyperlink{Ejercicio8_8c_ac237ead9a3c8d1c8f15f9791401e67d6}{lanzar\+Execlp(char $\ast$comm)} lanza el proceso comm usando execlp. 
+\begin{DoxyParams}{Parameters}
+{\em comm} & proceso por el que se pretende lanzar usando execlp. \\
+\hline
+\end{DoxyParams}
+\index{Ejercicio8.\+c@{Ejercicio8.\+c}!lanzar\+Execv@{lanzar\+Execv}}
+\index{lanzar\+Execv@{lanzar\+Execv}!Ejercicio8.\+c@{Ejercicio8.\+c}}
+\subsubsection[{\texorpdfstring{lanzar\+Execv(char $\ast$comm)}{lanzarExecv(char *comm)}}]{\setlength{\rightskip}{0pt plus 5cm}void lanzar\+Execv (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{comm}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio8_8c_a146802df68af952071c48f77afcb738a}{}\label{Ejercicio8_8c_a146802df68af952071c48f77afcb738a}
+
+
+Lanzamos un comando execv sobre un hijo creado. 
+
+lanzar\+Execp(char $\ast$comm) lanza el proceso comm usando execv. Usamos dos directorios, \textquotesingle{}/bin/\textquotesingle{} y \textquotesingle{}/usr/bien/\textquotesingle{}. 
+\begin{DoxyParams}{Parameters}
+{\em comm} & proceso por el que se pretende lanzar usando execv. \\
+\hline
+\end{DoxyParams}
+\index{Ejercicio8.\+c@{Ejercicio8.\+c}!lanzar\+Execvp@{lanzar\+Execvp}}
+\index{lanzar\+Execvp@{lanzar\+Execvp}!Ejercicio8.\+c@{Ejercicio8.\+c}}
+\subsubsection[{\texorpdfstring{lanzar\+Execvp(char $\ast$comm)}{lanzarExecvp(char *comm)}}]{\setlength{\rightskip}{0pt plus 5cm}void lanzar\+Execvp (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{comm}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio8_8c_acb5421e2b741622737535bf48ae90703}{}\label{Ejercicio8_8c_acb5421e2b741622737535bf48ae90703}
+
+
+Lanzamos un comando execvp sobre un hijo creado. 
+
+\hyperlink{Ejercicio8_8c_acb5421e2b741622737535bf48ae90703}{lanzar\+Execvp(char $\ast$comm)} lanza el proceso comm usando execvp. 
+\begin{DoxyParams}{Parameters}
+{\em comm} & proceso por el que se pretende lanzar usando execvp. \\
+\hline
+\end{DoxyParams}
+\index{Ejercicio8.\+c@{Ejercicio8.\+c}!main@{main}}
+\index{main@{main}!Ejercicio8.\+c@{Ejercicio8.\+c}}
+\subsubsection[{\texorpdfstring{main(int argc, char $\ast$argv[])}{main(int argc, char *argv[])}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{int}]{argc, }
+\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio8_8c_a0ddf1224851353fc92bfbff6f499fa97}{}\label{Ejercicio8_8c_a0ddf1224851353fc92bfbff6f499fa97}
+
+
+Llamamos a las funciones lanzar\+Execv, lanzar\+Execvp, lanzar\+Execl o lanzar\+Execlp segun lo introducido en la entrada, y para cada uno de los comandos introducidos. 
+
+main (int argc, char$\ast$ argv\mbox{[}\mbox{]}) Analiza la entrada y llama a las funciones con los parametros correspondientes 
+\begin{DoxyParams}{Parameters}
+{\em argc} & numero de argumentos recibidos en la entrada. \\
+\hline
+{\em argv} & array de strings de argumentos recibidos en la entrada.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int que determina si el programa se ha ejecutado o no con exito. 
+\end{DoxyReturn}

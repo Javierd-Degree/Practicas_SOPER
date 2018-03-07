@@ -35,7 +35,6 @@ typedef struct _estructura{
 
 int main() {
 	int pid;
-	int status;
 	estructura *est;
 
 	est = (estructura*)malloc(sizeof(estructura));

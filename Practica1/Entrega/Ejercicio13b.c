@@ -11,9 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include <unistd.h>
-#include <time.h>
 #include <pthread.h>
 
 int pos1, pos2; /*!< Variables globales usadas para la comunicacion entre hilos*/
@@ -72,9 +70,7 @@ void* multiplicarMatriz(void *args){
 			pos2++;
 			printf("- el Hilo 1 va por la fila %d\n", pos1);
 		}
-		
 	}
-
 	return NULL;
 }
 

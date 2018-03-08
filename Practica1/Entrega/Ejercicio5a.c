@@ -34,7 +34,7 @@ int main() {
 				printf("HIJO %d, DEL PADRE %d\n", getpid(), getppid());
 			}else{
 				/*Salimos, de forma que dejamos de crear hijos.
-				Al sali, hacemos el wait y esperamos a que el hijo termine*/
+				Al salir, hacemos el wait y esperamos a que el hijo termine*/
 				break;
 			}
 		}

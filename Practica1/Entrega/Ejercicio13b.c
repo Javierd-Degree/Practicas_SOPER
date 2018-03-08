@@ -53,23 +53,27 @@ typedef struct _multiplicacion{
 */
 void* multiplicarMatriz(void *args){
 	int i, j;
+	char text[1024];
+	char temp[256];
 	multiplicacion *mul = (multiplicacion *) args;
 
 	for(i = 0; i < mul->mat.size; i++){
 		/*Introducimos retardos para que se vea el paralelismo*/
 		usleep (1000000);
-		printf("Hilo %d multiplicando fila %d. Resultado: ", mul->hilo, i);
+		sprintf(text, "Hilo %d multiplicando fila %d. Resultado: ", mul->hilo, i);
 		for(j = 0; j < mul->mat.size; j++){
 			mul->mat.matriz[i][j] *= mul->multiplicador;
-			printf("%d ", mul->mat.matriz[i][j]);
+			sprintf(temp, "%d ", mul->mat.matriz[i][j]);
+			strcat(text, temp);
 		}
 		if(mul->hilo == 1){
 			pos1++;
-			printf("- el Hilo 2 va por la fila %d\n", pos2);
+			sprintf(temp, "- el Hilo 2 va por la fila %d\n", pos2);
 		}else if(mul->hilo == 2){
 			pos2++;
-			printf("- el Hilo 1 va por la fila %d\n", pos1);
+			sprintf(temp, "- el Hilo 1 va por la fila %d\n", pos1);
 		}
+		printf("%s%s\n", text, temp);
 	}
 	return NULL;
 }
@@ -105,18 +109,17 @@ int main(int argc , char *argv[]) {
 	/*Rellenamos las matrices*/
 	printf("Introduzca matriz 1:\n");
 	for(i = 0; i < mat.size*mat.size; i++){
-		scanf("%d", &(mat.matriz[i%mat.size][i/mat.size]));
+		scanf("%d", &(mat.matriz[i/mat.size][i%mat.size]));
 	}
 	printf("Introduzca matriz 2:\n");
 	for(i = 0; i < mat2.size*mat2.size; i++){
-		scanf("%d", &(mat2.matriz[i%mat2.size][i/mat2.size]));
+		scanf("%d", &(mat2.matriz[i/mat2.size][i%mat2.size]));
 	}
 
 	mu1.mat = mat;
 	mu1.hilo = 1;
-	mu2.mat = mat;
+	mu2.mat = mat2;
 	mu2.hilo = 2;
-	pos1 = pos2 = 0;
 	pthread_create(&h[0], NULL , multiplicarMatriz , &mu1); 
 	pthread_create(&h[1], NULL , multiplicarMatriz , &mu2); 	
 

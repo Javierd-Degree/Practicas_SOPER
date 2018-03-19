@@ -29,7 +29,7 @@ void main(){
 	printf("%s\n", buffer);
 	close(handle);
 
-	f= fopen(path, "a");
+	f = fopen(path, "a");
 	fgets(buffer, strlen(text), f);
 	printf("%s\n", buffer);
 

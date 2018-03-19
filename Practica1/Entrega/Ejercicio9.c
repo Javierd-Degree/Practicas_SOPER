@@ -224,13 +224,13 @@ int	main(){
 		exit(0);
 	/*El proceso padre escribe los datos y lee el resultado de las pipes*/	
 	}else{	
-		/* Cierre de los descriptores de salida en el padre*/	
+		/* Cierre de los descriptores de entrada en el padre*/	
 		close(fd[0]);
 		close(fe[0]);
 		close(ff[0]);
 		close(fg[0]);
 
-		/*Cierre de los descriptores de entrada del padre*/
+		/*Cierre de los descriptores de salida del padre*/
 		close(fh[1]);
 		close(fi[1]);
 		close(fj[1]);

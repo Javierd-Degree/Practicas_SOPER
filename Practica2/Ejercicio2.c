@@ -1,9 +1,28 @@
+/**
+* @brief Ejercicio 2 de la Practica 2.
+*
+* @file Ejercicio2.c
+* @author Javier.delgadod@estudiante.uam.es 
+* @author Javier.lopezcano@estudiante.uam.es
+*/
+
 #include <stdio.h>
 #include <sys/types.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
 
+/**
+* @brief El proceso padre crea cuatro procesos hijos, que imprimen
+* "Soy el proceso hijo <PID>", duermen treinta segundos, y luego 
+* imprimen "Soy el proceso hijo <PID> y ya me toca terminar.".
+* Una vez el proceso padre crea cada uno de los hijos, espera 30
+* segundos y mata al hijo enviando la senal SIGTERM.
+* De esta forma, es imposible que los hijos impriman el segundo 
+* mensaje, pues el padre los habra matado antes.
+*
+* @return int que determina si el programa se ha ejecutado o no con exito.
+*/
 void main(){
 	int pid;
 	int i;
@@ -26,5 +45,6 @@ void main(){
 }
 
 /*
+RESPUESTA:
 Cada hijo imprime solo la primera frase porque el padre les mata antes de que pasen los 30 segundos, con lo que n pueden acabar
 */

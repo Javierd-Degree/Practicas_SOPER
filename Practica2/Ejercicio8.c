@@ -129,19 +129,19 @@ int UpMultiple_Semaforo(int id, int size, int undo, int* active){
 	return OK;
 }
 
-int main ( ){
+int test(){
 	/*
 	* Declaración de variables
 	*/
 	int semid, ret; /* ID de la lista de semáforos */
-	unsigned short array[N_SEMAFOROS + 1] = {1, 1};
+	unsigned short array[N_SEMAFOROS] = {1, 1};
 
 	/*
 	* Creamos una lista o conjunto con dos semáforos
 	*/
 	ret = Crear_Semaforo(SEMKEY, N_SEMAFOROS, &semid);
 	if(ret == ERROR){
-		return ERROR;
+		exit(EXIT_FAILURE);
 	}
 
 	printf("Semid %d\n", semid);
@@ -151,7 +151,7 @@ int main ( ){
 	*/
 	ret = Inicializar_Semaforo(semid, array);
 	if(ret == ERROR){
-		return ERROR;
+		exit(EXIT_FAILURE);
 	}
 
 	/*
@@ -159,11 +159,11 @@ int main ( ){
 	*/
 	ret = Down_Semaforo(semid, 0, SEM_UNDO);
 	if(ret == ERROR){
-		return ERROR;
+		exit(EXIT_FAILURE);
 	}
 	ret = Up_Semaforo(semid, 1, SEM_UNDO);
 	if(ret == ERROR){
-		return ERROR;
+		exit(EXIT_FAILURE);
 	}
 
 	/*
@@ -175,7 +175,7 @@ int main ( ){
 	/* Eliminar la lista de semáforos */
 	ret = Borrar_Semaforo(semid);
 	if(ret == ERROR){
-		return ERROR;
+		exit(EXIT_FAILURE);
 	}
-	return OK;
-}/* fin de la función main */
+	exit(EXIT_SUCCESS);
+}

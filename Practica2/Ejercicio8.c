@@ -5,13 +5,13 @@
 #include <errno.h>
 #include <sys/shm.h>
 #include <stdlib.h>
+#include "Ejercicio8.h"
 
-
-#define ERROR -1
-#define OK 0
-#define CREADO 1
 #define SEMKEY 75798
 #define N_SEMAFOROS 2
+
+/*En este caso, guardamos en una varible global dentro de la libreria el numero
+de semaforos que tenemos, de forma que el usuario no es consciente de esto.*/
 
 union semun {
 	int val;
@@ -19,24 +19,31 @@ union semun {
 	unsigned short *array;
 } arg;
 
-
-
+int n_sems;
 
 int Inicializar_Semaforo(int semid, unsigned short * array){
 	int i;
 	if(array == NULL){
 		return ERROR;
 	}
-	arg.array = (unsigned short *)malloc(sizeof(array));
+
+	/*Borramos para asegurarnos de no perder memoria*/
+	if(arg.array != NULL){
+		free(arg.array);
+	}
+
+	arg.array = (unsigned short *)malloc(sizeof(unsigned short) * n_sems);
 	if(arg.array == NULL){
 		return ERROR;
 	}
-	for(i = 0; i < sizeof(array)/sizeof(unsigned short); i++){
+
+	for(i = 0; i < n_sems; i++){
 		arg.array[i] = array[i];
 	}
+
 	/*Se le pasa el semid del array de semaforos, el número de semaforos y SETALL 
 	para que los inicialice todos, inicializa el array de semaforos con los valores de arg.array*/
-	semctl (semid, sizeof(array)/sizeof(unsigned short), SETALL, arg);
+	semctl (semid, n_sems, SETALL, arg);
 	return OK;
 }
 
@@ -52,13 +59,21 @@ int Crear_Semaforo(key_t key, int size, int* semid){
 	int ret;
 	*semid = semget(key, size, IPC_CREAT | IPC_EXCL | SHM_R | SHM_W);
 	if((*semid == -1) && (errno == EEXIST)){
+		/*Ya esta creado, pero necesitamos el id de verdad, no -1*/
+		*semid = semget(key, size, SHM_R | SHM_W);
+		printf("Ya esta creado\n");
 		return CREADO;
 	}
 	if(*semid==-1){
 		perror("semget");
 		return ERROR;
 	}
-	unsigned short* array =(unsigned short*)calloc(size, sizeof(unsigned short));
+
+	/*Inicializamos el array con una posicion mas, que es la maxima que admite un unsigned short,
+	para saber hasta donde escribir al inicializar etc.*/
+	n_sems = size;
+	unsigned short* array = (unsigned short*)calloc(size, sizeof(unsigned short));
+	
 	ret = Inicializar_Semaforo(*semid, array);
 	free(array);
 	return ret;	
@@ -67,11 +82,11 @@ int Crear_Semaforo(key_t key, int size, int* semid){
 int Down_Semaforo(int id, int num_sem, int undo){
 	struct sembuf sem_oper;
 	int ret;
-	sem_oper.sem_num = num_sem; /* Actuamos sobre el semáforo 0 de la lista */
-	sem_oper.sem_op =-1; /* Decrementar en 1 el valor del semáforo */
+	sem_oper.sem_num = num_sem; /* Actuamos sobre el semáforo num_sem de la lista */
+	sem_oper.sem_op = -1; /* Decrementar en 1 el valor del semáforo */
 	sem_oper.sem_flg = SEM_UNDO; /* Para evitar interbloqueos si un
 	proceso acaba inesperadamente */
-	ret = semop (id, &sem_oper, 1);
+	ret = semop(id, &sem_oper, 1);
 	if(ret == -1){
 		return ERROR;
 	}
@@ -119,7 +134,8 @@ int main ( ){
 	* Declaración de variables
 	*/
 	int semid, ret; /* ID de la lista de semáforos */
-	unsigned short array[2] = {1, 1};
+	unsigned short array[N_SEMAFOROS + 1] = {1, 1};
+
 	/*
 	* Creamos una lista o conjunto con dos semáforos
 	*/
@@ -127,6 +143,9 @@ int main ( ){
 	if(ret == ERROR){
 		return ERROR;
 	}
+
+	printf("Semid %d\n", semid);
+
 	/*
 	* Inicializamos los semáforos
 	*/

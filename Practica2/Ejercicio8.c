@@ -19,38 +19,17 @@ union semun {
 	unsigned short *array;
 } arg;
 
-int n_sems;
-
 int Inicializar_Semaforo(int semid, unsigned short * array){
-	int i;
-	if(array == NULL){
-		return ERROR;
-	}
-
-	/*Borramos para asegurarnos de no perder memoria*/
-	if(arg.array != NULL){
-		free(arg.array);
-	}
-
-	arg.array = (unsigned short *)malloc(sizeof(unsigned short) * n_sems);
-	if(arg.array == NULL){
-		return ERROR;
-	}
-
-	for(i = 0; i < n_sems; i++){
-		arg.array[i] = array[i];
-	}
-
+	arg.array = array;
 	/*Se le pasa el semid del array de semaforos, el número de semaforos y SETALL 
 	para que los inicialice todos, inicializa el array de semaforos con los valores de arg.array*/
-	semctl (semid, n_sems, SETALL, arg);
+	semctl (semid, 0, SETALL, arg);
 	return OK;
 }
 
 
 int Borrar_Semaforo(int semid){
 	semctl (semid, 0, IPC_RMID);
-	free(arg.array);
 	return OK;
 }
 
@@ -61,7 +40,7 @@ int Crear_Semaforo(key_t key, int size, int* semid){
 	if((*semid == -1) && (errno == EEXIST)){
 		/*Ya esta creado, pero necesitamos el id de verdad, no -1*/
 		*semid = semget(key, size, SHM_R | SHM_W);
-		printf("Ya esta creado\n");
+		//printf("Ya esta creado\n");
 		return CREADO;
 	}
 	if(*semid==-1){
@@ -71,11 +50,9 @@ int Crear_Semaforo(key_t key, int size, int* semid){
 
 	/*Inicializamos el array con una posicion mas, que es la maxima que admite un unsigned short,
 	para saber hasta donde escribir al inicializar etc.*/
-	n_sems = size;
 	unsigned short* array = (unsigned short*)calloc(size, sizeof(unsigned short));
 	
 	ret = Inicializar_Semaforo(*semid, array);
-	free(array);
 	return ret;	
 }
 
@@ -157,6 +134,7 @@ int test(){
 	/*
 	* Operamos sobre los semáforos
 	*/
+	printf("Inicializamos semaforos\n");
 	ret = Down_Semaforo(semid, 0, SEM_UNDO);
 	if(ret == ERROR){
 		exit(EXIT_FAILURE);

@@ -4,6 +4,7 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <sys/wait.h>
+#include <time.h>
 #include "Ejercicio8.h"
 
 #define NCAJAS 2
@@ -11,11 +12,11 @@
 #define SEMKEY 75798
 /*De momento usamos solo dos semaforos, uno para los ficheros de 
 las cajas, y otro para el fichero proceso espera.*/
-#define N_SEMAFOROS 2
-
+#define N_SEMAFOROS NCAJAS + 1
+#define MAX_DINERO 1000
 
 int semid;
-int cuentaGlobal;
+int cuentaGlobal = 0;
 
 /*********************************************/
 /* Funcion: aleat_num                        */
@@ -83,10 +84,8 @@ int mod_caja(int caja, int valor, int modo){
 	int result;
 	int ret;
 
-	printf("HOLA!! %d", caja);
 	sprintf(nombre, "%d.txt", caja);
-	printf("Modificamos la caja %d", caja);
-	ret = Down_Semaforo(semid, 0, SEM_UNDO);
+	ret = Down_Semaforo(semid, caja, SEM_UNDO);
 	if(ret == ERROR){
 		printf("Error al bajar semaforo 1, %d\n", caja);
 	}
@@ -95,29 +94,34 @@ int mod_caja(int caja, int valor, int modo){
 	/*Cogemos el valor actual, o creamos el archivo si no existe*/
 	f = fopen(nombre, "r");
 	if(f == NULL){
-		printf("El archivo %s no existe, lo creamos\n", nombre);
+		//printf("El archivo %s no existe, lo creamos\n", nombre);
 		f = fopen(nombre, "w");
 	}else{
 		fscanf(f, "%d", &temp);
 		fclose(f);
 		f = fopen(nombre, "w");
-		printf("El archivo %s existe y tiene %d euros\n", nombre, temp);
+		//printf("El archivo %s existe y tiene %d euros\n", nombre, temp);
 	}
 
 	if(modo == 0){
 		fprintf(f, "%d", temp + valor);
 		result = temp + valor;
-	}else if(modo == 1){
+	}else if(modo == 1 && temp >= MAX_DINERO){
+		/*Nos aseguramos aqui de que haya mas de 1000 euros, pues 
+		puede darse el caso de que el hijo tenga guardado en la variable 
+		temp el dinero de antes de que se actualizase su caja, y por tanto,
+		vuelva a llamar al padre.*/
+		printf("Soy el padre y acabo de quitarle 900€ a la caja %d, que tenia %d€\n", caja, temp);
 		fprintf(f, "%d", temp - valor);
 		result = valor;
-	}else{
+	}else if(modo == 2){
 		fprintf(f, "0");
 		result = temp;
 	}
 	
 	fclose(f);
 
-	ret = Up_Semaforo(semid, 0, SEM_UNDO);
+	ret = Up_Semaforo(semid, caja, SEM_UNDO);
 	if(ret == ERROR){
 		printf("Error al subir semaforo 1, %d\n", caja);
 	}
@@ -139,13 +143,13 @@ void retirarParte(){
 	}
 	
 	if(fscanf(f, "%d", &i) != 1 || i < 0 || i >= NCAJAS){
-		printf("Error al intentar saber que proceso ha mandado la señal.\n");
-		return;
+		printf("Error al intentar saber que proceso ha mandado la señal. %d\n", i);
+	}else{
+		cuentaGlobal += mod_caja(i, 900, 1);
 	}
-	
-	cuentaGlobal += mod_caja(i, 900, 1);
 
-	ret = Up_Semaforo(semid, 1, SEM_UNDO);
+	fclose(f);
+	ret = Up_Semaforo(semid, N_SEMAFOROS - 1, SEM_UNDO);
 	if(ret == ERROR){
 		printf("Error al subir semaforo 2 para retirar todo.\n");
 		return;
@@ -158,7 +162,7 @@ lanzar dicha señal, y por tanto no es necesario usar una mascara
 se señales para bloquearlas.*/
 void retirarTotal(){
 	int ret;
-	int i;
+	int i = -1;
 	FILE *f = NULL;
 
 	f = fopen("procesoEspera.txt", "r");
@@ -168,12 +172,14 @@ void retirarTotal(){
 	
 	if(fscanf(f, "%d", &i) != 1 || i < 0 || i >= NCAJAS){
 		printf("Error al intentar saber que proceso ha mandado la señal.\n");
-		return;
+	}else{
+		cuentaGlobal += mod_caja(i, 0, 2);
+		printf("Soy el padre y acabo de quitarle todo el dinero a la caja %d\n", i);
 	}
 
-	cuentaGlobal += mod_caja(i, 0, 2);
-
-	ret = Up_Semaforo(semid, 1, SEM_UNDO);
+	fclose(f);
+	
+	ret = Up_Semaforo(semid, N_SEMAFOROS - 1, SEM_UNDO);
 	if(ret == ERROR){
 		printf("Error al subir semaforo 2 para retirar todo.\n");
 		return;
@@ -194,12 +200,14 @@ int main(){
 	int pids[NCAJAS];
 	int temp;
 	int ret;
+	unsigned short array[N_SEMAFOROS] = {1, 1, 1};
 	char nombre[500];
 	FILE *f;
 	FILE *fProcesoEspera;
 
-	cuentaGlobal = 0;
-	unsigned short array[N_SEMAFOROS] = {1, 1};
+	/*Inicializamos la semilla para generar los numeros aleatorios*/
+	srand(time(NULL));
+
 	/*Inicializamos la funcion de manejo*/
 	if(signal(SIGUSR1, retirarParte)== SIG_ERR){
 		perror("Signal 1");
@@ -243,7 +251,7 @@ int main(){
 	}
 
 	/*El código que ejecuta cada uno de los hijos*/
-	if(pids[i] == 0){
+	if(i < NCAJAS && pids[i] == 0){
 		/*Abrimos el fichero con todas las operaciones
 		de la caja, que no hace falta cerrar pues solo
 		se utiliza desde dicha caja.*/
@@ -251,43 +259,48 @@ int main(){
 		if(f == NULL){
 			exit(EXIT_FAILURE);
 		}
-		printf("Soy el hijo %d y empiezo a cobrar\n", i);
+		
 		while(fscanf(f, "%d\n", &temp) == 1){
-			printf("Soy el hijo %d y estoy cobrando\n", i);
-			printf("Hijo %d, pid %d\n", i, getpid());
 			temp = mod_caja(i, temp, 0);
 			printf("Dinero actual caja %d: %d\n", i, temp);
 			/*Dormimos y atendemos al cliente*/
-			//sleep(aleat_num(1, 5));
-			if(temp > 1000){
-				printf("Avisamos al padre, %d\n", i);
+			sleep(aleat_num(1, 5));
+			if(temp > MAX_DINERO){
 				/*TODO Down semaforo procesoEspera.txt. El padre hace el Up una vez lo ha leido.*/
-				ret = Down_Semaforo(semid, 1, SEM_UNDO);
+				ret = Down_Semaforo(semid, N_SEMAFOROS - 1, SEM_UNDO);
 				if(ret == ERROR){
 					printf("Error al bajar semaforo 2, %d\n", i);
 				}
+
+				//printf("Soy la caja %d y acabo de avisar al padre.\n", i);
 				fProcesoEspera = fopen("procesoEspera.txt", "w");
 				fprintf(fProcesoEspera, "%d", i);
+				fclose(fProcesoEspera);
 				kill(getppid(), SIGUSR1);
 			}
 		}
 		fclose(f);
+
+		/*Una vez hemos acabado, avisamos al padre*/
+		/*TODO Down semaforo procesoEspera.txt. El padre hace el Up una vez lo ha leido.*/
+		ret = Down_Semaforo(semid, N_SEMAFOROS - 1, SEM_UNDO);
+		if(ret == ERROR){
+			printf("Error al bajar semaforo 2, %d\n", i);
+		}
+		printf("Soy la caja %d y ya he acabado.\n", i);
+		fProcesoEspera = fopen("procesoEspera.txt", "w");
+		fprintf(fProcesoEspera, "%d", i);
+		fclose(fProcesoEspera);
+		kill(getppid(), SIGUSR2);
 	}else{
 		/*El padre simplemente tiene que esperar a los hijos*/
-		printf("Soy el padre %d\n", getpid());
 		while(wait(NULL) > 0);
-		printf("Soy el padre %d y dejo de esperar\n", getpid());
+		printf("\nSoy el padre, y en total he recaudado %d€.\n", cuentaGlobal);
+		ret = Borrar_Semaforo(semid);
+		if(ret == ERROR){
+			exit(EXIT_FAILURE);
+		}
 	}
-
-	/*TODO Down semaforo procesoEspera.txt. El padre hace el Up una vez lo ha leido.*/
-	ret = Down_Semaforo(semid, 1, SEM_UNDO);
-	if(ret == ERROR){
-		printf("Error al bajar semaforo 2, %d\n", i);
-	}
-	printf("Avisamos al padre de que hemos acabado, %d\n", i);
-	fProcesoEspera = fopen("procesoEspera.txt", "w");
-	fprintf(fProcesoEspera, "%d", i);
-	kill(getppid(), SIGUSR2);
 
 	exit(EXIT_SUCCESS);
 }

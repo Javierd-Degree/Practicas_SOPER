@@ -12,7 +12,7 @@
 #define SEMKEY 75798
 /*De momento usamos solo dos semaforos, uno para los ficheros de 
 las cajas, y otro para el fichero proceso espera.*/
-#define N_SEMAFOROS NCAJAS + 1
+#define N_SEMAFOROS (NCAJAS + 1)
 #define MAX_DINERO 1000
 
 int semid;
@@ -208,13 +208,24 @@ int main(){
 	int pids[NCAJAS];
 	int temp;
 	int ret;
-	unsigned short array[N_SEMAFOROS] = {1, 1, 1, 1, 1};
+	unsigned short *array;
 	char nombre[500];
 	FILE *f;
 	FILE *fProcesoEspera;
 
 	/*Inicializamos la semilla para generar los numeros aleatorios*/
 	srand(time(NULL));
+
+	/*Inicializamos el array de semaforos a 1*/
+	printf("%d, %d\n", sizeof(unsigned short), N_SEMAFOROS);
+	array = (unsigned short *)malloc(sizeof(unsigned short)*N_SEMAFOROS);
+	if(array == NULL){
+		printf("Error al reservar memoria\n");
+	}
+
+	for(i = 0; i < N_SEMAFOROS; i++){
+		array[i] = 1;
+	}
 
 	/*Inicializamos la funcion de manejo*/
 	if(signal(SIGUSR1, retirarParte)== SIG_ERR){
@@ -310,5 +321,6 @@ int main(){
 		}
 	}
 
+	free(array);
 	exit(EXIT_SUCCESS);
 }

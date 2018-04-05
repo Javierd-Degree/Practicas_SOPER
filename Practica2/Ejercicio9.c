@@ -1,3 +1,11 @@
+/**
+* @brief Ejercicio 9 de la Practica 2.
+*
+* @file Ejercicio9.c
+* @author Javier.delgadod@estudiante.uam.es 
+* @author Javier.lopezcano@estudiante.uam.es
+*/
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -18,22 +26,13 @@ las cajas, y otro para el fichero proceso espera.*/
 int semid;
 int cuentaGlobal = 0;
 
-/*********************************************/
-/* Funcion: aleat_num                        */
-/* Fecha: 29-09-2017                         */
-/* Autores:  Javier Delgado del Cerro,       */
-/*           Javier López Cano               */
-/*           Grupo 1201 Pareja 15            */
-/*                                           */
-/* Rutina que genera un numero aleatorio     */ 
-/* entre dos numeros dados                   */
-/*                                           */
-/* Entrada:                                  */
-/* int inf: limite inferior                  */
-/* int sup: limite superior                  */
-/* Salida:                                   */
-/* int: numero aleatorio                     */
-/*********************************************/
+/**
+* Funcion a la que le pasas 2 numeros y devuelve un numero aleatorio entre ambos.
+*
+* @param inf Int con el numero mas bajo que se quiere.
+* @param sup Int con el numero mas alto que se quiere.
+* @return int con un número aleatorio entre inf y sup. 
+*/
 int aleat_num(int inf, int sup){
     if(sup < inf) return ERROR;
     if(sup == inf) return sup;
@@ -51,6 +50,15 @@ int aleat_num(int inf, int sup){
     return (random/groups) + inf;
 }
 
+
+/**
+* @brief Funcion que recibe una string con el nombre de un fichero, lo abre
+* e imprime en el 50 numero aleatorios entre el 0 y el 300 usando la funcion
+* aleat_num creada antes.
+*
+* @param nombre Cadena de caracteres con el nombre del fichero.
+* @return int que determina si la funcion se ha ejecutado o no con exito.
+*/
 int rellenar_fichero(char *nombre){
 	FILE *f = NULL;
 	int i;
@@ -66,7 +74,7 @@ int rellenar_fichero(char *nombre){
 		return ERROR;
 	}
 
-	for(i = 0; i < 10; i++){
+	for(i = 0; i < 50; i++){
 		fprintf(f, "%d\n", aleat_num(0, 300));
 	}
 
@@ -77,6 +85,19 @@ int rellenar_fichero(char *nombre){
 /*Delvuelve la cantidad total guardada en el fichero.*/
 /*Modo puede ser 0 para sumar, 1 para restar, 2 para vaciar la caja
 En el caso en el que vaciamos la caja, valor se ignora.*/
+/**
+* @brief Funcion que recibe una caja, un modo y un valor y modifica la caja
+* bajando el semaforo antes de modificar el archivo y subiendolo al acabar,
+* de modo que no haya otro proceso que pueda modificar el archivo a la vez
+* que este. Si el modo es 0 suma el valor a lo que ya hay en la caja, si el
+* modo es 1 restas el valor a lo que hay en la caja, y si el modo es 2 se
+* vacia completamente la caja.
+*
+* @param caja Int con la caja que se va a modificar.
+* @param valor Int con el valor con el que se va a modificar la caja.
+* @param modo Int con el modo del que se quiere modificar la caja.
+* @return int con el valor final de la caja.
+*/
 int mod_caja(int caja, int valor, int modo){
 	char nombre[512];
 	FILE *f = NULL;
@@ -140,11 +161,16 @@ int mod_caja(int caja, int valor, int modo){
 proceso hijo hace un down del semaforo, ningun otro proceso podra
 lanzar dicha señal, y por tanto no es necesario usar una mascara 
 se señales para bloquearlas.*/
+/**
+* @brief Funcion de manejo de la senal USR1 que utiliza el proceso padre
+* para saber que tiene que quitar 900 euros al hijo. Esta funcion llama
+* a mod_caja y sube el ultimo semaforo que es el que se usa para manejar
+* el archivo en el que se controla que proceso es el que ha llamado.
+*/
 void retirarParte(){
 	FILE *f;
 	int i;
 	int ret;
-	/*Deshabilitar y habilitar las dos señales¿?*/
 	f = fopen("procesoEspera.txt", "r");
 	if(f == NULL){
 		return;
@@ -168,6 +194,12 @@ void retirarParte(){
 proceso hijo hace un down del semaforo, ningun otro proceso podra
 lanzar dicha señal, y por tanto no es necesario usar una mascara 
 se señales para bloquearlas.*/
+/**
+* @brief Funcion de manejo de la senal USR1 que utiliza el proceso padre
+* para saber que tiene que quitar todo el dinero al hijo. Esta funcion llama
+* a mod_caja y sube el ultimo semaforo que es el que se usa para manejar
+* el archivo en el que se controla que proceso es el que ha llamado.
+*/
 void retirarTotal(){
 	int ret;
 	int i = -1;
@@ -202,6 +234,17 @@ y SIGUSR2 cuando ya hemos acabado.
 Usamos un archivo procesoEspera.txt para que el padre sepa que proceso 
 ha mandado la señal. Lo protegemos con un semaforo para evitar que otro
 proceso pueda sobreescribirlo etc.
+*/
+/**
+* @brief Main que crea e inicializa un array de semaforos a 1, crea los
+* archivos para todas las cajas llamando a la funcion rellenar_fichero,
+* y hace los forks, Tras esto los hijos escanean el dinero que hay en su
+* caja y van llamando a mod_caja hasta que tienen 1000 euros o han
+* terminado el bucle, tras lo que guardan su PID en el archivo de los 
+* procesos, bajan el semaforo que lo controla y mandan una senal al
+* proceso que sube otra vez el semaforo al recibirla.
+*
+* @return int que indica si el programa se ha ejecutado con exito o no.
 */
 int main(){
 	int i;
@@ -274,7 +317,6 @@ int main(){
 			/*Dormimos y atendemos al cliente*/
 			sleep(aleat_num(1, 5));
 			if(temp > MAX_DINERO){
-				/*TODO Down semaforo procesoEspera.txt. El padre hace el Up una vez lo ha leido.*/
 				ret = Down_Semaforo(semid, N_SEMAFOROS - 1, SEM_UNDO);
 				if(ret == ERROR){
 					printf("Error al bajar semaforo 2, %d\n", i);
@@ -290,7 +332,6 @@ int main(){
 		fclose(f);
 
 		/*Una vez hemos acabado, avisamos al padre*/
-		/*TODO Down semaforo procesoEspera.txt. El padre hace el Up una vez lo ha leido.*/
 		ret = Down_Semaforo(semid, N_SEMAFOROS - 1, SEM_UNDO);
 		if(ret == ERROR){
 			printf("Error al bajar semaforo 2, %d\n", i);

@@ -23,7 +23,7 @@
 *
 * @return int que determina si el programa se ha ejecutado o no con exito.
 */
-void main(){
+int main(){
 	int pid;
 	int i;
 

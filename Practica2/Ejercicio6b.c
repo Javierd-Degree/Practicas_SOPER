@@ -1,3 +1,12 @@
+/**
+* @brief Ejercicio 6b de la Practica 2.
+*
+* @file Ejercicio6b.c
+* @author Javier.delgadod@estudiante.uam.es 
+* @author Javier.lopezcano@estudiante.uam.es
+*/
+
+
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -8,11 +17,32 @@
 
 #define NUM_PROC 5
 
+
+/**
+* @brief Esta funcion determina el funcionamiento que tendra el hijo tras
+* recibir la senal SIGTERM. En este caso al recibir esta senal el proceso
+* hijo ejecutara esta funcion que hara que imprima Soy <PID> y he recibido
+* la señal SIGTERM y termine su ejecucion.
+*/
 void recibirSIGTERM(){
 	printf("Soy %d y he recibido la señal SIGTERM\n", getpid());
 	exit(EXIT_SUCCESS);
 }
 
+/**
+* @brief El proceso padre crea un proceso hijo, que
+* inicializa una funcion que maneja la senal SIGTERM
+* (define lo que tiene que hacer el proceso hijo al
+* recibir esta senal), y comienza a realizar lo mismo
+* que en el ejercicio 6a, imprimir 0 1 2 3 4 y esperar
+* 1 segundo y 3 segundos continuamente.
+* El proceso padre tras lanzar el hijo duerme 40 segundos,
+* y al pasar este tiempo lanza la senal SIGTERM al hijo y 
+* realiza un wait para esperar a que el hijo acabe, tras
+* lo cual acaba su ejecucion.
+*
+* @return int que determina si el programa se ha ejecutado o no con exito.
+*/
 int main (void){
 	int pid, counter;
 

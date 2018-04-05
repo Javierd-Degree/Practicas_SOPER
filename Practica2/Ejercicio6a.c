@@ -1,3 +1,11 @@
+/**
+* @brief Ejercicio 6a de la Practica 2.
+*
+* @file Ejercicio6a.c
+* @author Javier.delgadod@estudiante.uam.es 
+* @author Javier.lopezcano@estudiante.uam.es
+*/
+
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -7,6 +15,23 @@
 #include <time.h>
 
 #define NUM_PROC 5
+
+/**
+* @brief El proceso padre crea un proceso hijo, que
+* inicializa una mascara vacia e introduce en ella las 
+* senales SIGUSR1, SIGUSR2, SIGUSR3 y lanza un alarm
+* que mandara una señal a los 40 segundos Tras esto entra en un
+* while(1) y bloquea las señales para que si le llegan
+* durante la cuenta que realizara a continuacion, no se
+* pare esta y comienza a imprimir 0 1 2 3 4 y a
+* esperar 1 segundo y 3 segundos continuamente, pero
+* antes de esperar los 3 segundos, desbloquea las senales
+* de modo que si ha recibido la senal del alarm, se para
+* su ejecucion tras lo cual acaba tambien el proceso padre
+* que habia hecho un wait para esperar al hijo.
+*
+* @return int que determina si el programa se ha ejecutado o no con exito.
+*/
 int main (void){
 	int pid, counter;
 	sigset_t set, oset;

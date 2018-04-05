@@ -10,58 +10,68 @@
 #define SEMKEY 75798
 #define N_SEMAFOROS 2
 
-/*En este caso, guardamos en una varible global dentro de la libreria el numero
-de semaforos que tenemos, de forma que el usuario no es consciente de esto.*/
-
+/*Creamos la estructura de los semaforos*/
 union semun {
 	int val;
 	struct semid_ds *semstat;
 	unsigned short *array;
 } arg;
 
+
 int Inicializar_Semaforo(int semid, unsigned short * array){
+	if(array == NULL){
+		return ERROR;
+	}
+
 	arg.array = array;
 	/*Se le pasa el semid del array de semaforos, el número de semaforos y SETALL 
 	para que los inicialice todos, inicializa el array de semaforos con los valores de arg.array*/
-	semctl (semid, 0, SETALL, arg);
+	if(semctl (semid, 0, SETALL, arg) == -1){
+		return ERROR;
+	}
 	return OK;
 }
 
 
 int Borrar_Semaforo(int semid){
-	semctl (semid, 0, IPC_RMID);
+	if(semctl (semid, 0, IPC_RMID) == -1){
+		return ERROR;
+	}
 	return OK;
 }
 
 
 int Crear_Semaforo(key_t key, int size, int* semid){
-	int ret;
-	*semid = semget(key, size, IPC_CREAT | IPC_EXCL | SHM_R | SHM_W);
-	if((*semid == -1) && (errno == EEXIST)){
-		/*Ya esta creado, pero necesitamos el id de verdad, no -1*/
-		*semid = semget(key, size, SHM_R | SHM_W);
-		//printf("Ya esta creado\n");
-		return CREADO;
-	}
-	if(*semid==-1){
-		perror("semget");
+	if(size < 0 || semid == NULL){
 		return ERROR;
 	}
 
-	/*Inicializamos el array con una posicion mas, que es la maxima que admite un unsigned short,
-	para saber hasta donde escribir al inicializar etc.*/
-	unsigned short* array = (unsigned short*)calloc(size, sizeof(unsigned short));
+	*semid = semget(key, size, IPC_CREAT | IPC_EXCL | SHM_R | SHM_W);
+
+	if((*semid == -1) && (errno == EEXIST)){
+		/*Ya esta creado, pero necesitamos el id de verdad, no -1*/
+		*semid = semget(key, size, SHM_R | SHM_W);
+		return CREADO;
+
+	}else if(*semid == -1){
+		perror("semget");
+		return ERROR;
+	}
 	
-	ret = Inicializar_Semaforo(*semid, array);
-	return ret;	
+	return OK;
 }
 
 int Down_Semaforo(int id, int num_sem, int undo){
 	struct sembuf sem_oper;
 	int ret;
+
+	if(num_sem < 0){
+		return ERROR;
+	}
+
 	sem_oper.sem_num = num_sem; /* Actuamos sobre el semáforo num_sem de la lista */
 	sem_oper.sem_op = -1; /* Decrementar en 1 el valor del semáforo */
-	sem_oper.sem_flg = SEM_UNDO; /* Para evitar interbloqueos si un
+	sem_oper.sem_flg = undo; /* Para evitar interbloqueos si un
 	proceso acaba inesperadamente */
 	ret = semop(id, &sem_oper, 1);
 	if(ret == -1){
@@ -72,7 +82,12 @@ int Down_Semaforo(int id, int num_sem, int undo){
 
 int DownMultiple_Semaforo(int id, int size, int undo, int* active){
 	int ret, i;
-	for(i = 0; i < sizeof(active)/sizeof(int); i++){
+
+	if(active == NULL || size < 0){
+		return ERROR;
+	}
+
+	for(i = 0; i < size; i++){
 		ret = Down_Semaforo(id, active[i], undo);
 		if(ret == ERROR){
 			return ERROR;
@@ -97,7 +112,7 @@ int Up_Semaforo(int id, int num_sem, int undo){
 
 int UpMultiple_Semaforo(int id, int size, int undo, int* active){
 	int ret, i;
-	for(i = 0; i < sizeof(active)/sizeof(int); i++){
+	for(i = 0; i < size; i++){
 		ret = Up_Semaforo(id, active[i], undo);
 		if(ret == ERROR){
 			return ERROR;

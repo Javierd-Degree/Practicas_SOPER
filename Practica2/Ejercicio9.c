@@ -7,7 +7,7 @@
 #include <time.h>
 #include "Ejercicio8.h"
 
-#define NCAJAS 2
+#define NCAJAS 4
 /*Id del array de semaforos*/
 #define SEMKEY 75798
 /*De momento usamos solo dos semaforos, uno para los ficheros de 
@@ -66,7 +66,7 @@ int rellenar_fichero(char *nombre){
 		return ERROR;
 	}
 
-	for(i = 0; i < 50; i++){
+	for(i = 0; i < 10; i++){
 		fprintf(f, "%d\n", aleat_num(0, 300));
 	}
 
@@ -83,21 +83,25 @@ int mod_caja(int caja, int valor, int modo){
 	int temp = 0;
 	int result;
 	int ret;
-
+	
 	sprintf(nombre, "%d.txt", caja);
 	ret = Down_Semaforo(semid, caja, SEM_UNDO);
 	if(ret == ERROR){
 		printf("Error al bajar semaforo 1, %d\n", caja);
 	}
+
 	/*Bajamos el semaforo para asegurarnos de que no leemos y escribimos
 	a la vez desde el padre y el hijo.*/
 	/*Cogemos el valor actual, o creamos el archivo si no existe*/
 	f = fopen(nombre, "r");
 	if(f == NULL){
-		//printf("El archivo %s no existe, lo creamos\n", nombre);
+		printf("El archivo %s no existe, lo creamos\n", nombre);
 		f = fopen(nombre, "w");
 	}else{
-		fscanf(f, "%d", &temp);
+		if(fscanf(f, "%d", &temp) != 1){
+			printf("\tError en el scanf caja %d. No carga temp.\n", caja);
+			exit(-1);
+		}
 		fclose(f);
 		f = fopen(nombre, "w");
 		//printf("El archivo %s existe y tiene %d euros\n", nombre, temp);
@@ -114,6 +118,9 @@ int mod_caja(int caja, int valor, int modo){
 		printf("Soy el padre y acabo de quitarle 900€ a la caja %d, que tenia %d€\n", caja, temp);
 		fprintf(f, "%d", temp - valor);
 		result = valor;
+	}else if(modo == 1 && temp < MAX_DINERO){
+		fprintf(f, "%d", temp);
+		result = 0;
 	}else if(modo == 2){
 		fprintf(f, "0");
 		result = temp;
@@ -125,6 +132,7 @@ int mod_caja(int caja, int valor, int modo){
 	if(ret == ERROR){
 		printf("Error al subir semaforo 1, %d\n", caja);
 	}
+
 	return result;
 }
 
@@ -200,7 +208,7 @@ int main(){
 	int pids[NCAJAS];
 	int temp;
 	int ret;
-	unsigned short array[N_SEMAFOROS] = {1, 1, 1};
+	unsigned short array[N_SEMAFOROS] = {1, 1, 1, 1, 1};
 	char nombre[500];
 	FILE *f;
 	FILE *fProcesoEspera;
@@ -236,7 +244,7 @@ int main(){
 	for(i = 0; i < NCAJAS; i++){
 		/*Como el hijo sale del bucle y duplica toda la memoria
 		del padre, conserva el valor nombre de su archivo.*/
-		sprintf(nombre, "clientesCaja%d.txt", i+1);
+		sprintf(nombre, "clientesCaja%d.txt", i);
 		if(rellenar_fichero(nombre) == ERROR){
 			exit(EXIT_FAILURE);
 		}

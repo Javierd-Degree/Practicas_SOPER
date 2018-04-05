@@ -1,0 +1,52 @@
+\hypertarget{Ejercicio2_8c}{}\section{Ejercicio2.\+c File Reference}
+\label{Ejercicio2_8c}\index{Ejercicio2.\+c@{Ejercicio2.\+c}}
+
+
+Ejercicio 2 de la Practica 2.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$signal.\+h$>$}\\*
+Include dependency graph for Ejercicio2.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Ejercicio2_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{Ejercicio2_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\begin{DoxyCompactList}\small\item\em El proceso padre crea cuatro procesos hijos, que imprimen \char`\"{}\+Soy el proceso hijo $<$\+P\+I\+D$>$\char`\"{}, duermen treinta segundos, y luego imprimen \char`\"{}\+Soy el proceso hijo $<$\+P\+I\+D$>$ y ya me toca terminar.\char`\"{}. Una vez el proceso padre crea cada uno de los hijos, espera 30 segundos y mata al hijo enviando la senal S\+I\+G\+T\+E\+RM. De esta forma, es imposible que los hijos impriman el segundo mensaje, pues el padre los habra matado antes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Ejercicio 2 de la Practica 2. 
+
+\begin{DoxyAuthor}{Author}
+\href{mailto:Javier.delgadod@estudiante.uam.es}{\tt Javier.\+delgadod@estudiante.\+uam.\+es} 
+
+\href{mailto:Javier.lopezcano@estudiante.uam.es}{\tt Javier.\+lopezcano@estudiante.\+uam.\+es} 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{Ejercicio2.\+c@{Ejercicio2.\+c}!main@{main}}
+\index{main@{main}!Ejercicio2.\+c@{Ejercicio2.\+c}}
+\subsubsection[{\texorpdfstring{main()}{main()}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio2_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{}\label{Ejercicio2_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}
+
+
+El proceso padre crea cuatro procesos hijos, que imprimen \char`\"{}\+Soy el proceso hijo $<$\+P\+I\+D$>$\char`\"{}, duermen treinta segundos, y luego imprimen \char`\"{}\+Soy el proceso hijo $<$\+P\+I\+D$>$ y ya me toca terminar.\char`\"{}. Una vez el proceso padre crea cada uno de los hijos, espera 30 segundos y mata al hijo enviando la senal S\+I\+G\+T\+E\+RM. De esta forma, es imposible que los hijos impriman el segundo mensaje, pues el padre los habra matado antes. 
+
+\begin{DoxyReturn}{Returns}
+int que determina si el programa se ha ejecutado o no con exito. 
+\end{DoxyReturn}

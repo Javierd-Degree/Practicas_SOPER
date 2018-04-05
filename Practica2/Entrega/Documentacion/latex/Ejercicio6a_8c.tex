@@ -1,0 +1,60 @@
+\hypertarget{Ejercicio6a_8c}{}\section{Ejercicio6a.\+c File Reference}
+\label{Ejercicio6a_8c}\index{Ejercicio6a.\+c@{Ejercicio6a.\+c}}
+
+
+Ejercicio 6a de la Practica 2.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$sys/wait.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$signal.\+h$>$}\\*
+{\ttfamily \#include $<$time.\+h$>$}\\*
+Include dependency graph for Ejercicio6a.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Ejercicio6a_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bfseries N\+U\+M\+\_\+\+P\+R\+OC}~5\hypertarget{Ejercicio6a_8c_acee2369f62e4a096d243dec3cd7d0b00}{}\label{Ejercicio6a_8c_acee2369f62e4a096d243dec3cd7d0b00}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{Ejercicio6a_8c_a840291bc02cba5474a4cb46a9b9566fe}{main} (void)
+\begin{DoxyCompactList}\small\item\em El proceso padre crea un proceso hijo, que inicializa una mascara vacia e introduce en ella las senales S\+I\+G\+U\+S\+R1, S\+I\+G\+U\+S\+R2, S\+I\+G\+U\+S\+R3 y lanza un alarm que mandara una señal a los 40 segundos Tras esto entra en un while(1) y bloquea las señales para que si le llegan durante la cuenta que realizara a continuacion, no se pare esta y comienza a imprimir 0 1 2 3 4 y a esperar 1 segundo y 3 segundos continuamente, pero antes de esperar los 3 segundos, desbloquea las senales de modo que si ha recibido la senal del alarm, se para su ejecucion tras lo cual acaba tambien el proceso padre que habia hecho un wait para esperar al hijo. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Ejercicio 6a de la Practica 2. 
+
+\begin{DoxyAuthor}{Author}
+\href{mailto:Javier.delgadod@estudiante.uam.es}{\tt Javier.\+delgadod@estudiante.\+uam.\+es} 
+
+\href{mailto:Javier.lopezcano@estudiante.uam.es}{\tt Javier.\+lopezcano@estudiante.\+uam.\+es} 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{Ejercicio6a.\+c@{Ejercicio6a.\+c}!main@{main}}
+\index{main@{main}!Ejercicio6a.\+c@{Ejercicio6a.\+c}}
+\subsubsection[{\texorpdfstring{main(void)}{main(void)}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio6a_8c_a840291bc02cba5474a4cb46a9b9566fe}{}\label{Ejercicio6a_8c_a840291bc02cba5474a4cb46a9b9566fe}
+
+
+El proceso padre crea un proceso hijo, que inicializa una mascara vacia e introduce en ella las senales S\+I\+G\+U\+S\+R1, S\+I\+G\+U\+S\+R2, S\+I\+G\+U\+S\+R3 y lanza un alarm que mandara una señal a los 40 segundos Tras esto entra en un while(1) y bloquea las señales para que si le llegan durante la cuenta que realizara a continuacion, no se pare esta y comienza a imprimir 0 1 2 3 4 y a esperar 1 segundo y 3 segundos continuamente, pero antes de esperar los 3 segundos, desbloquea las senales de modo que si ha recibido la senal del alarm, se para su ejecucion tras lo cual acaba tambien el proceso padre que habia hecho un wait para esperar al hijo. 
+
+\begin{DoxyReturn}{Returns}
+int que determina si el programa se ha ejecutado o no con exito. 
+\end{DoxyReturn}

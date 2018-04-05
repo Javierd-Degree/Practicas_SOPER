@@ -1,0 +1,70 @@
+\hypertarget{Ejercicio4_8c}{}\section{Ejercicio4.\+c File Reference}
+\label{Ejercicio4_8c}\index{Ejercicio4.\+c@{Ejercicio4.\+c}}
+
+
+Ejercicio 4 de la Practica 2.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$sys/wait.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$signal.\+h$>$}\\*
+Include dependency graph for Ejercicio4.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Ejercicio4_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{Ejercicio4_8c_a9dd395f2e0046c1513c84dfcfb9e54da}{N\+U\+M\+\_\+\+H\+I\+J\+OS}~5
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{Ejercicio4_8c_a0897883a0dfdf1023f377e262cee1299}{captura} ()\hypertarget{Ejercicio4_8c_a0897883a0dfdf1023f377e262cee1299}{}\label{Ejercicio4_8c_a0897883a0dfdf1023f377e262cee1299}
+
+\begin{DoxyCompactList}\small\item\em Funcion que ejecuta el proceso padre tras recibir la senal S\+I\+G\+U\+S\+R1. De esta forma, nos aseguramos que el proceso salga correctamente del pause() y continue su ejecucion. \end{DoxyCompactList}\item 
+void \hyperlink{Ejercicio4_8c_a8dde52fc2d8703ce2fa56ebedcacee05}{terminar} ()\hypertarget{Ejercicio4_8c_a8dde52fc2d8703ce2fa56ebedcacee05}{}\label{Ejercicio4_8c_a8dde52fc2d8703ce2fa56ebedcacee05}
+
+\begin{DoxyCompactList}\small\item\em Funcion que ejecutan los procesos hijos tras recibir la senal S\+I\+G\+U\+S\+R2, para terminar asi su ejecucion. \end{DoxyCompactList}\item 
+int \hyperlink{Ejercicio4_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\begin{DoxyCompactList}\small\item\em El proceso padre crea un proceso hijo, que imprime 10 veces \char`\"{}\+Soy $<$\+P\+I\+D$>$ y estoy trabajando\char`\"{}, esperando un segundo entre cada vez. Una vez el proceso hijo ha impreso el texto las 10 veces, manda la señal S\+I\+G\+U\+S\+R1 al padre, que sale del pause(), y crea otro hijo, de forma que es este nuevo hijo el que manda una senal S\+I\+G\+U\+S\+R2 al hijo anterior para que este se termine a el mismo. Asi, el padre acaba creando N\+U\+M\+\_\+\+H\+I\+J\+OS procesos hijos, el mismo mata al ultimo de los hijos, y se asegura de esperar a todos. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Ejercicio 4 de la Practica 2. 
+
+\begin{DoxyAuthor}{Author}
+\href{mailto:Javier.delgadod@estudiante.uam.es}{\tt Javier.\+delgadod@estudiante.\+uam.\+es} 
+
+\href{mailto:Javier.lopezcano@estudiante.uam.es}{\tt Javier.\+lopezcano@estudiante.\+uam.\+es} 
+\end{DoxyAuthor}
+
+
+\subsection{Macro Definition Documentation}
+\index{Ejercicio4.\+c@{Ejercicio4.\+c}!N\+U\+M\+\_\+\+H\+I\+J\+OS@{N\+U\+M\+\_\+\+H\+I\+J\+OS}}
+\index{N\+U\+M\+\_\+\+H\+I\+J\+OS@{N\+U\+M\+\_\+\+H\+I\+J\+OS}!Ejercicio4.\+c@{Ejercicio4.\+c}}
+\subsubsection[{\texorpdfstring{N\+U\+M\+\_\+\+H\+I\+J\+OS}{NUM_HIJOS}}]{\setlength{\rightskip}{0pt plus 5cm}\#define N\+U\+M\+\_\+\+H\+I\+J\+OS~5}\hypertarget{Ejercicio4_8c_a9dd395f2e0046c1513c84dfcfb9e54da}{}\label{Ejercicio4_8c_a9dd395f2e0046c1513c84dfcfb9e54da}
+Numero de hijos que crea el proceso padre 
+
+\subsection{Function Documentation}
+\index{Ejercicio4.\+c@{Ejercicio4.\+c}!main@{main}}
+\index{main@{main}!Ejercicio4.\+c@{Ejercicio4.\+c}}
+\subsubsection[{\texorpdfstring{main()}{main()}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio4_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{}\label{Ejercicio4_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}
+
+
+El proceso padre crea un proceso hijo, que imprime 10 veces \char`\"{}\+Soy $<$\+P\+I\+D$>$ y estoy trabajando\char`\"{}, esperando un segundo entre cada vez. Una vez el proceso hijo ha impreso el texto las 10 veces, manda la señal S\+I\+G\+U\+S\+R1 al padre, que sale del pause(), y crea otro hijo, de forma que es este nuevo hijo el que manda una senal S\+I\+G\+U\+S\+R2 al hijo anterior para que este se termine a el mismo. Asi, el padre acaba creando N\+U\+M\+\_\+\+H\+I\+J\+OS procesos hijos, el mismo mata al ultimo de los hijos, y se asegura de esperar a todos. 
+
+\begin{DoxyReturn}{Returns}
+int que determina si el programa se ha ejecutado o no con exito. 
+\end{DoxyReturn}

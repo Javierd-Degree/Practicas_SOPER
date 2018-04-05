@@ -1,0 +1,155 @@
+\hypertarget{Ejercicio9_8c}{}\section{Ejercicio9.\+c File Reference}
+\label{Ejercicio9_8c}\index{Ejercicio9.\+c@{Ejercicio9.\+c}}
+
+
+Ejercicio 9 de la Practica 2.  
+
+
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$signal.\+h$>$}\\*
+{\ttfamily \#include $<$sys/wait.\+h$>$}\\*
+{\ttfamily \#include $<$time.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}Ejercicio8.\+h\char`\"{}}\\*
+Include dependency graph for Ejercicio9.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Ejercicio9_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bfseries N\+C\+A\+J\+AS}~4\hypertarget{Ejercicio9_8c_ab452195743f024aa9aede75df0565cec}{}\label{Ejercicio9_8c_ab452195743f024aa9aede75df0565cec}
+
+\item 
+\#define {\bfseries S\+E\+M\+K\+EY}~75798\hypertarget{Ejercicio9_8c_ada831b9e37399bf906c8184a888e28cd}{}\label{Ejercicio9_8c_ada831b9e37399bf906c8184a888e28cd}
+
+\item 
+\#define {\bfseries N\+\_\+\+S\+E\+M\+A\+F\+O\+R\+OS}~(N\+C\+A\+J\+AS + 1)\hypertarget{Ejercicio9_8c_a95c81905ff3d55e62fb763f407f9fab1}{}\label{Ejercicio9_8c_a95c81905ff3d55e62fb763f407f9fab1}
+
+\item 
+\#define {\bfseries M\+A\+X\+\_\+\+D\+I\+N\+E\+RO}~1000\hypertarget{Ejercicio9_8c_ab60ef04e2bfb1af356dd2e3d39cdfec1}{}\label{Ejercicio9_8c_ab60ef04e2bfb1af356dd2e3d39cdfec1}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{Ejercicio9_8c_a423be02d237888f767b6d107096c10f4}{aleat\+\_\+num} (int inf, int sup)
+\item 
+int \hyperlink{Ejercicio9_8c_ab647077627d0e2e5f4fb7746bb9d575a}{rellenar\+\_\+fichero} (char $\ast$nombre)
+\begin{DoxyCompactList}\small\item\em Funcion que recibe una string con el nombre de un fichero, lo abre e imprime en el 50 numero aleatorios entre el 0 y el 300 usando la funcion aleat\+\_\+num creada antes. \end{DoxyCompactList}\item 
+int \hyperlink{Ejercicio9_8c_aae648d2169b6b35b32143ff547747ba1}{mod\+\_\+caja} (int caja, int valor, int modo)
+\begin{DoxyCompactList}\small\item\em Funcion que recibe una caja, un modo y un valor y modifica la caja bajando el semaforo antes de modificar el archivo y subiendolo al acabar, de modo que no haya otro proceso que pueda modificar el archivo a la vez que este. Si el modo es 0 suma el valor a lo que ya hay en la caja, si el modo es 1 restas el valor a lo que hay en la caja, y si el modo es 2 se vacia completamente la caja. \end{DoxyCompactList}\item 
+void \hyperlink{Ejercicio9_8c_a05a6e7a8a7f3189f97261e4868b5cbfb}{retirar\+Parte} ()\hypertarget{Ejercicio9_8c_a05a6e7a8a7f3189f97261e4868b5cbfb}{}\label{Ejercicio9_8c_a05a6e7a8a7f3189f97261e4868b5cbfb}
+
+\begin{DoxyCompactList}\small\item\em Funcion de manejo de la senal U\+S\+R1 que utiliza el proceso padre para saber que tiene que quitar 900 euros al hijo. Esta funcion llama a mod\+\_\+caja y sube el ultimo semaforo que es el que se usa para manejar el archivo en el que se controla que proceso es el que ha llamado. \end{DoxyCompactList}\item 
+void \hyperlink{Ejercicio9_8c_a6ea437b816f2ce6d9a777a499df394a2}{retirar\+Total} ()\hypertarget{Ejercicio9_8c_a6ea437b816f2ce6d9a777a499df394a2}{}\label{Ejercicio9_8c_a6ea437b816f2ce6d9a777a499df394a2}
+
+\begin{DoxyCompactList}\small\item\em Funcion de manejo de la senal U\+S\+R1 que utiliza el proceso padre para saber que tiene que quitar todo el dinero al hijo. Esta funcion llama a mod\+\_\+caja y sube el ultimo semaforo que es el que se usa para manejar el archivo en el que se controla que proceso es el que ha llamado. \end{DoxyCompactList}\item 
+int \hyperlink{Ejercicio9_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\begin{DoxyCompactList}\small\item\em Main que crea e inicializa un array de semaforos a 1, crea los archivos para todas las cajas llamando a la funcion rellenar\+\_\+fichero, y hace los forks, Tras esto los hijos escanean el dinero que hay en su caja y van llamando a mod\+\_\+caja hasta que tienen 1000 euros o han terminado el bucle, tras lo que guardan su P\+ID en el archivo de los procesos, bajan el semaforo que lo controla y mandan una senal al proceso que sube otra vez el semaforo al recibirla. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int {\bfseries semid}\hypertarget{Ejercicio9_8c_a7c35ac5305085cf7360645b8d52988b5}{}\label{Ejercicio9_8c_a7c35ac5305085cf7360645b8d52988b5}
+
+\item 
+int {\bfseries cuenta\+Global} = 0\hypertarget{Ejercicio9_8c_a58581276b2af38c6c64b9f2adeaaa822}{}\label{Ejercicio9_8c_a58581276b2af38c6c64b9f2adeaaa822}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Ejercicio 9 de la Practica 2. 
+
+\begin{DoxyAuthor}{Author}
+\href{mailto:Javier.delgadod@estudiante.uam.es}{\tt Javier.\+delgadod@estudiante.\+uam.\+es} 
+
+\href{mailto:Javier.lopezcano@estudiante.uam.es}{\tt Javier.\+lopezcano@estudiante.\+uam.\+es} 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{Ejercicio9.\+c@{Ejercicio9.\+c}!aleat\+\_\+num@{aleat\+\_\+num}}
+\index{aleat\+\_\+num@{aleat\+\_\+num}!Ejercicio9.\+c@{Ejercicio9.\+c}}
+\subsubsection[{\texorpdfstring{aleat\+\_\+num(int inf, int sup)}{aleat_num(int inf, int sup)}}]{\setlength{\rightskip}{0pt plus 5cm}int aleat\+\_\+num (
+\begin{DoxyParamCaption}
+\item[{int}]{inf, }
+\item[{int}]{sup}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio9_8c_a423be02d237888f767b6d107096c10f4}{}\label{Ejercicio9_8c_a423be02d237888f767b6d107096c10f4}
+Funcion a la que le pasas 2 numeros y devuelve un numero aleatorio entre ambos.
+
+
+\begin{DoxyParams}{Parameters}
+{\em inf} & Int con el numero mas bajo que se quiere. \\
+\hline
+{\em sup} & Int con el numero mas alto que se quiere. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int con un número aleatorio entre inf y sup. 
+\end{DoxyReturn}
+\index{Ejercicio9.\+c@{Ejercicio9.\+c}!main@{main}}
+\index{main@{main}!Ejercicio9.\+c@{Ejercicio9.\+c}}
+\subsubsection[{\texorpdfstring{main()}{main()}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio9_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{}\label{Ejercicio9_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}
+
+
+Main que crea e inicializa un array de semaforos a 1, crea los archivos para todas las cajas llamando a la funcion rellenar\+\_\+fichero, y hace los forks, Tras esto los hijos escanean el dinero que hay en su caja y van llamando a mod\+\_\+caja hasta que tienen 1000 euros o han terminado el bucle, tras lo que guardan su P\+ID en el archivo de los procesos, bajan el semaforo que lo controla y mandan una senal al proceso que sube otra vez el semaforo al recibirla. 
+
+\begin{DoxyReturn}{Returns}
+int que indica si el programa se ha ejecutado con exito o no. 
+\end{DoxyReturn}
+\index{Ejercicio9.\+c@{Ejercicio9.\+c}!mod\+\_\+caja@{mod\+\_\+caja}}
+\index{mod\+\_\+caja@{mod\+\_\+caja}!Ejercicio9.\+c@{Ejercicio9.\+c}}
+\subsubsection[{\texorpdfstring{mod\+\_\+caja(int caja, int valor, int modo)}{mod_caja(int caja, int valor, int modo)}}]{\setlength{\rightskip}{0pt plus 5cm}int mod\+\_\+caja (
+\begin{DoxyParamCaption}
+\item[{int}]{caja, }
+\item[{int}]{valor, }
+\item[{int}]{modo}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio9_8c_aae648d2169b6b35b32143ff547747ba1}{}\label{Ejercicio9_8c_aae648d2169b6b35b32143ff547747ba1}
+
+
+Funcion que recibe una caja, un modo y un valor y modifica la caja bajando el semaforo antes de modificar el archivo y subiendolo al acabar, de modo que no haya otro proceso que pueda modificar el archivo a la vez que este. Si el modo es 0 suma el valor a lo que ya hay en la caja, si el modo es 1 restas el valor a lo que hay en la caja, y si el modo es 2 se vacia completamente la caja. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em caja} & Int con la caja que se va a modificar. \\
+\hline
+{\em valor} & Int con el valor con el que se va a modificar la caja. \\
+\hline
+{\em modo} & Int con el modo del que se quiere modificar la caja. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int con el valor final de la caja. 
+\end{DoxyReturn}
+\index{Ejercicio9.\+c@{Ejercicio9.\+c}!rellenar\+\_\+fichero@{rellenar\+\_\+fichero}}
+\index{rellenar\+\_\+fichero@{rellenar\+\_\+fichero}!Ejercicio9.\+c@{Ejercicio9.\+c}}
+\subsubsection[{\texorpdfstring{rellenar\+\_\+fichero(char $\ast$nombre)}{rellenar_fichero(char *nombre)}}]{\setlength{\rightskip}{0pt plus 5cm}int rellenar\+\_\+fichero (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{nombre}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio9_8c_ab647077627d0e2e5f4fb7746bb9d575a}{}\label{Ejercicio9_8c_ab647077627d0e2e5f4fb7746bb9d575a}
+
+
+Funcion que recibe una string con el nombre de un fichero, lo abre e imprime en el 50 numero aleatorios entre el 0 y el 300 usando la funcion aleat\+\_\+num creada antes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nombre} & Cadena de caracteres con el nombre del fichero. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int que determina si la funcion se ha ejecutado o no con exito. 
+\end{DoxyReturn}

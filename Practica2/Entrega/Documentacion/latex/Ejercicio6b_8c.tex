@@ -1,0 +1,63 @@
+\hypertarget{Ejercicio6b_8c}{}\section{Ejercicio6b.\+c File Reference}
+\label{Ejercicio6b_8c}\index{Ejercicio6b.\+c@{Ejercicio6b.\+c}}
+
+
+Ejercicio 6b de la Practica 2.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$sys/wait.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$signal.\+h$>$}\\*
+{\ttfamily \#include $<$time.\+h$>$}\\*
+Include dependency graph for Ejercicio6b.\+c\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Ejercicio6b_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bfseries N\+U\+M\+\_\+\+P\+R\+OC}~5\hypertarget{Ejercicio6b_8c_acee2369f62e4a096d243dec3cd7d0b00}{}\label{Ejercicio6b_8c_acee2369f62e4a096d243dec3cd7d0b00}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{Ejercicio6b_8c_a3d60508a7c724aae98e027b714db086a}{recibir\+S\+I\+G\+T\+E\+RM} ()\hypertarget{Ejercicio6b_8c_a3d60508a7c724aae98e027b714db086a}{}\label{Ejercicio6b_8c_a3d60508a7c724aae98e027b714db086a}
+
+\begin{DoxyCompactList}\small\item\em Esta funcion determina el funcionamiento que tendra el hijo tras recibir la senal S\+I\+G\+T\+E\+RM. En este caso al recibir esta senal el proceso hijo ejecutara esta funcion que hara que imprima Soy $<$\+P\+I\+D$>$ y he recibido la señal S\+I\+G\+T\+E\+RM y termine su ejecucion. \end{DoxyCompactList}\item 
+int \hyperlink{Ejercicio6b_8c_a840291bc02cba5474a4cb46a9b9566fe}{main} (void)
+\begin{DoxyCompactList}\small\item\em El proceso padre crea un proceso hijo, que inicializa una funcion que maneja la senal S\+I\+G\+T\+E\+RM (define lo que tiene que hacer el proceso hijo al recibir esta senal), y comienza a realizar lo mismo que en el ejercicio 6a, imprimir 0 1 2 3 4 y esperar 1 segundo y 3 segundos continuamente. El proceso padre tras lanzar el hijo duerme 40 segundos, y al pasar este tiempo lanza la senal S\+I\+G\+T\+E\+RM al hijo y realiza un wait para esperar a que el hijo acabe, tras lo cual acaba su ejecucion. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Ejercicio 6b de la Practica 2. 
+
+\begin{DoxyAuthor}{Author}
+\href{mailto:Javier.delgadod@estudiante.uam.es}{\tt Javier.\+delgadod@estudiante.\+uam.\+es} 
+
+\href{mailto:Javier.lopezcano@estudiante.uam.es}{\tt Javier.\+lopezcano@estudiante.\+uam.\+es} 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{Ejercicio6b.\+c@{Ejercicio6b.\+c}!main@{main}}
+\index{main@{main}!Ejercicio6b.\+c@{Ejercicio6b.\+c}}
+\subsubsection[{\texorpdfstring{main(void)}{main(void)}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio6b_8c_a840291bc02cba5474a4cb46a9b9566fe}{}\label{Ejercicio6b_8c_a840291bc02cba5474a4cb46a9b9566fe}
+
+
+El proceso padre crea un proceso hijo, que inicializa una funcion que maneja la senal S\+I\+G\+T\+E\+RM (define lo que tiene que hacer el proceso hijo al recibir esta senal), y comienza a realizar lo mismo que en el ejercicio 6a, imprimir 0 1 2 3 4 y esperar 1 segundo y 3 segundos continuamente. El proceso padre tras lanzar el hijo duerme 40 segundos, y al pasar este tiempo lanza la senal S\+I\+G\+T\+E\+RM al hijo y realiza un wait para esperar a que el hijo acabe, tras lo cual acaba su ejecucion. 
+
+\begin{DoxyReturn}{Returns}
+int que determina si el programa se ha ejecutado o no con exito. 
+\end{DoxyReturn}

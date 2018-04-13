@@ -7,12 +7,15 @@
 */
 
 #include <stdio.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
 #include <sys/shm.h> 
+#include <errno.h>
+
 /* shm*  */
 #define FILEKEY "/bin/cat"
 #define KEY 1300
@@ -24,6 +27,32 @@ typedef struct info{
      int id;
 }Info;
 
+int semid, id_zone;
+
+/**
+* Funcion a la que le pasas 2 numeros y devuelve un numero aleatorio entre ambos.
+*
+* @param inf Int con el numero mas bajo que se quiere.
+* @param sup Int con el numero mas alto que se quiere.
+* @return int con un número aleatorio entre inf y sup. 
+*/
+int aleat_num(int inf, int sup){
+    if(sup < inf) return -1;
+    if(sup == inf) return sup;
+    /*Cuando nuestro intervalo es mayor que RAND_MAX, groups será 0, y no funcionará*/
+    if(sup-inf+1 > RAND_MAX) return -1;
+    int random;
+    int range = sup-inf+1;
+    int groups = RAND_MAX/range;
+    int new_lim = groups * range;
+
+    do{
+    	random = rand();
+    }while(random >= new_lim);
+
+    return (random/groups) + inf;
+}
+
 /**
 * @brief Funcion que ejecuta el proceso padre tras recibir
 * la senal SIGUSR1. De esta forma, nos aseguramos que el
@@ -31,22 +60,24 @@ typedef struct info{
 * ejecucion.
 */
 void captura(){
-	Info inf;
-	int id_zone;
+	Info* inf;
+	key_t key;
 
-	id_zone = shmget (key, sizeof(Info), IPC_CREAT | IPC_EXCL |SHM_R | SHM_W);
-   	if(id_zone == -1) {
-     	fprintf (stderr, "Error with id_zone \n");
-		return -1; 
+	/* Key to shared memory */
+   	key = ftok(FILEKEY, KEY);
+   	if(key == -1) {
+      	fprintf (stderr, "Error with key \n"); 
+      	return;
 	}
+
 	/* we declared to zone to share */
    	inf = shmat (id_zone, (char*)0, 0);
 	if(inf == NULL) {
       	fprintf (stderr, "Error reserve shared memory \n");
-		return -1; 
+		return;
    	}
 
-   	printf("The user %s has the id %d.", inf->nombre, inf->id);
+   	printf("The user %s has the id %d.\n", inf->nombre, inf->id);
 }
 
 
@@ -64,10 +95,12 @@ void captura(){
 * @return int que determina si el programa se ha ejecutado o no con exito.
 */
 int main(){
-	int pid[NUM_HIJOS], id_zone;
+	int pid[NUM_HIJOS], i;
 	char buffer[80];
 	key_t key;
-	Info inf;
+	Info* inf;
+	int ret;
+
 
 	/*Definimos la señal para el padre*/
 	if(signal(SIGUSR1, captura)== SIG_ERR){
@@ -81,12 +114,23 @@ int main(){
       	fprintf (stderr, "Error with key \n");
 		return -1; 
 	}
+
    	/* we create the shared memory */
-   	id_zone = shmget (key, sizeof(Info), IPC_CREAT | IPC_EXCL |SHM_R | SHM_W);
+   	id_zone = shmget (key, sizeof(Info), IPC_CREAT | IPC_EXCL | SHM_R | SHM_W);
    	if(id_zone == -1) {
-     	fprintf (stderr, "Error with id_zone \n");
+     	fprintf (stderr, "Error with id_zone1 \n");
 		return -1; 
 	}
+
+	/* we declared to zone to share */
+   	inf = shmat (id_zone, (char*)0, 0);
+	if(inf == NULL) {
+      	fprintf (stderr, "Error reserve shared memory \n");
+		return -1; 
+   	}
+
+   	/*we initialise the id to 0 at the begining*/
+   	inf->id = 0;
 
 
 	for(i = 0; i < NUM_HIJOS; i++){
@@ -95,13 +139,7 @@ int main(){
 			exit(EXIT_FAILURE);
 			printf("Error al crear el proceso.\n");
 		}else if(pid[i] == 0){
-			if(signal(SIGUSR2, terminar)== SIG_ERR){
-				perror("signal");
-				exit(EXIT_FAILURE);
-			}
-
-			if(i != 0){
-			sleep(random);
+			sleep(aleat_num(1, 5)); 
 			printf("Introduce el nombre del nuevo usuario: ");
 			scanf("%s", buffer);
 
@@ -112,18 +150,28 @@ int main(){
 				return -1; 
 		   	}
 
-		   	inf->nombre = buffer;
+		   	strcpy(inf->nombre, buffer);
 		   	inf->id ++;
 
 			kill(getppid(), SIGUSR1);
 
+			free(array);
+
 			exit(EXIT_SUCCESS);
-		}
+		}else{
+			pause();
+		} 
 	}
 
 	for(i = 0; i < NUM_HIJOS; i++){
 		wait(NULL);
 	}
+
+	/* Free the shared memory */
+   	shmdt ((char*)inf);
+   	shmctl (id_zone, IPC_RMID, (struct shmid_ds *)NULL);
+
+   	free(array);
 
 	exit(EXIT_SUCCESS);
 }

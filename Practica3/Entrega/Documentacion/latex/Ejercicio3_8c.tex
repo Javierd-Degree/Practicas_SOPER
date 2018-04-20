@@ -1,0 +1,121 @@
+\hypertarget{Ejercicio3_8c}{}\section{Ejercicio3.\+c File Reference}
+\label{Ejercicio3_8c}\index{Ejercicio3.\+c@{Ejercicio3.\+c}}
+
+
+Ejercicio 3 de la Practica 3.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$sys/wait.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$signal.\+h$>$}\\*
+{\ttfamily \#include $<$sys/shm.\+h$>$}\\*
+{\ttfamily \#include $<$errno.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}Libreria\+Semaforos.\+h\char`\"{}}\\*
+Include dependency graph for Ejercicio3.\+c\+:
+% FIG 0
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structinfo}{info}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bfseries S\+E\+M\+K\+EY}~75798\hypertarget{Ejercicio3_8c_ada831b9e37399bf906c8184a888e28cd}{}\label{Ejercicio3_8c_ada831b9e37399bf906c8184a888e28cd}
+
+\item 
+\#define {\bfseries N\+\_\+\+S\+E\+M\+A\+F\+O\+R\+OS}~1\hypertarget{Ejercicio3_8c_a95c81905ff3d55e62fb763f407f9fab1}{}\label{Ejercicio3_8c_a95c81905ff3d55e62fb763f407f9fab1}
+
+\item 
+\#define {\bfseries F\+I\+L\+E\+K\+EY}~\char`\"{}/bin/cat\char`\"{}\hypertarget{Ejercicio3_8c_a68c15c5fb7f7c6f707903e6a46ab0557}{}\label{Ejercicio3_8c_a68c15c5fb7f7c6f707903e6a46ab0557}
+
+\item 
+\#define {\bfseries K\+EY}~1300\hypertarget{Ejercicio3_8c_a8ae9d53f33f46cfcfcb9736e6351452a}{}\label{Ejercicio3_8c_a8ae9d53f33f46cfcfcb9736e6351452a}
+
+\item 
+\#define {\bfseries N}~36\hypertarget{Ejercicio3_8c_a0240ac851181b84ac374872dc5434ee4}{}\label{Ejercicio3_8c_a0240ac851181b84ac374872dc5434ee4}
+
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structinfo}{info} {\bfseries Info}\hypertarget{Ejercicio3_8c_a163511f3dadd6f89b69b2c2b6d40dcf7}{}\label{Ejercicio3_8c_a163511f3dadd6f89b69b2c2b6d40dcf7}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{Ejercicio3_8c_af6be62fb8af1ca164fa2861c403b8245}{produce\+\_\+item} ()
+\begin{DoxyCompactList}\small\item\em Funcion que produce los elementos, que en este caso son caracteres. crea los caracteres de la \textquotesingle{}a\textquotesingle{} a la \textquotesingle{}z\textquotesingle{} y los numeros del 0 al 9 y los almacena en la memoria compartida. \end{DoxyCompactList}\item 
+int \hyperlink{Ejercicio3_8c_a8a453d70ebc614f358646af9dcf7cd49}{consume\+\_\+item} ()
+\begin{DoxyCompactList}\small\item\em Funcion que consume los elementos. En este caso consumirlos consiste en ir leyendolos de la memoria compartida e irlos imprimiendo por pantalla. \end{DoxyCompactList}\item 
+int \hyperlink{Ejercicio3_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\begin{DoxyCompactList}\small\item\em El proceso padre inicializa una zona de memoria compartida y un semaforo paracontrolar el acceso a esta, tras esto crea un proceso hijo, que consume los elementos creados por el productor con la funcion \hyperlink{Ejercicio3_8c_a8a453d70ebc614f358646af9dcf7cd49}{consume\+\_\+item()} hasta que esta devuelve 0 en cuyo caso termina su ejecucion (pues se habra llegado ya al ultimo). Mientras tanto el padre se va encargando de producir los objetos e introducirlos en la memoria compartida con la funcion produce\+\_\+item, hasta que esta devuelve 0 indicando que se ha creado ya el ultimo elemento, tras lo cual espera a que acabe la ejecucion del hijo, libera la memoria compartida y los semaforos y termina su ejecucion. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int {\bfseries semid}\hypertarget{Ejercicio3_8c_a7c35ac5305085cf7360645b8d52988b5}{}\label{Ejercicio3_8c_a7c35ac5305085cf7360645b8d52988b5}
+
+\item 
+int {\bfseries id\+\_\+zone}\hypertarget{Ejercicio3_8c_a554bdf03ae4f8480bddb761bd7c03b53}{}\label{Ejercicio3_8c_a554bdf03ae4f8480bddb761bd7c03b53}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Ejercicio 3 de la Practica 3. 
+
+\begin{DoxyAuthor}{Author}
+\href{mailto:Javier.delgadod@estudiante.uam.es}{\tt Javier.\+delgadod@estudiante.\+uam.\+es} 
+
+\href{mailto:Javier.lopezcano@estudiante.uam.es}{\tt Javier.\+lopezcano@estudiante.\+uam.\+es} 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{Ejercicio3.\+c@{Ejercicio3.\+c}!consume\+\_\+item@{consume\+\_\+item}}
+\index{consume\+\_\+item@{consume\+\_\+item}!Ejercicio3.\+c@{Ejercicio3.\+c}}
+\subsubsection[{\texorpdfstring{consume\+\_\+item()}{consume_item()}}]{\setlength{\rightskip}{0pt plus 5cm}int consume\+\_\+item (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio3_8c_a8a453d70ebc614f358646af9dcf7cd49}{}\label{Ejercicio3_8c_a8a453d70ebc614f358646af9dcf7cd49}
+
+
+Funcion que consume los elementos. En este caso consumirlos consiste en ir leyendolos de la memoria compartida e irlos imprimiendo por pantalla. 
+
+\begin{DoxyReturn}{Returns}
+int que indica si la funcion se ha ejecutado con exito. 
+\end{DoxyReturn}
+\index{Ejercicio3.\+c@{Ejercicio3.\+c}!main@{main}}
+\index{main@{main}!Ejercicio3.\+c@{Ejercicio3.\+c}}
+\subsubsection[{\texorpdfstring{main()}{main()}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio3_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{}\label{Ejercicio3_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}
+
+
+El proceso padre inicializa una zona de memoria compartida y un semaforo paracontrolar el acceso a esta, tras esto crea un proceso hijo, que consume los elementos creados por el productor con la funcion \hyperlink{Ejercicio3_8c_a8a453d70ebc614f358646af9dcf7cd49}{consume\+\_\+item()} hasta que esta devuelve 0 en cuyo caso termina su ejecucion (pues se habra llegado ya al ultimo). Mientras tanto el padre se va encargando de producir los objetos e introducirlos en la memoria compartida con la funcion produce\+\_\+item, hasta que esta devuelve 0 indicando que se ha creado ya el ultimo elemento, tras lo cual espera a que acabe la ejecucion del hijo, libera la memoria compartida y los semaforos y termina su ejecucion. 
+
+\begin{DoxyReturn}{Returns}
+int que determina si el programa se ha ejecutado o no con exito. 
+\end{DoxyReturn}
+\index{Ejercicio3.\+c@{Ejercicio3.\+c}!produce\+\_\+item@{produce\+\_\+item}}
+\index{produce\+\_\+item@{produce\+\_\+item}!Ejercicio3.\+c@{Ejercicio3.\+c}}
+\subsubsection[{\texorpdfstring{produce\+\_\+item()}{produce_item()}}]{\setlength{\rightskip}{0pt plus 5cm}int produce\+\_\+item (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio3_8c_af6be62fb8af1ca164fa2861c403b8245}{}\label{Ejercicio3_8c_af6be62fb8af1ca164fa2861c403b8245}
+
+
+Funcion que produce los elementos, que en este caso son caracteres. crea los caracteres de la \textquotesingle{}a\textquotesingle{} a la \textquotesingle{}z\textquotesingle{} y los numeros del 0 al 9 y los almacena en la memoria compartida. 
+
+\begin{DoxyReturn}{Returns}
+int que indica si la funcion se ha ejecutado correctamente. 
+\end{DoxyReturn}

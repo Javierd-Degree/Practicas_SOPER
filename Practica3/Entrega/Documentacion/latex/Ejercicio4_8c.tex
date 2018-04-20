@@ -1,0 +1,115 @@
+\hypertarget{Ejercicio4_8c}{}\section{Ejercicio4.\+c File Reference}
+\label{Ejercicio4_8c}\index{Ejercicio4.\+c@{Ejercicio4.\+c}}
+
+
+Ejercicio 4 de la Practica 4.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
+{\ttfamily \#include $<$sys/stat.\+h$>$}\\*
+{\ttfamily \#include $<$sys/mman.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$fcntl.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+Include dependency graph for Ejercicio4.\+c\+:
+% FIG 0
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{Ejercicio4_8c_a423be02d237888f767b6d107096c10f4}{aleat\+\_\+num} (int inf, int sup)
+\begin{DoxyCompactList}\small\item\em Funcion a la que le pasas 2 numeros y devuelve un numero aleatorio entre ambos. \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{Ejercicio4_8c_ab2e09d1e877d464de2b854252412fbbb}{write\+File} (void $\ast$fichero)
+\begin{DoxyCompactList}\small\item\em Funcion que escribe en un fichero cuyo nombre se pasa por parametro (si este no existe lo crea) entre 1000 y 2000 (el numero exacto es aleatorio) números aleatorios entre el 100 y el 1000, empleando la funcion aleat\+\_\+num. \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{Ejercicio4_8c_a6c5067d39455dbcbf23790f3092d2444}{read\+File} (void $\ast$fichero)
+\begin{DoxyCompactList}\small\item\em Funcion que lee un fichero cuyo nombre se pasa por parametro y cambia todas las comas que este tenga por espacios, el fichero se lee entero de golpe mediante la funcion mmap a la que se le pasa el tamano del fichero que se obtiene con la funcion fstat. Esta funcion emplea open y close en lugar de fopen y fclose pues a mmap se le debe pasar el descriptor de fichero y no el puntero al fichero, finalmente se cierra el mapa con la funcion munmap, y se cierra el fichero con close. \end{DoxyCompactList}\item 
+int \hyperlink{Ejercicio4_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\begin{DoxyCompactList}\small\item\em Main del programa que declara 2 threads, primero se hace que uno de ellos llame a write\+File con un fichero, se espera a que este acabe, y luego se hace que el otro llame a read\+File para modificar el fichero cambiando las comas por espacios. Se espera a que el segundo thread acabe y se hace una salida con exito. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Ejercicio 4 de la Practica 4. 
+
+\begin{DoxyAuthor}{Author}
+\href{mailto:Javier.delgadod@estudiante.uam.es}{\tt Javier.\+delgadod@estudiante.\+uam.\+es} 
+
+\href{mailto:Javier.lopezcano@estudiante.uam.es}{\tt Javier.\+lopezcano@estudiante.\+uam.\+es} 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{Ejercicio4.\+c@{Ejercicio4.\+c}!aleat\+\_\+num@{aleat\+\_\+num}}
+\index{aleat\+\_\+num@{aleat\+\_\+num}!Ejercicio4.\+c@{Ejercicio4.\+c}}
+\subsubsection[{\texorpdfstring{aleat\+\_\+num(int inf, int sup)}{aleat_num(int inf, int sup)}}]{\setlength{\rightskip}{0pt plus 5cm}int aleat\+\_\+num (
+\begin{DoxyParamCaption}
+\item[{int}]{inf, }
+\item[{int}]{sup}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio4_8c_a423be02d237888f767b6d107096c10f4}{}\label{Ejercicio4_8c_a423be02d237888f767b6d107096c10f4}
+
+
+Funcion a la que le pasas 2 numeros y devuelve un numero aleatorio entre ambos. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em inf} & Int con el numero mas bajo que se quiere. \\
+\hline
+{\em sup} & Int con el numero mas alto que se quiere. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int con un número aleatorio entre inf y sup. 
+\end{DoxyReturn}
+\index{Ejercicio4.\+c@{Ejercicio4.\+c}!main@{main}}
+\index{main@{main}!Ejercicio4.\+c@{Ejercicio4.\+c}}
+\subsubsection[{\texorpdfstring{main()}{main()}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio4_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{}\label{Ejercicio4_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}
+
+
+Main del programa que declara 2 threads, primero se hace que uno de ellos llame a write\+File con un fichero, se espera a que este acabe, y luego se hace que el otro llame a read\+File para modificar el fichero cambiando las comas por espacios. Se espera a que el segundo thread acabe y se hace una salida con exito. 
+
+\begin{DoxyReturn}{Returns}
+Int que indica si el programa se ha ejecutado con exito. 
+\end{DoxyReturn}
+\index{Ejercicio4.\+c@{Ejercicio4.\+c}!read\+File@{read\+File}}
+\index{read\+File@{read\+File}!Ejercicio4.\+c@{Ejercicio4.\+c}}
+\subsubsection[{\texorpdfstring{read\+File(void $\ast$fichero)}{readFile(void *fichero)}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ read\+File (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{fichero}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio4_8c_a6c5067d39455dbcbf23790f3092d2444}{}\label{Ejercicio4_8c_a6c5067d39455dbcbf23790f3092d2444}
+
+
+Funcion que lee un fichero cuyo nombre se pasa por parametro y cambia todas las comas que este tenga por espacios, el fichero se lee entero de golpe mediante la funcion mmap a la que se le pasa el tamano del fichero que se obtiene con la funcion fstat. Esta funcion emplea open y close en lugar de fopen y fclose pues a mmap se le debe pasar el descriptor de fichero y no el puntero al fichero, finalmente se cierra el mapa con la funcion munmap, y se cierra el fichero con close. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ficero} & Void$\ast$ con el nombre del fichero. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ que siempre es N\+U\+LL pues al ser una funcion ejecutada por un thread debe devolver void$\ast$ y no puede devolver void. 
+\end{DoxyReturn}
+\index{Ejercicio4.\+c@{Ejercicio4.\+c}!write\+File@{write\+File}}
+\index{write\+File@{write\+File}!Ejercicio4.\+c@{Ejercicio4.\+c}}
+\subsubsection[{\texorpdfstring{write\+File(void $\ast$fichero)}{writeFile(void *fichero)}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ write\+File (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{fichero}
+\end{DoxyParamCaption}
+)}\hypertarget{Ejercicio4_8c_ab2e09d1e877d464de2b854252412fbbb}{}\label{Ejercicio4_8c_ab2e09d1e877d464de2b854252412fbbb}
+
+
+Funcion que escribe en un fichero cuyo nombre se pasa por parametro (si este no existe lo crea) entre 1000 y 2000 (el numero exacto es aleatorio) números aleatorios entre el 100 y el 1000, empleando la funcion aleat\+\_\+num. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ficero} & Void$\ast$ con el nombre del fichero. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ que siempre es N\+U\+LL pues al ser una funcion ejecutada por un thread debe devolver void$\ast$ y no puede devolver void. 
+\end{DoxyReturn}

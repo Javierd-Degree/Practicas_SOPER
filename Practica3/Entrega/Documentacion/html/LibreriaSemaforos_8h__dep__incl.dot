@@ -1,0 +1,12 @@
+digraph "LibreriaSemaforos.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="LibreriaSemaforos.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Ejercicio2_solved.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$Ejercicio2__solved_8c.html",tooltip="Segunda parte del ejercicio 2 de la Practica 3. "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Ejercicio3.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$Ejercicio3_8c.html",tooltip="Ejercicio 3 de la Practica 3. "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="LibreriaSemaforos.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$LibreriaSemaforos_8c.html",tooltip="Libreria de semaforos de la Practica 2. "];
+}

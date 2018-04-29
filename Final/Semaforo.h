@@ -11,6 +11,8 @@
 
 #include <sys/sem.h>
 
+#define SEMKEY 75798
+
 #define ERROR -1
 #define OK 0
 #define CREADO 1

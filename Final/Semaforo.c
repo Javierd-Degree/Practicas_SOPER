@@ -13,9 +13,8 @@
 #include <errno.h>
 #include <sys/shm.h>
 #include <stdlib.h>
-#include "Semaforos.h"
+#include "Semaforo.h"
 
-#define SEMKEY 75798
 #define N_SEMAFOROS 2
 
 /*Creamos la estructura de los semaforos*/

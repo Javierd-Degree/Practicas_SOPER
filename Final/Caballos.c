@@ -1,12 +1,5 @@
 #include "Caballos.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <signal.h>
-#include <time.h>
-#include <sys/types.h>
-#include <sys/ipc.h>
-#include <sys/msg.h>
+
 
 /**
 * Funcion a la que le pasas 2 numeros y devuelve un numero aleatorio entre ambos.

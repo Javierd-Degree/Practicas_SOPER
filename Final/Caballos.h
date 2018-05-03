@@ -1,7 +1,14 @@
 #ifndef CABALLOS_H
 #define CABALLOS_H
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
 #include <signal.h>
+#include <time.h>
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/msg.h>
 
 #define MEDIO 0
 #define PRIMERO 1

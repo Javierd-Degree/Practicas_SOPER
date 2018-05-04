@@ -10,6 +10,7 @@
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
+#include <sys/wait.h>
 #include "Semaforo.h"
 
 #define MAX_CABALLOS 10
@@ -35,6 +36,8 @@ typedef struct _recursosCaballo{
 	int semid;
 	int memid;
 }recursosCaballo;
+
+void carrera(int numCaballos, int longCarrera, int semid, int memid);
 
 int inicializaRecursosCaballo(recursosCaballo *r, int numCaballos);
 

@@ -1,6 +1,5 @@
 #include "Caballos.h"
 
-
 /**
 * Funcion a la que le pasas 2 numeros y devuelve un numero aleatorio entre ambos.
 *
@@ -35,6 +34,77 @@ int caballoAvanza(int modo){
 
 	return -1;
 }
+
+int inicializaRecursosCaballo(recursosCaballo *r, int numCaballos){
+	int semid;
+	int memid;
+	int i;
+	int res;
+	unsigned short mutexValor = 1;
+	int *temp;
+
+	if(r == NULL){
+		return -1;
+	}
+	/*Creamos e inicializamos el semáforo que controlará la entrada a 
+	la memoria compartida de los caballos.
+
+	TODO Cambiar este sem key
+	*/
+	res = Crear_Semaforo(CABALLO_SEMKEY, 1,  &semid);
+	if(res == -1){
+		printf("Error al crear el array de semáforos\n");
+		return -1;
+	}
+	res = Inicializar_Semaforo(semid, &mutexValor);
+	if(res == -1){
+		printf("Error al inicializar el array de semáforos\n");
+		return -1;
+	}
+
+	/*Inicializamos la memoria compartida de las posiciones y de las tiradas.*/
+	int memkey = ftok(FILE_CABALLO_MEM_KEY, CABALLO_MEM_KEY);
+	if(memkey ==(key_t) -1){
+		printf("Error al obtener la clave de la memoria compartida.");
+		return -1;
+	}
+	memid = shmget(memkey, 2*numCaballos*sizeof(int), IPC_CREAT | SHM_W | SHM_R);
+
+	/*Inicializamos la memoria a cero*/
+	temp = (int*)shmat(memid, (char*)0, 0);
+	if(temp == NULL) {
+		printf ("Error con la memoria compartida\n");
+		return -1;
+	}
+
+	for(i = 0; i < numCaballos; i++){
+		temp[i] = 0;
+	}
+
+	/*Liberamos el direccionamiento virtual de la memoria compartida*/
+	shmdt(temp);
+
+	r->memid = memid;
+	r->semid = semid;
+
+	return 0;
+}
+
+int liberarRecursosCaballo(recursosCaballo *r){
+	if(r == NULL){
+		return -1;
+	}
+
+	shmctl (r->memid, IPC_RMID, (struct shmid_ds *)NULL);
+
+	/*Liberamos el array de semáforos*/
+	if(Borrar_Semaforo(r->semid) == -1){
+		printf("Error al liberar el semáforo");
+		return -1;
+	}
+	return 0;
+}
+
 
 /*Cuenta el numero de caballos que han acabado la carrera, con 
 lo que nos permite saber en que posicion ha qudado cada uno.
@@ -81,67 +151,32 @@ int posicionCaballo(int num, int *lista, int numCaballos){
 	return MEDIO;
 }
 
-void corre(){
-	return;
-}
-
-void caballo(int numero, int pipe[2], int lonCarrera){
-	mensajeCaballo mensaje;
-	key_t key;
-	int mensaje_id;
+void caballo(int numero, int pipe[2], int pipe2[2], int lonCarrera){
 	int posicion;
-	int recorrido;
-	int res;
-	int temp;
-	char sPosicion[20];
+	int avanza;
+	char temp[124];
 
 
 	/*Inicializamos la semilla para generar los numeros aleatorios*/
 	srand(time(0)*numero);
 
-	/*El caballo solo puede leer del pipe*/
+	/*El caballo solo puede leer del pipe y escribir en pipe2*/
 	close(pipe[1]);
+	close(pipe2[0]);
 
-	if(signal(SENAL_CABALLO, corre) == SIG_ERR){
-		printf("Error al inicializar el manejador.\n");
-	}
-
-	key = ftok(FILE_CABALLO_KEY, CABALLO_KEY);
-	if(key ==(key_t) -1){
-		printf("Error al obtener la clave de la cola de mensajes.");
-	}
-
-	mensaje_id = msgget(key, IPC_CREAT | 0660);
-	if(mensaje_id == -1){
-		printf("Error al crear la cola de mensajes en caballo.");
-	}
-
-	recorrido = 0;
 	while(1){
 		/*El padre le avisa cuando ha escrito en el pipe*/
-		//pause();
 		//printf("Soy el caballo %d, quiero leer.\n", numero);
-		read(pipe[0], sPosicion, sizeof(sPosicion));
-		posicion = atoi(sPosicion);
+		read(pipe[0], temp, 124);
+		posicion = atoi(temp);
 
-		temp = caballoAvanza(posicion);
-		recorrido += temp;
-
-		sprintf(mensaje.text, "%d", temp);
- 		mensaje.type = numero;
+		avanza = caballoAvanza(posicion);
+		sprintf(temp, "%d", avanza);
 
  		//printf("Soy el caballo %d llevo %d\n", numero, recorrido);
- 		printf("Soy el caballo %d, voy en posicion %d, y llevo %d\n", numero, posicion, recorrido-temp);
+ 		printf("Soy el caballo %d, voy en posicion %d, y avanzo %d\n", numero, posicion, avanza);
 
-		res = msgsnd(mensaje_id, (struct msgbuf*)&mensaje, sizeof(mensaje) - sizeof(long), IPC_NOWAIT);
-		if(res == -1){
-			printf("Error al enviar el mensaje.");
-		}
-
-		if(recorrido >= lonCarrera){
-			printf("Soy el caballo %d y he acabado la carrera.\n", numero);
-			break;
-		}
+ 		write(pipe2[1], temp, strlen(temp)+1);
 	}
 
 	return;

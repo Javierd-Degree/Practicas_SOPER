@@ -11,9 +11,6 @@
 #include <sys/msg.h>
 #include "Caballos.h"
 #include "Semaforo.h"
-#define FILE_MEM_COMP_KEY "/bin/ls"
-#define MEM_COMP_KEY 13000
-
 
 /*Libera los recursos de los caballos.
 Es necesario llamarla en cada uno de los procesos y en el padre.*/
@@ -29,7 +26,7 @@ void liberarCaballos(int numCaballos, int *pids, int *posTemp, int **pipes){
 
 void carrera(int numCaballos, int longitudCarrera){
 	int *pidCaballos;
-	int *posCaballos, *posTempCaballos;
+	int *posCaballos, *tiaradasCaballos;
 	int i;
 	int mensaje_id;
 	int mem_id;
@@ -54,8 +51,9 @@ void carrera(int numCaballos, int longitudCarrera){
 	if(res == -1){
 		printf("Error al inicializar el array de semáforos\n");
 	}
+
 	/*Inicializamos la memoria compartida.*/
-	memkey = ftok(FILE_MEM_COMP_KEY, MEM_COMP_KEY);
+	memkey = ftok(FILE_CABALLO_MEM_KEY, CABALLO_MEM_KEY);
 	if(memkey ==(key_t) -1){
 		printf("Error al obtener la clave de la memoria compartida.");
 	}
@@ -75,15 +73,17 @@ void carrera(int numCaballos, int longitudCarrera){
 	for(i = 0; i < numCaballos; i++){
 		posCaballos[i] = 0;
 	}
+
 	/*Liberamos el direccionamiento virtual de la memoria compartida*/
 	shmdt(posCaballos);
 	res = Up_Semaforo(semid, 0, SEM_UNDO);
 	if(res == -1){
 		printf("Error al subir el semáforo");
 	}
-	/*TODO  usamos posTempCaballos solo para sumar las tiradas todas a la vez.
-	De lo contrario, las posicionesn no tendrian sentido.*/
-	posTempCaballos = (int *) calloc(numCaballos, sizeof(int));
+
+	/*Usamos tiaradasCaballos solo para sumar las tiradas todas a la vez.
+	De lo contrario, las posiciones no tendrian sentido.*/
+	tiaradasCaballos = (int *) calloc(numCaballos, sizeof(int));
 	if(pidCaballos == NULL || posCaballos == NULL){
 		printf("Error al reservar memoria.\n");
 		exit(EXIT_FAILURE);
@@ -126,7 +126,7 @@ void carrera(int numCaballos, int longitudCarrera){
 			printf("Error al hacer fork.\n");
 		}else if(pidCaballos[i] == 0){
 			caballo(i+1, pipesCaballos[i], longitudCarrera);
-			liberarCaballos(numCaballos, pidCaballos, posTempCaballos, pipesCaballos);
+			liberarCaballos(numCaballos, pidCaballos, tiaradasCaballos, pipesCaballos);
 			exit(EXIT_SUCCESS);
 		}else{
 			printf("ID Caballo %d: %d\n", i+1, pidCaballos[i]);
@@ -164,7 +164,7 @@ void carrera(int numCaballos, int longitudCarrera){
 				printf("Error al recibir mensaje de caballo.");
 			}
 			
-			posTempCaballos[i] = atoi(mensaje.text);
+			tiaradasCaballos[i] = atoi(mensaje.text);
 			/*Liberamos el direccionamiento virtual de la memoria compartida*/
 			shmdt(posCaballos);
 			res = Up_Semaforo(semid, 0, SEM_UNDO);
@@ -190,8 +190,8 @@ void carrera(int numCaballos, int longitudCarrera){
 				printf ("Error reserve shared memory \n");
 			}
 
-			posCaballos[i] += posTempCaballos[i];
-			posTempCaballos[i] = 0;
+			posCaballos[i] += tiaradasCaballos[i];
+			tiaradasCaballos[i] = 0;
 
 			if(posCaballos[i] >= longitudCarrera){
 				/*Marcamos el pid como -1, porque ya hemos acabado, 
@@ -240,7 +240,7 @@ void carrera(int numCaballos, int longitudCarrera){
 		wait(NULL);
 	}
 
-	liberarCaballos(numCaballos, pidCaballos, posTempCaballos, pipesCaballos);
+	liberarCaballos(numCaballos, pidCaballos, tiaradasCaballos, pipesCaballos);
 	/*Eliminamos la memoria compartida*/
 	shmctl (mem_id, IPC_RMID, (struct shmid_ds *)NULL);
 	/*Liberamos el array de semáforos*/

@@ -21,6 +21,9 @@
 #define FILE_CABALLO_KEY "/bin/ls"
 #define CABALLO_KEY 33
 
+#define FILE_CABALLO_MEM_KEY "/bin/ls"
+#define CABALLO_MEM_KEY 13000
+
 typedef struct _mensaje{
 	long type;
 	char text[100];

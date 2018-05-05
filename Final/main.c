@@ -10,6 +10,7 @@
 #include <sys/shm.h>
 #include <sys/msg.h>
 #include "Caballos.h"
+#include "Monitor.h"
 #include "Semaforo.h"
 
 int main(){
@@ -17,6 +18,7 @@ int main(){
 	int numCaballos;
 	int longCarrera;
 	int res;
+	int pidMonitor;
 
 	printf("Introduce la longitud de carrera: ");
 	scanf("%d", &longCarrera);
@@ -31,7 +33,16 @@ int main(){
 		printf("Error en inicializaRecursosCaballo\n");
 	}
 
+	pidMonitor = fork();
+	if(pidMonitor == -1){
+		printf("Error al hacer fork.\n");
+	}else if(pidMonitor == 0){
+		monitorDuranteCarrera(resCaballo.semid, resCaballo.memid, numCaballos);
+	}
+
 	carrera(numCaballos, longCarrera, resCaballo.semid, resCaballo.memid);
+	kill(pidMonitor, SIGKILL);
+
 
 	res = liberarRecursosCaballo(&resCaballo);
 	if(res == -1){

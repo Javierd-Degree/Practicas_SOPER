@@ -1,35 +1,13 @@
 #include "Caballos.h"
-
-/**
-* Funcion a la que le pasas 2 numeros y devuelve un numero aleatorio entre ambos.
-*
-* @param inf Int con el numero mas bajo que se quiere.
-* @param sup Int con el numero mas alto que se quiere.
-* @return int con un número aleatorio entre inf y sup. 
-*/
-int dado(int inf, int sup){
-    if(sup < inf) return -1;
-    if(sup == inf) return sup;
-    if(sup-inf+1 > RAND_MAX) return -1;
-    int random;
-    int range = sup-inf+1;
-    int groups = RAND_MAX/range;
-    int new_lim = groups * range;
-
-    do{
-    	random = rand();
-    }while(random >= new_lim);
-
-    return (random/groups) + inf;
-}
+#include "Utils.h"
 
 int caballoAvanza(int modo){
 	if(modo == MEDIO){
-		return dado(1, 6);
+		return aleatNum(1, 6);
 	}else if(modo == PRIMERO){
-		return dado(1, 7);
+		return aleatNum(1, 7);
 	}else if(modo == ULTIMO){
-		return dado(2, 12);
+		return aleatNum(2, 12);
 	}
 
 	return -1;
@@ -126,26 +104,6 @@ void carrera(int numCaballos, int longCarrera, int semid, int memid){
 		wait(NULL);
 	}
 
-	/*Imprimimos los resultados de los caballos*/
-	printf("La carrera ya ha acabado y las posiciones son:\n");
-	res = Down_Semaforo(semid, 0, SEM_UNDO);
-	if(res == -1){
-		printf("Error al bajar el semáforo");
-	}
-	for(i = 0; i < numCaballos; i++){
-		printf("Caballo %d, en posicion %d, con ultima tirada %d.\n", i+1, memCaballos[i], memCaballos[numCaballos + i]);
-		/*Guardamos la tirada y actualizamos la posicion.*/
-		memCaballos[numCaballos + i] = atoi(temp);
-		memCaballos[i] += atoi(temp);
-		if(memCaballos[i] >= longCarrera){
-			ganador = 1;
-		}
-	}
-	res = Up_Semaforo(semid, 0, SEM_UNDO);
-	if(res == -1){
-		printf("Error al subir el semáforo");
-	}
-
 	shmdt(memCaballos);
 }
 
@@ -219,22 +177,6 @@ int liberarRecursosCaballo(recursosCaballo *r){
 	return 0;
 }
 
-
-/*Cuenta el numero de caballos que han acabado la carrera, con 
-lo que nos permite saber en que posicion ha qudado cada uno.
-Para esto, recibe un array con los pid de los procesos, y los
-caballos que ya hayan terminado, tendran pid -1*/
-int carreraAcabada(int *pids, int numCaballos){
-	int i;
-	int n;
-	for(i = 0, n = 0; i < numCaballos; i++){
-		if(pids[i] == -1){
-			n++;
-		}
-	}
-	return n;
-}
-
 /*Dada la lista de caballos, nos permite saber si un caballo
 esta en el medio, al final o al principio.*/
 int posicionCaballo(int num, int *lista, int numCaballos){
@@ -288,7 +230,7 @@ void caballo(int numero, int pipe[2], int pipe2[2], int lonCarrera){
 		sprintf(temp, "%d", avanza);
 
  		//printf("Soy el caballo %d llevo %d\n", numero, recorrido);
- 		printf("Soy el caballo %d, voy en posicion %d, y avanzo %d\n", numero, posicion, avanza);
+ 		//printf("Soy el caballo %d, voy en posicion %d, y avanzo %d\n", numero, posicion, avanza);
 
  		write(pipe2[1], temp, strlen(temp)+1);
 	}

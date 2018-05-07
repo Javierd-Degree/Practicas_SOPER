@@ -4,7 +4,37 @@ void monitor(int semCaballos, int memCaballos, int numCaballos){
 
 }
 
-void monitorAntesCarrera(){
+void monitorAntesCarrera(int numCaballos, int memid, int semid){
+	int i;
+	int j;
+	int res;
+	memCompartida* mem;
+
+	for(i = 30; i > 0; i--){
+		printf("Quedan %d segundos para que la carrera comience.\n", i);
+		printf("La cotización de los caballos es: \n");
+
+		res = Down_Semaforo(semid, 0, SEM_UNDO);
+		if(res == -1){
+			printf("Error al bajar el semaforo de la memoria compartida.\n");
+		}
+
+		mem = (memCompartida*)shmat(memid, (char)0, 0);
+		if(mem == NULL){
+			printf("Error en la memoria compartida.\n");
+		}
+
+		for(j = 0; j < numCaballos; j++){
+			printf("Caballo %d: %lf\n", j, mem->cotizaciones[j]);
+		}
+
+		res = Up_Semaforo(semid, 0, SEM_UNDO);
+		if(res == -1){
+			printf("Error al subir el semaforo de la memoria compartida.\n");
+		}
+		usleep(1000000);
+	}
+	shmdt(mem);
 	return;
 }
 
@@ -51,7 +81,6 @@ void monitorDuranteCarrera(int semid, int memid, int numCaballos){
 	}
 
 	shmdt(memCaballos);
-	return;
 }
 
 void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCaballos, int numApostadores){

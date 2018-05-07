@@ -1,12 +1,87 @@
 #include "GestorApuestas.h"
+#include <errno.h>
 
 
-
-double* cotizaciones;
-double* pagar;
-double* apuestas;
-double totalApostado;
+pthread_t *h;
 pthread_mutex_t mutex;
+
+recursosGestor* recursos;
+
+
+int inicializaRecursosGestor(recursosGestor* recs){
+	int semid;
+	int memid;
+	int mensaje_id;
+	int res;
+	key_t memkey;
+	key_t msgkey;
+	unsigned short semvalor = 1;
+
+	/*Creamos e inicializamos el semáforo que controlará la entrada a la memoria compartida*/
+	res = Crear_Semaforo((key_t)SEMKEYGESTOR, 1,  &semid);
+	if(res == -1){
+		printf("Error al crear el array de semáforos\n");
+		return -1;
+	}
+	res = Inicializar_Semaforo(semid, &semvalor);
+	if(res == -1){
+		printf("Error al inicializar el array de semáforos\n");
+		return -1;
+	}
+	/*Inicializamos la memoria compartida.*/
+	memkey = ftok(FILE_MEM_COMP_GESTOR_KEY, MEM_COMP_GESTOR_KEY);
+	if(memkey ==(key_t) -1){
+		printf("Error al obtener la clave de la memoria compartida.");
+		return -1;
+	}
+
+	memid = shmget(memkey, sizeof(memCompartida), IPC_CREAT | SHM_W | SHM_R);
+	if(memid == -1){
+		printf("Error al obtener el id de la memoria compartida del gestor.\n %s",strerror(errno));
+		return -1;
+	}
+
+	msgkey = ftok(FILE_VENTANILLA_KEY, VENTANILLA_KEY);
+	if(msgkey ==(key_t) -1){
+		printf("Error al obtener la clave de la cola de mensajes.");
+	}
+
+	mensaje_id = msgget(msgkey, IPC_CREAT | 0660);
+	if(mensaje_id == -1){
+		printf("Error al crear la cola de mensajes de apuestas.");
+	}
+
+	recs->semid = semid;
+	recs->memid = memid;
+	recs->mensaje_id = mensaje_id;
+	return 0;
+}
+
+
+int liberarRecursosGestor(recursosGestor* recs){
+	int res;
+
+	res = Borrar_Semaforo(recs->semid);
+	if(res == -1){
+		printf("Error al borrar el array de semáforos\n");
+		return -1;
+	}
+	
+	res = shmctl(recs->memid, IPC_RMID, (struct shmid_ds *)NULL);
+	if(res == -1){
+		printf("Error al eliminar la memoria compartida del gestor.\n");
+		return -1;
+	}
+
+
+	res = msgctl(recs->mensaje_id, IPC_RMID, (struct msqid_ds*)NULL);
+	if(res == -1){
+		printf("Error al liberar la cola de mensajes.\n");
+		return -1;
+	}
+	return 0;
+}
+
 
 /**
 * Funcion a la que le pasas 2 numeros y devuelve un numero aleatorio entre ambos.
@@ -15,105 +90,128 @@ pthread_mutex_t mutex;
 * @param sup Int con el numero mas alto que se quiere.
 * @return int con un número aleatorio entre inf y sup. 
 */
-void* ventanilla(){
-	mensajeApuesta* mensaje;
-	key = ftok(FILE_VENTANILLA_KEY, VENTANILLA_KEY);
-	if(key ==(key_t) -1){
-		printf("Error al obtener la clave de la cola de mensajes.");
-	}
+void* ventanilla(void* resGestor){
+	mensajeApuesta mensaje;
+	memCompartida* mem;
+	int apostador;
+	int res;
+	recursosGestor* recs;
 
-	mensaje_id = msgget(key, IPC_CREAT | 0660);
-	if(mensaje_id == -1){
-		printf("Error al crear la cola de mensajes de apuestas.");
-	}
+	recs = (recursosGestor*)resGestor;
 
 	while(1){
-		res = msgrcv(mensaje_id, (struct msgbuf*)&mensaje, sizeof(mensajeApuesta) - sizeof(long) - sizeof(double), 0, MSG_NOERROR);
+		res = msgrcv(recs->mensaje_id, (struct msgbuf*)&mensaje, sizeof(mensajeApuesta) - sizeof(long), 0, 0);
 		if(res == -1){
 			printf("Error al recibir el mensaje de apuesta\n");
 		}
+		printf("%s ha hecho una apuesta de %lf al caballo %ld\n", mensaje.text, mensaje.apuesta, mensaje.type);
 
 		pthread_mutex_lock(&mutex);
-		pagar[mensaje->text] = cotizaciones[mensaje->type]* mensaje->apuesta;
-		apuestas[mensaje->type] += mensaje->apuesta;
-		totalApostado += mensaje->apuesta;
-		cotizaciones[mensaje->type] = totalApostado / apuestas[mensaje->type];
+		Down_Semaforo(recs->semid, 0, SEM_UNDO);
+		mem = (memCompartida*)shmat(recs->memid, (char*)0, 0);
+		if(mem == NULL) {
+			printf ("Error reserve shared memory \n");
+		}
+		sscanf(mensaje.text, "Apostador-%d", &apostador);
+		mem->pagar[apostador] = mem->cotizaciones[mensaje.type]* mensaje.apuesta;
+		mem->apuestas[mensaje.type] += mensaje.apuesta;
+		mem->totalApostado += mensaje.apuesta;
+		mem->cotizaciones[mensaje.type] = mem->totalApostado / mem->apuestas[mensaje.type];
+		Up_Semaforo(recs->semid, 0, SEM_UNDO);
 		pthread_mutex_unlock(&mutex);
+		shmdt(mem);
 	}
 
 	return NULL;
 }
-void crearVentanillas(int N, pthread_t* h){
+void crearVentanillas(int N, pthread_t* h, recursosGestor* recs){
 	int i;
-    if(N < 1) return -1;
     for(i = 0; i < N; i++){
-    	pthread_create(h[i], NULL, ventanilla, NULL);
+    	pthread_create(&h[i], NULL, ventanilla, (void*)recs);
     }
 }
 
 void esperarVentanillas(int N, pthread_t* h){
 	int i;
-    if(N < 1) return -1;
     for(i = 0; i < N; i++){
     	pthread_join(h[i], NULL);
     }
 }
 
 
-void apostador(){
+void apostador(int numCaballos, int numApostadores, int maxApuesta, recursosGestor* recs){
 	int res;
-	int mensaje_id;
-	key_t key;
-	mensajeApuesta* mensaje;
-	key = ftok(FILE_VENTANILLA_KEY, VENTANILLA_KEY);
-	if(key ==(key_t) -1){
-		printf("Error al obtener la clave de la cola de mensajes.");
-	}
+	int i;
+	mensajeApuesta mensaje;
 
-	mensaje_id = msgget(key, IPC_CREAT | 0660);
-	if(mensaje_id == -1){
-		printf("Error al crear la cola de mensajes de apuestas.");
-	}
 
-	mensaje = (mensajeApuesta*)malloc(sizeof(mensajeApuesta));
-	if(mensaje == NULL){
-		printf("Error al reservar memoria para la cola de mensajes.\n");
-	}
-
-	while(1){
-		res = msgsnd(mensaje_id, (struct msgbuf*)&mensaje, sizeof(mensajeApuesta) - sizeof(long) - sizeof(double), 0, MSG_NOERROR);
+	for(i = 1; i<=numApostadores; i++){
+		mensaje.type = aleatNum(1, numCaballos);
+		mensaje.apuesta = ((double)aleatNum(100, 100*maxApuesta))/100;
+		sprintf(mensaje.text, "Apostador-%d", i);
+		printf("%s va a hacer una apuesta de %lf al caballo %ld\n", mensaje.text, mensaje.apuesta, mensaje.type);
+		res = msgsnd(recs->mensaje_id, (struct msgbuf*)&mensaje, sizeof(mensajeApuesta) - sizeof(long), IPC_NOWAIT);
 		if(res == -1){
-			printf("Error al recibir el mensaje de apuesta\n");
+			printf("Error al enviar el mensaje de apuesta\n %s\n", strerror(errno));
 		}
-		usleep(1);
+		usleep(1000000);
 	}
 }
 
+void salida(){
+	free(h);
+	exit(EXIT_SUCCESS);
+}
 
-void gestor(int numCaballos, int numApostadores, int numVentanillas){
+
+void gestor(int numCaballos, int numApostadores, int numVentanillas, recursosGestor* recs){
 	int i;
-	pthread_t *h;
+	int res;
+	memCompartida* mem;
+
+
+	recursos = recs;
+
+	if(signal(SIGUSR1, salida)== SIG_ERR){
+		perror("signal");
+		exit(EXIT_FAILURE);
+	}
 	
-
-	totalApostado = numCaballos;
-	apuestas = (double*)malloc(sizeof(double)*numCaballos);
-	for(i=0; i<numCaballos; i++){
-		apuestas[i] = 1;
+	res = Down_Semaforo(recs->semid, 0, SEM_UNDO);
+	if(res == -1){
+		printf("Error en el down del semaforo del gestor.\n");
 	}
-	cotizaciones = (double*)malloc(sizeof(double)*numCaballos);
-	for(i=0; i<numCaballos; i++){
-		cotizaciones[i] = totalApostado/apuestas[i];
-	}
-	pagar = (double*)malloc(sizeof(double)*numApostadores);
-	for(i=0; i<numApostadores; i++){
-		pagar[i] = 0;
+	mem = shmat(recs->memid, (char*)0, 0);
+	if(mem == NULL) {
+		printf ("Error reserve shared memory \n");
 	}
 
-	h = (pthread_t*)malloc(sizeof(pthread_t)*N);
+	mem->totalApostado = numCaballos;
+	mem->pagar = (double*)malloc(sizeof(double*)*numApostadores);
+	mem->apuestas = (double*)malloc(sizeof(double)*numCaballos);
+	for(i=0; i<numCaballos; i++){
+		mem->apuestas[i] = 1;
+		mem->pagar[i] = 0;
+	}
+	mem->cotizaciones = (double*)malloc(sizeof(double)*numCaballos);
+	for(i=0; i<numCaballos; i++){
+		mem->cotizaciones[i] = mem->totalApostado/mem->apuestas[i];
+		printf("%lf\n", mem->cotizaciones[i]);
+	}
+	
+	shmdt(mem);
+	
+	res = Up_Semaforo(recs->semid, 0, SEM_UNDO);
+	if(res == -1){
+		printf("Error en el up del semaforo del gestor.\n");
+	}
+
+	h = (pthread_t*)malloc(sizeof(pthread_t)*numVentanillas);
 	if(h==NULL){
 		printf("Error al reservar memoria para los threads.\n");
 	}
-	crearVentanillas(numVentanillas, h);
+
+	crearVentanillas(numVentanillas, h, recs);
 	esperarVentanillas(numVentanillas, h);
 }
 

@@ -8,10 +8,11 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include "Semaforo.h"
+#include "GestorApuestas.h"
 
 #define NEXT_SIGNAL SIGUSR2
 
-void monitorAntesCarrera();
+void monitorAntesCarrera(int numCaballos, int memid, int semid);
 
 void monitorDuranteCarrera(int semid, int memid, int numCaballos);
 

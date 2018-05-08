@@ -16,7 +16,7 @@ int inicializaRecursosGestor(recursosGestor* recs){
 	key_t semkey;
 	key_t memkey;
 	key_t msgkey;
-	unsigned short semvalor = 1;
+	unsigned short semvalor[2] = {1, 1};
 
 	/*Creamos e inicializamos el semáforo que controlará la entrada a la memoria compartida*/
 	semkey = ftok(FILE_MEM_COMP_GESTOR_KEY, SEMKEYGESTOR);
@@ -24,12 +24,12 @@ int inicializaRecursosGestor(recursosGestor* recs){
 		printf("Error al obtener la clave del semaforo.");
 		return -1;
 	}
-	res = Crear_Semaforo(semkey, 1,  &semid);
+	res = Crear_Semaforo(semkey, 2,  &semid);
 	if(res == -1){
 		printf("Error al crear el array de semáforos\n");
 		return -1;
 	}
-	res = Inicializar_Semaforo(semid, &semvalor);
+	res = Inicializar_Semaforo(semid, semvalor);
 	if(res == -1){
 		printf("Error al inicializar el array de semáforos\n");
 		return -1;
@@ -102,16 +102,24 @@ void* ventanilla(void* resGestor){
 	int apostador;
 	int res;
 	int i;
+	char string[200];
+	int numVentanilla;
 	recursosGestor* recs;
 
 	recs = (recursosGestor*)resGestor;
+	numVentanilla = recs->numVentanilla;
+	res = Up_Semaforo(recs->semid, 2, SEM_UNDO);
+	if(res == -1){
+		printf("Error al subir el semafono del id de ventanilla.\n");
+	}
 
 	while(1){
 		res = msgrcv(recs->mensaje_id, (struct msgbuf*)&mensaje, sizeof(mensajeApuesta) - sizeof(long), 0, 0);
 		if(res == -1){
 			printf("Error al recibir el mensaje de apuesta\n");
 		}
-		//printf("%s ha hecho una apuesta de %lf al caballo %ld\n", mensaje.text, mensaje.apuesta, mensaje.type);
+		sprintf(string, "%s ha hecho una apuesta de %lf al caballo %ld en la ventanilla %d\n", mensaje.text, mensaje.apuesta, mensaje.type, numVentanilla);
+		monitorImprimeReport(string, recs->semid);
 
 		pthread_mutex_lock(&mutex);
 		Down_Semaforo(recs->semid, 0, SEM_UNDO);
@@ -135,8 +143,15 @@ void* ventanilla(void* resGestor){
 }
 void crearVentanillas(int N, pthread_t* h, recursosGestor* recs){
 	int i;
+	int res;
+	recs->numVentanilla = 1;
     for(i = 0; i < N; i++){
     	pthread_create(&h[i], NULL, ventanilla, (void*)recs);
+    	res = Down_Semaforo(recs->semid, 2, SEM_UNDO);
+		if(res == -1){
+			printf("Error al bajar el semafono del id de ventanilla.\n");
+		}
+    	recs->numVentanilla++;
     }
 }
 

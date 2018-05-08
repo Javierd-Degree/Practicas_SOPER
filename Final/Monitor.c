@@ -123,14 +123,14 @@ void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCabal
 	/*Como ya ha acabado la carrera, no es necesario usar el 
 	semaforo de los caballos.*/
 	for(i = 0; i < numCaballos; i++){
-		if(memCaballos[i] > max){
-			max = memCaballos[i];
+		if(memCaballos[i] > maxDistancia){
+			maxDistancia = memCaballos[i];
 		}
 		printf("\t -Caballo %d, en posicion %d", i+1, memCaballos[i]);
 	}
 
 	for(i = 0; i < numCaballos; i++){
-		if(memCaballos[i] == max){
+		if(memCaballos[i] == maxDistancia){
 			printf("\t -Caballo ganador %d, en posicion %d", i, memCaballos[i]);
 		}
 	}
@@ -141,4 +141,28 @@ void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCabal
 	/*Imprimimos la informacion de los apostadores.*/
 
 	return;
+}
+
+void monitorImprimeReport(char* string, int semid){
+	FILE* f;
+	int res;
+
+	res = Down_Semaforo(semid, 1, SEM_UNDO);
+	if(res == -1){
+		printf("Error al bajar semaforo de fichero.\n");
+	}
+
+	f = fopen("fichero.txt", "a");
+	if(f == NULL){
+		printf("Error al abrir el fichero.\n");
+	}
+
+	fprintf(f, "%s", string);
+
+	fclose(f);
+
+	res = Up_Semaforo(semid, 1, SEM_UNDO);
+	if(res == -1){
+		printf("Error al subir semaforo de fichero.\n");
+	}
 }

@@ -12,6 +12,7 @@
 #include <sys/msg.h>
 #include <pthread.h>
 #include "Utils.h"
+#include "Monitor.h"
 
 
 typedef struct _mensajeGestor{
@@ -24,15 +25,8 @@ typedef struct _recursosGestor{
 	int memid;
 	int semid;
 	int mensaje_id;
+	int numVentanilla;
 }recursosGestor;
-
-typedef struct _compartida{
-	double cotizaciones[10];
-	double pagar[100];
-	double apuestas[10];
-	double totalApostado;
-}memCompartida;
-
 
 
 #define SEMKEYGESTOR 17000

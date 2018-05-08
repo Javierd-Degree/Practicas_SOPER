@@ -29,6 +29,7 @@ int main(){
 	int pidGestor;
 	int pidApostador; 	
 	int semid;
+	int status;
 	unsigned short semvalor;
 
 	printf("Introduce la longitud de carrera: ");
@@ -122,7 +123,7 @@ int main(){
 	carrera(numCaballos, longCarrera, resCaballo.semid, resCaballo.memid);
 	printf("CARRERA ACABADA\n");
 
-	waitpid(pidMonitor);
+	waitpid(pidMonitor, &status, WUNTRACED | WCONTINUED);
 
 	res = Borrar_Semaforo(semid);
 	if(res == -1){

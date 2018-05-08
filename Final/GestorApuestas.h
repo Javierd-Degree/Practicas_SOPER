@@ -27,9 +27,9 @@ typedef struct _recursosGestor{
 }recursosGestor;
 
 typedef struct _compartida{
-	double* cotizaciones;
-	double* pagar;
-	double* apuestas;
+	double cotizaciones[10];
+	double pagar[100];
+	double apuestas[10];
 	double totalApostado;
 }memCompartida;
 

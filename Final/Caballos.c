@@ -1,5 +1,6 @@
 #include "Caballos.h"
 #include "Utils.h"
+#include <errno.h>
 
 int caballoAvanza(int modo){
 	if(modo == MEDIO){
@@ -118,6 +119,12 @@ void carrera(int numCaballos, int longCarrera, int semid, int memid){
 		}
 	}
 
+	/*Hacemos un ultimo up para que el monitor imprima la ultima tirada.*/
+	res = Up_Semaforo(semid, 2, SEM_UNDO);
+	if(res == -1){
+		printf("Error al subir el semáforo del rendezvous.");
+	}
+
 	/*Finalizamos todos los caballos*/
 	for(i = 0; i < numCaballos; i++){
 		kill(pids[i], SIGKILL);
@@ -132,7 +139,7 @@ int inicializaRecursosCaballo(recursosCaballo *r, int numCaballos){
 	int memid;
 	int i;
 	int res;
-	unsigned short mutexValor = 1;
+	unsigned short mutexValor[] = {1, 0, 0, 0, 0};
 	int *temp;
 
 	if(r == NULL){
@@ -140,28 +147,36 @@ int inicializaRecursosCaballo(recursosCaballo *r, int numCaballos){
 	}
 	/*Creamos e inicializamos el semáforo que controlará la entrada a 
 	la memoria compartida de los caballos.
-
-	TODO Cambiar este sem key
 	*/
-	res = Crear_Semaforo(CABALLO_SEMKEY, 5,  &semid);
-	if(res == -1){
-		printf("Error al crear el array de semáforos\n");
+
+	
+	int semkey = ftok(FILE_CABALLO_KEY, CABALLO_KEY);
+	if(semkey ==(key_t) -1){
+		printf("Error al obtener la clave de los semaforos. %s", strerror(errno));
 		return -1;
 	}
-	res = Inicializar_Semaforo(semid, &mutexValor);
+
+	res = Crear_Semaforo(semkey, 5,  &semid);
 	if(res == -1){
-		printf("Error al inicializar el array de semáforos\n");
+		printf("Error al crear el array de semáforos %s\n", strerror(errno));
+		return -1;
+	}
+	res = Inicializar_Semaforo(semid, mutexValor);
+	if(res == -1){
+		printf("Error al inicializar el array de semáforos %s\n", strerror(errno));
 		return -1;
 	}
 
 	/*Inicializamos la memoria compartida de las posiciones y de las tiradas.*/
 	int memkey = ftok(FILE_CABALLO_MEM_KEY, CABALLO_MEM_KEY);
 	if(memkey ==(key_t) -1){
-		printf("Error al obtener la clave de la memoria compartida.");
+		printf("Error al obtener la clave de la memoria compartida. %s", strerror(errno));
 		return -1;
 	}
 	memid = shmget(memkey, 2*numCaballos*sizeof(int), IPC_CREAT | SHM_W | SHM_R);
-
+	if(memid == -1){
+		printf("Error al reservar la memoria compartida para los caballos. %s\n", strerror(errno));
+	}
 	/*Inicializamos la memoria a cero*/
 	temp = (int*)shmat(memid, (char*)0, 0);
 	if(temp == NULL) {

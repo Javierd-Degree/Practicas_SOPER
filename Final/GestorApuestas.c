@@ -13,12 +13,18 @@ int inicializaRecursosGestor(recursosGestor* recs){
 	int memid;
 	int mensaje_id;
 	int res;
+	key_t semkey;
 	key_t memkey;
 	key_t msgkey;
 	unsigned short semvalor = 1;
 
 	/*Creamos e inicializamos el semáforo que controlará la entrada a la memoria compartida*/
-	res = Crear_Semaforo((key_t)SEMKEYGESTOR, 1,  &semid);
+	semkey = ftok(FILE_MEM_COMP_GESTOR_KEY, SEMKEYGESTOR);
+	if(semkey ==(key_t) -1){
+		printf("Error al obtener la clave del semaforo.");
+		return -1;
+	}
+	res = Crear_Semaforo(semkey, 1,  &semid);
 	if(res == -1){
 		printf("Error al crear el array de semáforos\n");
 		return -1;
@@ -95,6 +101,7 @@ void* ventanilla(void* resGestor){
 	memCompartida* mem;
 	int apostador;
 	int res;
+	int i;
 	recursosGestor* recs;
 
 	recs = (recursosGestor*)resGestor;
@@ -104,7 +111,7 @@ void* ventanilla(void* resGestor){
 		if(res == -1){
 			printf("Error al recibir el mensaje de apuesta\n");
 		}
-		printf("%s ha hecho una apuesta de %lf al caballo %ld\n", mensaje.text, mensaje.apuesta, mensaje.type);
+		//printf("%s ha hecho una apuesta de %lf al caballo %ld\n", mensaje.text, mensaje.apuesta, mensaje.type);
 
 		pthread_mutex_lock(&mutex);
 		Down_Semaforo(recs->semid, 0, SEM_UNDO);
@@ -116,7 +123,9 @@ void* ventanilla(void* resGestor){
 		mem->pagar[apostador] = mem->cotizaciones[mensaje.type]* mensaje.apuesta;
 		mem->apuestas[mensaje.type] += mensaje.apuesta;
 		mem->totalApostado += mensaje.apuesta;
-		mem->cotizaciones[mensaje.type] = mem->totalApostado / mem->apuestas[mensaje.type];
+		for(i=0; i<10; i++){
+			mem->cotizaciones[i] = mem->totalApostado / mem->apuestas[i];
+		}
 		Up_Semaforo(recs->semid, 0, SEM_UNDO);
 		pthread_mutex_unlock(&mutex);
 		shmdt(mem);
@@ -149,12 +158,12 @@ void apostador(int numCaballos, int numApostadores, int maxApuesta, recursosGest
 		mensaje.type = aleatNum(1, numCaballos);
 		mensaje.apuesta = ((double)aleatNum(100, 100*maxApuesta))/100;
 		sprintf(mensaje.text, "Apostador-%d", i);
-		printf("%s va a hacer una apuesta de %lf al caballo %ld\n", mensaje.text, mensaje.apuesta, mensaje.type);
+		//printf("%s va a hacer una apuesta de %lf al caballo %ld\n", mensaje.text, mensaje.apuesta, mensaje.type);
 		res = msgsnd(recs->mensaje_id, (struct msgbuf*)&mensaje, sizeof(mensajeApuesta) - sizeof(long), IPC_NOWAIT);
 		if(res == -1){
 			printf("Error al enviar el mensaje de apuesta\n %s\n", strerror(errno));
 		}
-		usleep(1000000);
+		usleep(100000);
 	}
 }
 
@@ -187,16 +196,18 @@ void gestor(int numCaballos, int numApostadores, int numVentanillas, recursosGes
 	}
 
 	mem->totalApostado = numCaballos;
-	mem->pagar = (double*)malloc(sizeof(double*)*numApostadores);
-	mem->apuestas = (double*)malloc(sizeof(double)*numCaballos);
-	for(i=0; i<numCaballos; i++){
+	
+	for(i=0; i<10; i++){
 		mem->apuestas[i] = 1;
-		mem->pagar[i] = 0;
 	}
-	mem->cotizaciones = (double*)malloc(sizeof(double)*numCaballos);
-	for(i=0; i<numCaballos; i++){
+	
+	for(i=0; i<10; i++){
 		mem->cotizaciones[i] = mem->totalApostado/mem->apuestas[i];
 		printf("%lf\n", mem->cotizaciones[i]);
+	}
+
+	for(i=0; i<100; i++){
+		mem->pagar[i] = 0;
 	}
 	
 	shmdt(mem);

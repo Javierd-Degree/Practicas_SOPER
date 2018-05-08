@@ -84,7 +84,8 @@ int main(){
 		if(res == -1){
 			printf("Error al subir el semáforo");
 		}
-		monitorDuranteCarrera(resCaballo.semid, resCaballo.memid, numCaballos);
+		monitorDuranteCarrera(resCaballo.semid, resCaballo.memid, numCaballos, longCarrera);
+		printf("El monitor de carrera ha acabado.\n");
 		exit(EXIT_SUCCESS);
 	}
 
@@ -105,22 +106,23 @@ int main(){
 	}
 
 
-	printf("gestor %d\n", pidGestor);
+	printf("Gestor %d\n", pidGestor);
 	printf("Apostador %d\n", pidApostador);
 	printf("Monitor %d\n", pidMonitor);
-
 
 	res = Down_Semaforo(semid, 0, SEM_UNDO);
 	if(res == -1){
 		printf("Error al bajar el semáforo");
 	}
+
+	/*El gestor y el apostador tienen que acabar obligatoriamente.*/
 	kill(pidGestor, SIGUSR1);
 	kill(pidApostador, SIGKILL);
-	printf("Gestor killed\n");
 
 	carrera(numCaballos, longCarrera, resCaballo.semid, resCaballo.memid);
 	printf("CARRERA ACABADA\n");
-	kill(pidMonitor, SIGKILL);
+
+	waitpid(pidMonitor);
 
 	res = Borrar_Semaforo(semid);
 	if(res == -1){

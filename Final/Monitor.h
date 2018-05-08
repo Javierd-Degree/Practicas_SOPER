@@ -14,7 +14,7 @@
 
 void monitorAntesCarrera(int numCaballos, int memid, int semid);
 
-void monitorDuranteCarrera(int semid, int memid, int numCaballos);
+void monitorDuranteCarrera(int semid, int memid, int numCaballos, int longCarrera);
 
 void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCaballos, int numApostadores);
 

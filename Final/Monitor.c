@@ -56,6 +56,18 @@ void monitorDuranteCarrera(int semid, int memid, int numCaballos){
 	}
 
 	while(1){
+		/*Rendezvous.*/
+		res = Up_Semaforo(semid, 1, SEM_UNDO);
+		if(res == -1){
+			printf("Error al subir el semáforo del rendezvous.");
+		}
+		res = Down_Semaforo(semid, 2, SEM_UNDO);
+		if(res == -1){
+			printf("Error al bajar el semáforo del rendezvous.");
+		}
+		
+
+
 		res = Down_Semaforo(semid, 0, SEM_UNDO);
 		if(res == -1){
 			printf("Error al bajar el semáforo");
@@ -77,6 +89,16 @@ void monitorDuranteCarrera(int semid, int memid, int numCaballos){
 
 		if(flag){
 			break;
+		}
+
+		/*Rendezvous 2.*/
+		res = Up_Semaforo(semid, 3, SEM_UNDO);
+		if(res == -1){
+			printf("Error al subir el semáforo del rendezvous 2.");
+		}
+		res = Down_Semaforo(semid, 4, SEM_UNDO);
+		if(res == -1){
+			printf("Error al bajar el semáforo del rendezvous 2.");
 		}
 	}
 

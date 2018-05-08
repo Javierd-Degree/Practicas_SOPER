@@ -58,6 +58,16 @@ void carrera(int numCaballos, int longCarrera, int semid, int memid){
 
 	/*Empieza la carrera*/
 	while(!ganador){
+		/*Rendezvous*/
+		res = Down_Semaforo(semid, 1, SEM_UNDO);
+		if(res == -1){
+			printf("Error al bajar el semáforo del rendezvous.");
+		}
+		res = Up_Semaforo(semid, 2, SEM_UNDO);
+		if(res == -1){
+			printf("Error al subir el semáforo del rendezvous.");
+		}
+
 		/*Hacemos las tiradas de todos los caballos.*/
 		res = Down_Semaforo(semid, 0, SEM_UNDO);
 		if(res == -1){
@@ -96,6 +106,16 @@ void carrera(int numCaballos, int longCarrera, int semid, int memid){
 		if(res == -1){
 			printf("Error al subir el semáforo");
 		}
+
+		/*Rendezvous 2*/
+		res = Down_Semaforo(semid, 3, SEM_UNDO);
+		if(res == -1){
+			printf("Error al bajar el semáforo del rendezvous 2.");
+		}
+		res = Up_Semaforo(semid, 4, SEM_UNDO);
+		if(res == -1){
+			printf("Error al subir el semáforo del rendezvous 2.");
+		}
 	}
 
 	/*Finalizamos todos los caballos*/
@@ -123,7 +143,7 @@ int inicializaRecursosCaballo(recursosCaballo *r, int numCaballos){
 
 	TODO Cambiar este sem key
 	*/
-	res = Crear_Semaforo(CABALLO_SEMKEY, 1,  &semid);
+	res = Crear_Semaforo(CABALLO_SEMKEY, 5,  &semid);
 	if(res == -1){
 		printf("Error al crear el array de semáforos\n");
 		return -1;

@@ -15,6 +15,7 @@
 #include <sys/types.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
+#include <syslog.h>
 #include "Semaforo.h"
 
 #define NEXT_SIGNAL SIGUSR2

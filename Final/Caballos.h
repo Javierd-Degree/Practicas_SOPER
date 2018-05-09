@@ -19,6 +19,7 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <sys/wait.h>
+#include <syslog.h>
 #include "Semaforo.h"
 
 #define MAX_CABALLOS 10

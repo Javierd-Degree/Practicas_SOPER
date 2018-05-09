@@ -37,6 +37,7 @@ void monitorAntesCarrera(int numCaballos, int memid, int semid){
 
 		for(j = 0; j < numCaballos; j++){
 			printf("\tCaballo %d: %lf\n", j, mem->cotizaciones[j]);
+			syslog(LOG_NOTICE, "Soy el monitor y he impreso la cuenta atras y las cotizaciones de los caballos.\n");
 		}
 
 		res = Up_Semaforo(semid, 0, SEM_UNDO);
@@ -99,6 +100,7 @@ void monitorDuranteCarrera(int semid, int memid, int numCaballos, int longCarrer
 				printf("\n");
 			}
 		}
+		syslog(LOG_NOTICE, "Soy el monitor y he impreso la tirada de los caballos.\n");
 		res = Up_Semaforo(semid, 0, SEM_UNDO);
 		if(res == -1){
 			printf("Error al subir el semáforo");
@@ -181,6 +183,8 @@ void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCabal
 		printf("\t -Caballo ganador %d, en posicion %d\n", ganadores[i], memCaballos[ganadores[i]]);
 	}
 
+	syslog(LOG_NOTICE, "Soy el monitor y he impreso el resultado de la carrera.\n");
+
 
 
 	shmdt(memCaballos);
@@ -218,6 +222,8 @@ void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCabal
 		monitorImprimeReport(infoApostador, semid);
 	}
 
+	syslog(LOG_NOTICE, "Soy el monitor y he impreso en el report los resultados de las apuestas.\n");
+
 	for(i=2; i<numApostadores; i++){
 		for(j=numApostadores - i; j > 0; j--){
 			if(beneficios[j-1] < beneficios[j]){
@@ -239,6 +245,8 @@ void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCabal
 		}
 	}
 
+	syslog(LOG_NOTICE, "Soy el monitor y he impreso los mejores apoestadores.\n");
+
 
 
 
@@ -248,6 +256,8 @@ void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCabal
 	free(ganadores);
 
 	printf("Se ha generado un informe de la carrera que se puede ver en el archivo report.txt\n");
+
+	syslog(LOG_NOTICE, "Soy el monitor y he acabado el report.\n");
 	
 
 	return;

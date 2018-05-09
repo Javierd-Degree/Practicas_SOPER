@@ -18,6 +18,7 @@
 #include <sys/ipc.h>
 #include <sys/msg.h>
 #include <pthread.h>
+#include <syslog.h>
 #include "Utils.h"
 #include "Monitor.h"
 

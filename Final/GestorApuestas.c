@@ -137,6 +137,7 @@ void* ventanilla(void* resGestor){
 		if(res == -1){
 			printf("Error al recibir el mensaje de apuesta\n");
 		}
+		syslog(LOG_NOTICE, "Soy la ventanilla %d y he procesado una apuesta de %s por valor de %lf al caballo %ld\n", numVentanilla, mensaje.text, mensaje.apuesta, mensaje.type);
 		sprintf(string, "%s ha hecho una apuesta de %lf al caballo %ld en la ventanilla %d\n", mensaje.text, mensaje.apuesta, mensaje.type, numVentanilla);
 		monitorImprimeReport(string, recs->semid);
 
@@ -216,7 +217,7 @@ void apostador(int numCaballos, int numApostadores, int maxApuesta, recursosGest
 		mensaje.type = aleatNum(1, numCaballos);
 		mensaje.apuesta = ((double)aleatNum(100, 100*maxApuesta))/100;
 		sprintf(mensaje.text, "Apostador-%d", i);
-		//printf("%s va a hacer una apuesta de %lf al caballo %ld\n", mensaje.text, mensaje.apuesta, mensaje.type);
+		syslog(LOG_NOTICE, "Soy %s y voy a hacer una apuesta de %lf al caballo %ld\n", mensaje.text, mensaje.apuesta, mensaje.type);
 		res = msgsnd(recs->mensaje_id, (struct msgbuf*)&mensaje, sizeof(mensajeApuesta) - sizeof(long), IPC_NOWAIT);
 		if(res == -1){
 			printf("Error al enviar el mensaje de apuesta\n %s\n", strerror(errno));

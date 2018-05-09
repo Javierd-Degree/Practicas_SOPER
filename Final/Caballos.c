@@ -50,6 +50,7 @@ void carrera(int numCaballos, int longCarrera, int semid, int memid){
 
 	char temp[124];
 
+	syslog(LOG_NOTICE, "Soy el Principal y he empezado la carrera.\n");
 	/*Guardamos en primer lugar todas las posiciones, en segundo 
 	lugar todas las tiradas.*/
 	memCaballos = (int*)shmat(memid, (char*)0, 0);
@@ -323,7 +324,7 @@ void caballo(int numero, int pipe[2], int pipe2[2], int lonCarrera){
 		sprintf(temp, "%d", avanza);
 
  		//printf("Soy el caballo %d llevo %d\n", numero, recorrido);
- 		//printf("Soy el caballo %d, voy en posicion %d, y avanzo %d\n", numero, posicion, avanza);
+ 		syslog(LOG_NOTICE, "Soy el caballo %d, voy en posicion %d, y avanzo %d\n", numero, posicion, avanza);
 
  		write(pipe2[1], temp, strlen(temp)+1);
 	}

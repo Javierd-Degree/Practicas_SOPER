@@ -16,7 +16,7 @@ int inicializaRecursosGestor(recursosGestor* recs){
 	key_t semkey;
 	key_t memkey;
 	key_t msgkey;
-	unsigned short semvalor[2] = {1, 1};
+	unsigned short semvalor[3] = {1, 1, 0};
 
 	/*Creamos e inicializamos el semáforo que controlará la entrada a la memoria compartida*/
 	semkey = ftok(FILE_MEM_COMP_GESTOR_KEY, SEMKEYGESTOR);
@@ -24,14 +24,14 @@ int inicializaRecursosGestor(recursosGestor* recs){
 		printf("Error al obtener la clave del semaforo.");
 		return -1;
 	}
-	res = Crear_Semaforo(semkey, 2,  &semid);
+	res = Crear_Semaforo(semkey, 3,  &semid);
 	if(res == -1){
 		printf("Error al crear el array de semáforos\n");
 		return -1;
 	}
 	res = Inicializar_Semaforo(semid, semvalor);
 	if(res == -1){
-		printf("Error al inicializar el array de semáforos\n");
+		printf("Error al inicializar el array de semáforos. %s\n", strerror(errno));
 		return -1;
 	}
 	/*Inicializamos la memoria compartida.*/
@@ -128,6 +128,8 @@ void* ventanilla(void* resGestor){
 			printf ("Error reserve shared memory \n");
 		}
 		sscanf(mensaje.text, "Apostador-%d", &apostador);
+		mem->apostadorCaballo[apostador] = (int) mensaje.type;
+		mem->cantidadApostada[apostador] = mensaje.apuesta;
 		mem->pagar[apostador] = mem->cotizaciones[mensaje.type]* mensaje.apuesta;
 		mem->apuestas[mensaje.type] += mensaje.apuesta;
 		mem->totalApostado += mensaje.apuesta;
@@ -144,14 +146,16 @@ void* ventanilla(void* resGestor){
 void crearVentanillas(int N, pthread_t* h, recursosGestor* recs){
 	int i;
 	int res;
+
 	recs->numVentanilla = 1;
+	
     for(i = 0; i < N; i++){
     	pthread_create(&h[i], NULL, ventanilla, (void*)recs);
     	res = Down_Semaforo(recs->semid, 2, SEM_UNDO);
 		if(res == -1){
 			printf("Error al bajar el semafono del id de ventanilla.\n");
 		}
-    	recs->numVentanilla++;
+		recs->numVentanilla++;
     }
 }
 
@@ -218,11 +222,12 @@ void gestor(int numCaballos, int numApostadores, int numVentanillas, recursosGes
 	
 	for(i=0; i<10; i++){
 		mem->cotizaciones[i] = mem->totalApostado/mem->apuestas[i];
-		printf("%lf\n", mem->cotizaciones[i]);
 	}
 
 	for(i=0; i<100; i++){
 		mem->pagar[i] = 0;
+		mem->apostadorCaballo[i] = -1;
+		mem->cantidadApostada[i] = 0;
 	}
 	
 	shmdt(mem);

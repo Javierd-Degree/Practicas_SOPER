@@ -17,13 +17,15 @@ typedef struct _compartida{
 	double pagar[100];
 	double apuestas[10];
 	double totalApostado;
+	double cantidadApostada[100];
+	int apostadorCaballo[100];
 }memCompartida;
 
 void monitorAntesCarrera(int numCaballos, int memid, int semid);
 
 void monitorDuranteCarrera(int semid, int memid, int numCaballos, int longCarrera);
 
-void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCaballos, int numApostadores);
+void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCaballos, int numApostadores, int dineroApostador, int longCarrera, int semid);
 
 void monitorImprimeReport(char* string, int semid);
 

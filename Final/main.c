@@ -87,6 +87,8 @@ int main(){
 		}
 		monitorDuranteCarrera(resCaballo.semid, resCaballo.memid, numCaballos, longCarrera);
 		printf("El monitor de carrera ha acabado.\n");
+		monitorDespuesCarrera(resCaballo.memid, resGestor.memid, numCaballos, numApostadores, maxApuesta, longCarrera, resGestor.semid);
+		printf("El monitor despues de carrera ha acabado.\n");
 		exit(EXIT_SUCCESS);
 	}
 
@@ -140,5 +142,6 @@ int main(){
 	if(res == -1){
 		printf("Error en liberarRecursosCaballo\n");
 	}
+	printf("ACABADO");
 	exit(EXIT_SUCCESS);
 }

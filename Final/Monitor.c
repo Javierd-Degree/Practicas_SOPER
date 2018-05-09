@@ -107,10 +107,19 @@ void monitorDuranteCarrera(int semid, int memid, int numCaballos, int longCarrer
 	return;
 }
 
-void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCaballos, int numApostadores){
+void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCaballos, int numApostadores, int dineroApostador, int longCarrera, int semid){
 	int i;
+	int j = 0;
 	int *memCaballos;
-	int maxDistancia = 0;
+	memCompartida* mem;
+	int ganadores[10];
+	double beneficio;
+	char infoApostador[100];
+	char resultado [100];
+
+	for(i=0; i<10; i++){
+		ganadores[i] = -1;
+	}
 
 	memCaballos = (int*)shmat(memCaballosId, (char*)0, 0);
 	if(memCaballos == NULL) {
@@ -119,26 +128,52 @@ void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCabal
 	}
 
 	/*Imprimimos la informacion de los caballos*/
-	printf("La carrera ya ha acabado y las posiciones son:\n");
+	sprintf(resultado, "La carrera ya ha acabado y las posiciones son:\n");
+	printf("%s", resultado);
+	monitorImprimeReport(resultado, semid);
 	/*Como ya ha acabado la carrera, no es necesario usar el 
 	semaforo de los caballos.*/
 	for(i = 0; i < numCaballos; i++){
-		if(memCaballos[i] > maxDistancia){
-			maxDistancia = memCaballos[i];
+		if(memCaballos[i] >= longCarrera){
+			ganadores[j] = i;
+			j++;
 		}
-		printf("\t -Caballo %d, en posicion %d", i+1, memCaballos[i]);
+		sprintf(resultado, "\t -Caballo %d, en posicion %d\n", i, memCaballos[i]);
+		printf("%s", resultado);
+		monitorImprimeReport(resultado, semid);
 	}
 
-	for(i = 0; i < numCaballos; i++){
-		if(memCaballos[i] == maxDistancia){
-			printf("\t -Caballo ganador %d, en posicion %d", i, memCaballos[i]);
-		}
+	for(i = 0; ganadores[i] != -1; i++){
+		printf("\t -Caballo ganador %d, en posicion %d\n", ganadores[i], memCaballos[i]);
 	}
+
+
 
 	shmdt(memCaballos);
 
-
 	/*Imprimimos la informacion de los apostadores.*/
+
+	mem = (memCompartida*)shmat(memApostadoresId, (char)0, 0);
+	if(mem == NULL){
+		printf("Error en el shmat de losapostadores.\n");
+		exit(EXIT_FAILURE);
+	}
+
+	for(i = 1; i<=numApostadores; i++){
+		for(j=0; ganadores[j] != -1; j++){
+			if(mem->apostadorCaballo[i] == ganadores[j]){
+				beneficio = mem->pagar[i] - mem->cantidadApostada[i];
+				break;
+			}else{
+				beneficio = 0 - mem->cantidadApostada[i];
+			}
+		}
+		sprintf(infoApostador, "Apostador-%d ha apostado %lf y ha obtenido %lf beneficios, por lo que le queda %lf.\n", i, mem->cantidadApostada[i], beneficio, dineroApostador + beneficio);
+		monitorImprimeReport(infoApostador, semid);
+	}
+
+	shmdt(mem);
+	
 
 	return;
 }

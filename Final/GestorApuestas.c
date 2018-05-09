@@ -1,3 +1,11 @@
+/**
+* @brief Gestor de apuestas del Proyecto Final.
+*
+* @file GestorApuestas.c
+* @author Javier.delgadod@estudiante.uam.es 
+* @author Javier.lopezcano@estudiante.uam.es
+*/
+
 #include "GestorApuestas.h"
 #include <errno.h>
 
@@ -7,7 +15,12 @@ pthread_mutex_t mutex;
 
 recursosGestor* recursos;
 
-
+/**
+* @brief Funcion que inicializa los recursos que empleara el monitor y el gestor, entre ellos esta
+* la memoria compartida, el array de semaforos para la memoria compartida y el report y la cola de mensajes.
+* @param recs Estructura en la que se guardan los ids de la memoria compartida, el array de semaforos y el de la cola de mensajes.
+* @return int indicando si la funcion se ha ejecutado con éxito.
+*/
 int inicializaRecursosGestor(recursosGestor* recs){
 	int semid;
 	int memid;
@@ -64,6 +77,13 @@ int inicializaRecursosGestor(recursosGestor* recs){
 }
 
 
+
+/**
+* @brief Funcion que libera los recursos que empleara el monitor y el gestor, entre ellos esta
+* la memoria compartida, el array de semaforos para la memoria compartida y el report y la cola de mensajes.
+* @param recs Estructura en la que se guardan los ids de la memoria compartida, el array de semaforos y el de la cola de mensajes.
+* @return int indicando si la funcion se ha ejecutado con éxito.
+*/
 int liberarRecursosGestor(recursosGestor* recs){
 	int res;
 
@@ -90,11 +110,10 @@ int liberarRecursosGestor(recursosGestor* recs){
 
 
 /**
-* Funcion a la que le pasas 2 numeros y devuelve un numero aleatorio entre ambos.
-*
-* @param inf Int con el numero mas bajo que se quiere.
-* @param sup Int con el numero mas alto que se quiere.
-* @return int con un número aleatorio entre inf y sup. 
+* @brief Funcion se encarga de recibir los mensajes de apuesta de la cola de mensajes y procesarlos actualizando las cotizaciones de cada
+* caballo, lo que se pafar a cada apostador si gana..., e imprime en el report los datos de las apuestas.
+* @param resGestor Estructura en la que se guardan los ids de la memoria compartida, el array de semaforos y el de la cola de mensajes.
+* @return void* Debe ser void* pues la empleara un thread, pero no se emplea para nada asi que es NULL.
 */
 void* ventanilla(void* resGestor){
 	mensajeApuesta mensaje;
@@ -143,6 +162,13 @@ void* ventanilla(void* resGestor){
 
 	return NULL;
 }
+
+/**
+* @brief Funcion que crea los threads que ejecutaran las distintas ventanillas de apuestas.
+* @param N int que indica el numero de ventanillas a crear.
+* @param h, array de los threads a crear.
+* @param recs Estructura en la que se guardan los ids de la memoria compartida, el array de semaforos y el de la cola de mensajes.
+*/
 void crearVentanillas(int N, pthread_t* h, recursosGestor* recs){
 	int i;
 	int res;
@@ -159,6 +185,12 @@ void crearVentanillas(int N, pthread_t* h, recursosGestor* recs){
     }
 }
 
+
+/**
+* @brief Funcion que espera a que se finalice la ejecucion de los threads.
+* @param N int que indica el numero de ventanillas a crear.
+* @param h, array de los threads creados.
+*/
 void esperarVentanillas(int N, pthread_t* h){
 	int i;
     for(i = 0; i < N; i++){
@@ -166,7 +198,14 @@ void esperarVentanillas(int N, pthread_t* h){
     }
 }
 
-
+/**
+* @brief Funcion que ejecutara el proceso apostador, genera una apuesta de valor aleatorio para un caballo aleatorio
+* cada segundo y la sube a la cola de mensajes para que las ventanillas la procesen.
+* @param numCaballos int que indica el numero de caballos que participan en la carrera.
+* @param numApostadores int que indica el numero de apostadores para la carrera.
+* @param maxApuesta int que indica el dinero del que disponen los apostadores.
+* @param recs Estructura en la que se guardan los ids de la memoria compartida, el array de semaforos y el de la cola de mensajes.
+*/
 void apostador(int numCaballos, int numApostadores, int maxApuesta, recursosGestor* recs){
 	int res;
 	int i;
@@ -182,16 +221,26 @@ void apostador(int numCaballos, int numApostadores, int maxApuesta, recursosGest
 		if(res == -1){
 			printf("Error al enviar el mensaje de apuesta\n %s\n", strerror(errno));
 		}
-		usleep(100000);
+		usleep(1000000);
 	}
 }
 
+/**
+* @brief Funcion de control de la senal SIGUSR1 pra el proceso gestor para que este salga con exito.
+*/
 void salida(){
 	free(h);
 	exit(EXIT_SUCCESS);
 }
 
-
+/**
+* @brief Funcion que ejecutara el proceso gestor, inicializa todos los datos de la memoria compartida a sus datos iniciales, crea
+* los threds para las ventanillas y espera a que se ejecuten hasta recibir la senal SIGUSR1.
+* @param numCaballos int que indica el numero de caballos que participan en la carrera.
+* @param numApostadores int que indica el numero de apostadores para la carrera.
+* @param numVentanillas int que indica el numero de threads a crear para las ventanillas.
+* @param recs Estructura en la que se guardan los ids de la memoria compartida, el array de semaforos y el de la cola de mensajes.
+*/
 void gestor(int numCaballos, int numApostadores, int numVentanillas, recursosGestor* recs){
 	int i;
 	int res;

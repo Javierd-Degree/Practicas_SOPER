@@ -1,9 +1,20 @@
+/**
+* @brief Monitor del Proyecto Final.
+*
+* @file Monitor.c
+* @author Javier.delgadod@estudiante.uam.es 
+* @author Javier.lopezcano@estudiante.uam.es
+*/
+
 #include "Monitor.h"
 
-void monitor(int semCaballos, int memCaballos, int numCaballos){
-
-}
-
+/**
+* @brief Funcion que ejecutara el proceso monitor antes del comienzo de la carrera, imprime una cuenta atras con cuanto queda para 
+* el comienzo de la carrera e imprime cada segundo como van las cotizaciones de los caballos.
+* @param numCaballos int que indica el numero de caballos que participan en la carrera.
+* @param memid int que indica el id de la memoria compartida que contiene los datos de las cotizaciones.
+* @param semid int que indica el id del array de semaforos que controla la memoria compartida.
+*/
 void monitorAntesCarrera(int numCaballos, int memid, int semid){
 	int i;
 	int j;
@@ -32,14 +43,22 @@ void monitorAntesCarrera(int numCaballos, int memid, int semid){
 		if(res == -1){
 			printf("Error al subir el semaforo de la memoria compartida.\n");
 		}
-		/*TODO Cambiar*/
-		usleep(100000);
+		usleep(1000000);
 	}
 
 	shmdt(mem);
 	return;
 }
 
+/**
+* @brief Funcion que ejecutara el proceso monitor durante la carrera,realiza mediante semaforos un rendezvous con el proceso principal 
+* que ejecuta la carrera para sincronizarse y va imprimiendo por pantalla la posicion de los caballos en cada momento y las tiradas que
+* van realizando.
+* @param numCaballos int que indica el numero de caballos que participan en la carrera.
+* @param memid int que indica el id de la memoria compartida que contiene los datos de las cotizaciones.
+* @param semid int que indica el id del array de semaforos.
+* @param longCarrera int que indica la longitud de la carrera.
+*/
 void monitorDuranteCarrera(int semid, int memid, int numCaballos, int longCarrera){
 	int i;
 	int res;
@@ -103,6 +122,18 @@ void monitorDuranteCarrera(int semid, int memid, int numCaballos, int longCarrer
 	return;
 }
 
+/**
+* @brief Funcion que ejecutara el proceso monitor al acabar la carrera, imprime la posicion en que han quedado los caballos asi
+* como una lista con los 10 apostadore con mas beneficios obtenidos, ademas imprime en un fichero los dator de todas las apuestas
+* en orden de ralizacion.
+* @param numCaballos int que indica el numero de caballos que participan en la carrera.
+* @param semid int que indica el id del array de semaforos que controla la memoria compartida.
+* @param memCaballosId int que indica el id de la memoria compartida con la posicion de los caballos.
+* @param memApostadoresId int que indica el id de la memoria compartida con los datos de los apostadores y las apuestas.
+* @param numApostadores int que indica el numero de personas que apuestan en la carrera.
+* @param dineroApostador int que indica el dinero del que disponen los apostadores.
+* @param longCarrera int que indica la longitud de la carrera.
+*/
 void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCaballos, int numApostadores, int dineroApostador, int longCarrera, int semid){
 	int i;
 	int j = 0;
@@ -187,8 +218,8 @@ void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCabal
 		monitorImprimeReport(infoApostador, semid);
 	}
 
-	for(i=0; i<numApostadores; i++){
-		for(j=numApostadores - 1; j<i; j++){
+	for(i=2; i<numApostadores; i++){
+		for(j=numApostadores - i; j > 0; j--){
 			if(beneficios[j-1] < beneficios[j]){
 				temp = beneficios[j];
 				beneficios[j] = beneficios[j-1];
@@ -222,6 +253,12 @@ void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCabal
 	return;
 }
 
+
+/**
+* @brief Funcion que imprime una string dada en el fichero del report.
+* @param string, cadena de caracteres que se imprimira en el fichero.
+* @param semid int que indica el id del array de semaforos que controla el acceso al fichero.
+*/
 void monitorImprimeReport(char* string, int semid){
 	FILE* f;
 	int res;

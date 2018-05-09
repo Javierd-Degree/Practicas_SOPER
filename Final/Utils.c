@@ -1,3 +1,10 @@
+/**
+* @brief Archivo con funciones utiles para el Proyecto Final.
+*
+* @file Utils.c
+* @author Javier.delgadod@estudiante.uam.es 
+* @author Javier.lopezcano@estudiante.uam.es
+*/
 #include "Utils.h"
 /**
 * Funcion a la que le pasas 2 numeros y devuelve un numero aleatorio entre ambos.

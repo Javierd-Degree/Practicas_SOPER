@@ -1,7 +1,7 @@
 /**
-* @brief Ejercicio 8 de la Practica 2.
+* @brief libreria de semaforos.
 *
-* @file Ejercicio8.h
+* @file Semaforo.h
 * @author Javier.delgadod@estudiante.uam.es 
 * @author Javier.lopezcano@estudiante.uam.es
 */

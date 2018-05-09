@@ -1,3 +1,11 @@
+/**
+* @brief libreria del monitor del Proyecto Final.
+*
+* @file Monitor.h
+* @author Javier.delgadod@estudiante.uam.es 
+* @author Javier.lopezcano@estudiante.uam.es
+*/
+
 #ifndef MONITOR_H
 #define MONITOR_H
 

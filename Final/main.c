@@ -1,3 +1,11 @@
+/**
+* @brief main del Proyecto Final.
+*
+* @file main.c
+* @author Javier.delgadod@estudiante.uam.es 
+* @author Javier.lopezcano@estudiante.uam.es
+*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -9,6 +17,7 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <sys/msg.h>
+#include <syslog.h>
 #include "Caballos.h"
 #include "Monitor.h"
 #include "Semaforo.h"
@@ -16,6 +25,13 @@
 
 #define KEY 11000
 
+
+/**
+* @brief main del programa que inicializa los distintos recursos con las funciones creadas para ello y crea los procesos apostador,
+* gestor de apuestas y monitor haciendo que cada uno realicen las funciones necesarias, finalmente libera los recursos (memorias
+* compartidas, semaforos y colas de mensajes, e imprime que el proceso ha finalizado.
+* @return int que indica si el programa se ha ejecutado correctamente.
+*/
 int main(){
 	recursosCaballo resCaballo;
 	recursosGestor resGestor;

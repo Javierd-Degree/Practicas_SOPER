@@ -1,3 +1,10 @@
+/**
+* @brief libreria del gestor de apuestas del Proyecto Final.
+*
+* @file GestorApuestas.h
+* @author Javier.delgadod@estudiante.uam.es 
+* @author Javier.lopezcano@estudiante.uam.es
+*/
 #ifndef GESTORAPUESTAS_H
 #define GESTORAPUESTAS_H
 

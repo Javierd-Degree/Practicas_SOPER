@@ -44,7 +44,6 @@ void monitorDuranteCarrera(int semid, int memid, int numCaballos, int longCarrer
 	int i;
 	int res;
 	int *memCaballos;
-	int flag = 0;
 	int ganador = 0;
 
 	/*Tenemos que imprimir lo que hacen los caballos
@@ -86,17 +85,14 @@ void monitorDuranteCarrera(int semid, int memid, int numCaballos, int longCarrer
 			printf("Error al subir el semáforo");
 		}
 
-		if(ganador) break;
-
-		if(flag){
-			break;
-		}
-
 		/*Rendezvous 2.*/
 		res = Up_Semaforo(semid, 3, SEM_UNDO);
 		if(res == -1){
 			printf("Error al subir el semáforo del rendezvous 2.");
 		}
+		/*Hacemos un break para que el monitor salga del bucle pero dejamos el up del rendezvous 
+		para que el proceso principal pueda salir del rendezvous en la ultima iteracion de la carrera*/
+		if(ganador) break;
 		res = Down_Semaforo(semid, 4, SEM_UNDO);
 		if(res == -1){
 			printf("Error al bajar el semáforo del rendezvous 2.");
@@ -111,13 +107,20 @@ void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCabal
 	int i;
 	int j = 0;
 	int *memCaballos;
+	int *ganadores;
 	memCompartida* mem;
-	int ganadores[10];
-	double beneficio;
+	double* beneficios;
+	double* beneficiosAux;
+	double temp;
 	char infoApostador[100];
 	char resultado [100];
 
-	for(i=0; i<10; i++){
+	ganadores = (int*)malloc(sizeof(int)*numCaballos);
+	if(ganadores == NULL){
+		printf("Error al reservar memoria para ganadores.\n");
+	}
+
+	for(i=0; i<numCaballos; i++){
 		ganadores[i] = -1;
 	}
 
@@ -144,7 +147,7 @@ void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCabal
 	}
 
 	for(i = 0; ganadores[i] != -1; i++){
-		printf("\t -Caballo ganador %d, en posicion %d\n", ganadores[i], memCaballos[i]);
+		printf("\t -Caballo ganador %d, en posicion %d\n", ganadores[i], memCaballos[ganadores[i]]);
 	}
 
 
@@ -152,6 +155,16 @@ void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCabal
 	shmdt(memCaballos);
 
 	/*Imprimimos la informacion de los apostadores.*/
+
+	beneficios = (double*)malloc(sizeof(double)*numApostadores);
+	if(beneficios == NULL){
+		printf("Error al reservar memoria para beneficios.\n");
+	}
+
+	beneficiosAux = (double*)malloc(sizeof(double)*numApostadores);
+	if(beneficios == NULL){
+		printf("Error al reservar memoria para beneficiosAux.\n");
+	}
 
 	mem = (memCompartida*)shmat(memApostadoresId, (char)0, 0);
 	if(mem == NULL){
@@ -162,17 +175,48 @@ void monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCabal
 	for(i = 1; i<=numApostadores; i++){
 		for(j=0; ganadores[j] != -1; j++){
 			if(mem->apostadorCaballo[i] == ganadores[j]){
-				beneficio = mem->pagar[i] - mem->cantidadApostada[i];
+				beneficios[i] = mem->pagar[i] - mem->cantidadApostada[i];
+				beneficiosAux[i] = beneficios[i];
 				break;
 			}else{
-				beneficio = 0 - mem->cantidadApostada[i];
+				beneficios[i] = 0 - mem->cantidadApostada[i];
+				beneficiosAux[i] = beneficios[i];
 			}
 		}
-		sprintf(infoApostador, "Apostador-%d ha apostado %lf y ha obtenido %lf beneficios, por lo que le queda %lf.\n", i, mem->cantidadApostada[i], beneficio, dineroApostador + beneficio);
+		sprintf(infoApostador, "Apostador-%d ha apostado %lf y ha obtenido %lf beneficios, por lo que le queda %lf.\n", i, mem->cantidadApostada[i], beneficios[i], dineroApostador + beneficios[i]);
 		monitorImprimeReport(infoApostador, semid);
 	}
 
+	for(i=0; i<numApostadores; i++){
+		for(j=numApostadores - 1; j<i; j++){
+			if(beneficios[j-1] < beneficios[j]){
+				temp = beneficios[j];
+				beneficios[j] = beneficios[j-1];
+				beneficios[j-1] = temp;
+			}
+		}
+	}
+
+	printf("Los mejores apostadores han sido: \n");
+
+	for(i = 0; i<10 && beneficios[i] > 0 ; i++){
+		for(j=0; j<numApostadores; j++){
+			if(beneficios[i] == beneficiosAux[j]){
+				printf("\tApostador-%d ha obtenido un beneficio de %lf\n", j, beneficios[i]);
+				break;
+			}
+		}
+	}
+
+
+
+
 	shmdt(mem);
+	free(beneficios);
+	free(beneficiosAux);
+	free(ganadores);
+
+	printf("Se ha generado un informe de la carrera que se puede ver en el archivo report.txt\n");
 	
 
 	return;
@@ -187,7 +231,7 @@ void monitorImprimeReport(char* string, int semid){
 		printf("Error al bajar semaforo de fichero.\n");
 	}
 
-	f = fopen("fichero.txt", "a");
+	f = fopen("report.txt", "a");
 	if(f == NULL){
 		printf("Error al abrir el fichero.\n");
 	}

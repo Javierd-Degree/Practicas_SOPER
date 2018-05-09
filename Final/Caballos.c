@@ -24,8 +24,6 @@ void carrera(int numCaballos, int longCarrera, int semid, int memid){
 
 	char temp[124];
 
-		printf("ENTRA CARRERA");
-
 	/*Guardamos en primer lugar todas las posiciones, en segundo 
 	lugar todas las tiradas.*/
 	memCaballos = (int*)shmat(memid, (char*)0, 0);
@@ -42,7 +40,6 @@ void carrera(int numCaballos, int longCarrera, int semid, int memid){
 		}
 	}
 
-	printf("ANTES DE INICIALIZAR CABALLOS");
 	/*Creamos todos los caballos.*/
 	for(i = 0; i < numCaballos; i++){
 		pids[i] = fork();
@@ -59,8 +56,6 @@ void carrera(int numCaballos, int longCarrera, int semid, int memid){
 			close(pipesCaballos[numCaballos + i][1]);
 		}
 	}
-	printf("DESPUES DE INICIALIZAR CABALLOS");
-	fflush(stdout);
 
 	/*Empieza la carrera*/
 	while(!ganador){
@@ -69,15 +64,11 @@ void carrera(int numCaballos, int longCarrera, int semid, int memid){
 		if(res == -1){
 			printf("Error al bajar el semáforo del rendezvous.");
 		}
-		printf("DESPUES DE PRIMER DOWN");
-	fflush(stdout);
 
 		res = Up_Semaforo(semid, 2, SEM_UNDO);
 		if(res == -1){
 			printf("Error al subir el semáforo del rendezvous.");
 		}
-		printf("DESPUES DE PRIMER RENDEZVOUS");
-	fflush(stdout);
 
 		/*Hacemos las tiradas de todos los caballos.*/
 		res = Down_Semaforo(semid, 0, SEM_UNDO);
@@ -85,8 +76,6 @@ void carrera(int numCaballos, int longCarrera, int semid, int memid){
 			printf("Error al bajar el semáforo");
 		}
 
-		printf("DESPUES DE DOWN PARA LAS TIRADAS");
-	fflush(stdout);
 
 		for(i = 0; i < numCaballos; i++){
 			/*Le mandamos a cada caballo la posicion en
@@ -99,8 +88,6 @@ void carrera(int numCaballos, int longCarrera, int semid, int memid){
 		if(res == -1){
 			printf("Error al subir el semáforo");
 		}
-		printf("DESPUES DE UP PARA LAS TIRADAS");
-	fflush(stdout);
 
 		/*Esperamos a todos los caballos y actualizamos
 		sus posiciones*/
@@ -108,8 +95,6 @@ void carrera(int numCaballos, int longCarrera, int semid, int memid){
 		if(res == -1){
 			printf("Error al bajar el semáforo");
 		}
-printf("DESPUES DE DOWN PARA ACTUALIZAR POSICIONES");
-	fflush(stdout);
 
 		for(i = 0; i < numCaballos; i++){
 			read(pipesCaballos[numCaballos + i][0], temp, 124);
@@ -126,26 +111,16 @@ printf("DESPUES DE DOWN PARA ACTUALIZAR POSICIONES");
 			printf("Error al subir el semáforo");
 		}
 
-		printf("DESPUES DE UP PARA ACTUALIZAR POSICIONES");
-	fflush(stdout);
-
 		/*Rendezvous 2*/
 		res = Down_Semaforo(semid, 3, SEM_UNDO);
 		if(res == -1){
 			printf("Error al bajar el semáforo del rendezvous 2.");
 		}
-		printf("DESPUES DE DOWN RENDEZVOUS 2");
-	fflush(stdout);
 		res = Up_Semaforo(semid, 4, SEM_UNDO);
 		if(res == -1){
 			printf("Error al subir el semáforo del rendezvous 2.");
 		}
-		printf("DESPUES DE UP RENDEZVOUS 2");
-	fflush(stdout);
 	}
-
-		printf("DESPUES WHILE");
-		fflush(stdout);
 
 	/*Hacemos un ultimo up para que el monitor imprima la ultima tirada.*/
 	res = Up_Semaforo(semid, 2, SEM_UNDO);

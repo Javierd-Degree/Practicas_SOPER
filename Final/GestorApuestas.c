@@ -173,7 +173,7 @@ void apostador(int numCaballos, int numApostadores, int maxApuesta, recursosGest
 	mensajeApuesta mensaje;
 
 
-	for(i = 1; i<=numApostadores; i++){
+	for(i = 0; i<numApostadores; i++){
 		mensaje.type = aleatNum(1, numCaballos);
 		mensaje.apuesta = ((double)aleatNum(100, 100*maxApuesta))/100;
 		sprintf(mensaje.text, "Apostador-%d", i);

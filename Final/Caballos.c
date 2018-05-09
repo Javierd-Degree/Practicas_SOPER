@@ -1,7 +1,24 @@
+/**
+* @brief Caballos de la practica final.
+*
+* @file Caballos.c
+* @author Javier.delgadod@estudiante.uam.es 
+* @author Javier.lopezcano@estudiante.uam.es
+*/
+
+
 #include "Caballos.h"
 #include "Utils.h"
 #include <errno.h>
 
+/**
+* @brief Funcion que nos devuelve el numero de
+* casillas que tiene que avanzar un caballo segun
+* su relativa posicion en la lista.
+*
+* @param modo Posicion relativa en la lista
+* @return numero de casillas que avanza
+*/
 int caballoAvanza(int modo){
 	if(modo == MEDIO){
 		return aleatNum(1, 6);
@@ -14,6 +31,15 @@ int caballoAvanza(int modo){
 	return -1;
 }
 
+/**
+* @brief Funcion llamada por el proceso principal
+* para hacer la carrera de los caballos.
+*
+* @param numCaballos numero de caballos de la carrera
+* @param longCarrera longitud de la carrera
+* @param semid id del array de semaforos que controla los caballos
+* @param memid id de la memoria compartida de los caballos
+*/
 void carrera(int numCaballos, int longCarrera, int semid, int memid){
 	int i;
 	int res;
@@ -137,6 +163,14 @@ void carrera(int numCaballos, int longCarrera, int semid, int memid){
 	shmdt(memCaballos);
 }
 
+/**
+* @brief Funcion que permite inicializar los recursos de los caballos.
+*
+* @param recursosCaballo puntero a la estructura donde se guardaran 
+* los recursos
+* @param numCaballos numero de caballos 
+* @return 0 si todo ha ido bien, -1 si hay algun error
+*/
 int inicializaRecursosCaballo(recursosCaballo *r, int numCaballos){
 	int semid;
 	int memid;
@@ -200,6 +234,12 @@ int inicializaRecursosCaballo(recursosCaballo *r, int numCaballos){
 	return 0;
 }
 
+/**
+* @brief Funcion que permite inicializar los recursos de los caballos.
+*
+* @param recursosCaballo puntero a la estructura con los recursos a liberar 
+* @return 0 si todo ha ido bien, -1 si hay algun error
+*/
 int liberarRecursosCaballo(recursosCaballo *r){
 	if(r == NULL){
 		return -1;
@@ -215,8 +255,15 @@ int liberarRecursosCaballo(recursosCaballo *r){
 	return 0;
 }
 
-/*Dada la lista de caballos, nos permite saber si un caballo
-esta en el medio, al final o al principio.*/
+/**
+* @brief Dada la lista de caballos, nos permite saber si un caballo
+* esta en el medio, al final o al principio.
+*
+* @param num numero del caballo
+* @param lista Lista de las posiciones de los caballos
+* @param numCaballos numero de caballos 
+* @return MEDIO, PRIMERO o ULTIMO
+*/
 int posicionCaballo(int num, int *lista, int numCaballos){
 	int i;
 	int esMax = 1;
@@ -245,6 +292,14 @@ int posicionCaballo(int num, int *lista, int numCaballos){
 	return MEDIO;
 }
 
+/**
+* @brief Funcion que ejecuta un caballo
+*
+* @param numero numero del caballo
+* @param pipe Pipe que usa el caballo para leer
+* @param pipe Pipe2 que usa el caballo para escribir
+* @param lonCarrera longitud de la carrera
+*/
 void caballo(int numero, int pipe[2], int pipe2[2], int lonCarrera){
 	int posicion;
 	int avanza;

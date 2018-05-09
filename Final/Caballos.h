@@ -1,3 +1,11 @@
+/**
+* @brief Caballos de la practica final.
+*
+* @file Caballos.h
+* @author Javier.delgadod@estudiante.uam.es 
+* @author Javier.lopezcano@estudiante.uam.es
+*/
+
 #ifndef CABALLOS_H
 #define CABALLOS_H
 

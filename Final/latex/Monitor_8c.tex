@@ -1,0 +1,134 @@
+\hypertarget{Monitor_8c}{}\section{Monitor.\+c File Reference}
+\label{Monitor_8c}\index{Monitor.\+c@{Monitor.\+c}}
+
+
+Monitor del Proyecto Final.  
+
+
+{\ttfamily \#include \char`\"{}Monitor.\+h\char`\"{}}\\*
+Include dependency graph for Monitor.\+c\+:
+% FIG 0
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{Monitor_8c_abd8979a2a06ac70ae1dd61dd984adcf6}{monitor\+Antes\+Carrera} (int num\+Caballos, int memid, int semid)
+\begin{DoxyCompactList}\small\item\em Funcion que ejecutara el proceso monitor antes del comienzo de la carrera, imprime una cuenta atras con cuanto queda para el comienzo de la carrera e imprime cada segundo como van las cotizaciones de los caballos. \end{DoxyCompactList}\item 
+void \hyperlink{Monitor_8c_adc79e26d0dba860fd8acb5f94523deef}{monitor\+Durante\+Carrera} (int semid, int memid, int num\+Caballos, int long\+Carrera)
+\begin{DoxyCompactList}\small\item\em Funcion que ejecutara el proceso monitor durante la carrera,realiza mediante semaforos un rendezvous con el proceso principal que ejecuta la carrera para sincronizarse y va imprimiendo por pantalla la posicion de los caballos en cada momento y las tiradas que van realizando. \end{DoxyCompactList}\item 
+void \hyperlink{Monitor_8c_ae70f7c0eb9c4234a49236fc741db19c9}{monitor\+Despues\+Carrera} (int mem\+Caballos\+Id, int mem\+Apostadores\+Id, int num\+Caballos, int num\+Apostadores, int dinero\+Apostador, int long\+Carrera, int semid)
+\begin{DoxyCompactList}\small\item\em Funcion que ejecutara el proceso monitor al acabar la carrera, imprime la posicion en que han quedado los caballos asi como una lista con los 10 apostadore con mas beneficios obtenidos, ademas imprime en un fichero los dator de todas las apuestas en orden de ralizacion. \end{DoxyCompactList}\item 
+void \hyperlink{Monitor_8c_ab9b43061a7328429e3ee3a9b8f37b48f}{monitor\+Imprime\+Report} (char $\ast$string, int semid)
+\begin{DoxyCompactList}\small\item\em Funcion que imprime una string dada en el fichero del report. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Monitor del Proyecto Final. 
+
+\begin{DoxyAuthor}{Author}
+\href{mailto:Javier.delgadod@estudiante.uam.es}{\tt Javier.\+delgadod@estudiante.\+uam.\+es} 
+
+\href{mailto:Javier.lopezcano@estudiante.uam.es}{\tt Javier.\+lopezcano@estudiante.\+uam.\+es} 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{Monitor.\+c@{Monitor.\+c}!monitor\+Antes\+Carrera@{monitor\+Antes\+Carrera}}
+\index{monitor\+Antes\+Carrera@{monitor\+Antes\+Carrera}!Monitor.\+c@{Monitor.\+c}}
+\subsubsection[{\texorpdfstring{monitor\+Antes\+Carrera(int num\+Caballos, int memid, int semid)}{monitorAntesCarrera(int numCaballos, int memid, int semid)}}]{\setlength{\rightskip}{0pt plus 5cm}void monitor\+Antes\+Carrera (
+\begin{DoxyParamCaption}
+\item[{int}]{num\+Caballos, }
+\item[{int}]{memid, }
+\item[{int}]{semid}
+\end{DoxyParamCaption}
+)}\hypertarget{Monitor_8c_abd8979a2a06ac70ae1dd61dd984adcf6}{}\label{Monitor_8c_abd8979a2a06ac70ae1dd61dd984adcf6}
+
+
+Funcion que ejecutara el proceso monitor antes del comienzo de la carrera, imprime una cuenta atras con cuanto queda para el comienzo de la carrera e imprime cada segundo como van las cotizaciones de los caballos. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+Caballos} & int que indica el numero de caballos que participan en la carrera. \\
+\hline
+{\em memid} & int que indica el id de la memoria compartida que contiene los datos de las cotizaciones. \\
+\hline
+{\em semid} & int que indica el id del array de semaforos que controla la memoria compartida. \\
+\hline
+\end{DoxyParams}
+\index{Monitor.\+c@{Monitor.\+c}!monitor\+Despues\+Carrera@{monitor\+Despues\+Carrera}}
+\index{monitor\+Despues\+Carrera@{monitor\+Despues\+Carrera}!Monitor.\+c@{Monitor.\+c}}
+\subsubsection[{\texorpdfstring{monitor\+Despues\+Carrera(int mem\+Caballos\+Id, int mem\+Apostadores\+Id, int num\+Caballos, int num\+Apostadores, int dinero\+Apostador, int long\+Carrera, int semid)}{monitorDespuesCarrera(int memCaballosId, int memApostadoresId, int numCaballos, int numApostadores, int dineroApostador, int longCarrera, int semid)}}]{\setlength{\rightskip}{0pt plus 5cm}void monitor\+Despues\+Carrera (
+\begin{DoxyParamCaption}
+\item[{int}]{mem\+Caballos\+Id, }
+\item[{int}]{mem\+Apostadores\+Id, }
+\item[{int}]{num\+Caballos, }
+\item[{int}]{num\+Apostadores, }
+\item[{int}]{dinero\+Apostador, }
+\item[{int}]{long\+Carrera, }
+\item[{int}]{semid}
+\end{DoxyParamCaption}
+)}\hypertarget{Monitor_8c_ae70f7c0eb9c4234a49236fc741db19c9}{}\label{Monitor_8c_ae70f7c0eb9c4234a49236fc741db19c9}
+
+
+Funcion que ejecutara el proceso monitor al acabar la carrera, imprime la posicion en que han quedado los caballos asi como una lista con los 10 apostadore con mas beneficios obtenidos, ademas imprime en un fichero los dator de todas las apuestas en orden de ralizacion. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+Caballos} & int que indica el numero de caballos que participan en la carrera. \\
+\hline
+{\em semid} & int que indica el id del array de semaforos que controla la memoria compartida. \\
+\hline
+{\em mem\+Caballos\+Id} & int que indica el id de la memoria compartida con la posicion de los caballos. \\
+\hline
+{\em mem\+Apostadores\+Id} & int que indica el id de la memoria compartida con los datos de los apostadores y las apuestas. \\
+\hline
+{\em num\+Apostadores} & int que indica el numero de personas que apuestan en la carrera. \\
+\hline
+{\em dinero\+Apostador} & int que indica el dinero del que disponen los apostadores. \\
+\hline
+{\em long\+Carrera} & int que indica la longitud de la carrera. \\
+\hline
+\end{DoxyParams}
+\index{Monitor.\+c@{Monitor.\+c}!monitor\+Durante\+Carrera@{monitor\+Durante\+Carrera}}
+\index{monitor\+Durante\+Carrera@{monitor\+Durante\+Carrera}!Monitor.\+c@{Monitor.\+c}}
+\subsubsection[{\texorpdfstring{monitor\+Durante\+Carrera(int semid, int memid, int num\+Caballos, int long\+Carrera)}{monitorDuranteCarrera(int semid, int memid, int numCaballos, int longCarrera)}}]{\setlength{\rightskip}{0pt plus 5cm}void monitor\+Durante\+Carrera (
+\begin{DoxyParamCaption}
+\item[{int}]{semid, }
+\item[{int}]{memid, }
+\item[{int}]{num\+Caballos, }
+\item[{int}]{long\+Carrera}
+\end{DoxyParamCaption}
+)}\hypertarget{Monitor_8c_adc79e26d0dba860fd8acb5f94523deef}{}\label{Monitor_8c_adc79e26d0dba860fd8acb5f94523deef}
+
+
+Funcion que ejecutara el proceso monitor durante la carrera,realiza mediante semaforos un rendezvous con el proceso principal que ejecuta la carrera para sincronizarse y va imprimiendo por pantalla la posicion de los caballos en cada momento y las tiradas que van realizando. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+Caballos} & int que indica el numero de caballos que participan en la carrera. \\
+\hline
+{\em memid} & int que indica el id de la memoria compartida que contiene los datos de las cotizaciones. \\
+\hline
+{\em semid} & int que indica el id del array de semaforos. \\
+\hline
+{\em long\+Carrera} & int que indica la longitud de la carrera. \\
+\hline
+\end{DoxyParams}
+\index{Monitor.\+c@{Monitor.\+c}!monitor\+Imprime\+Report@{monitor\+Imprime\+Report}}
+\index{monitor\+Imprime\+Report@{monitor\+Imprime\+Report}!Monitor.\+c@{Monitor.\+c}}
+\subsubsection[{\texorpdfstring{monitor\+Imprime\+Report(char $\ast$string, int semid)}{monitorImprimeReport(char *string, int semid)}}]{\setlength{\rightskip}{0pt plus 5cm}void monitor\+Imprime\+Report (
+\begin{DoxyParamCaption}
+\item[{char $\ast$}]{string, }
+\item[{int}]{semid}
+\end{DoxyParamCaption}
+)}\hypertarget{Monitor_8c_ab9b43061a7328429e3ee3a9b8f37b48f}{}\label{Monitor_8c_ab9b43061a7328429e3ee3a9b8f37b48f}
+
+
+Funcion que imprime una string dada en el fichero del report. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em string,cadena} & de caracteres que se imprimira en el fichero. \\
+\hline
+{\em semid} & int que indica el id del array de semaforos que controla el acceso al fichero. \\
+\hline
+\end{DoxyParams}

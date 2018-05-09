@@ -1,0 +1,239 @@
+\hypertarget{GestorApuestas_8h}{}\section{Gestor\+Apuestas.\+h File Reference}
+\label{GestorApuestas_8h}\index{Gestor\+Apuestas.\+h@{Gestor\+Apuestas.\+h}}
+
+
+libreria del gestor de apuestas del Proyecto Final.  
+
+
+{\ttfamily \#include \char`\"{}Caballos.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$signal.\+h$>$}\\*
+{\ttfamily \#include $<$time.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$sys/ipc.\+h$>$}\\*
+{\ttfamily \#include $<$sys/msg.\+h$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
+{\ttfamily \#include $<$syslog.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}Utils.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Monitor.\+h\char`\"{}}\\*
+Include dependency graph for Gestor\+Apuestas.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct__mensajeGestor}{\+\_\+mensaje\+Gestor}
+\item 
+struct \hyperlink{struct__recursosGestor}{\+\_\+recursos\+Gestor}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bfseries S\+E\+M\+K\+E\+Y\+G\+E\+S\+T\+OR}~17000\hypertarget{GestorApuestas_8h_a35ccabb5032ae51f6989187b23763f5b}{}\label{GestorApuestas_8h_a35ccabb5032ae51f6989187b23763f5b}
+
+\item 
+\#define {\bfseries F\+I\+L\+E\+\_\+\+M\+E\+M\+\_\+\+C\+O\+M\+P\+\_\+\+G\+E\+S\+T\+O\+R\+\_\+\+K\+EY}~\char`\"{}/bin/ls\char`\"{}\hypertarget{GestorApuestas_8h_a1bae2d8a8115cad5ff32aa1162f42b2a}{}\label{GestorApuestas_8h_a1bae2d8a8115cad5ff32aa1162f42b2a}
+
+\item 
+\#define {\bfseries M\+E\+M\+\_\+\+C\+O\+M\+P\+\_\+\+G\+E\+S\+T\+O\+R\+\_\+\+K\+EY}~12000\hypertarget{GestorApuestas_8h_ac5b6c888d271c9a727ed3af53f36eeac}{}\label{GestorApuestas_8h_ac5b6c888d271c9a727ed3af53f36eeac}
+
+\item 
+\#define {\bfseries F\+I\+L\+E\+\_\+\+V\+E\+N\+T\+A\+N\+I\+L\+L\+A\+\_\+\+K\+EY}~\char`\"{}/bin/ls\char`\"{}\hypertarget{GestorApuestas_8h_a71ad64d9fcf5991307bcca9fb055f126}{}\label{GestorApuestas_8h_a71ad64d9fcf5991307bcca9fb055f126}
+
+\item 
+\#define {\bfseries V\+E\+N\+T\+A\+N\+I\+L\+L\+A\+\_\+\+K\+EY}~33\hypertarget{GestorApuestas_8h_addb5dae6758c2a311558ff47e3e4f33e}{}\label{GestorApuestas_8h_addb5dae6758c2a311558ff47e3e4f33e}
+
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{struct__mensajeGestor}{\+\_\+mensaje\+Gestor} {\bfseries mensaje\+Apuesta}\hypertarget{GestorApuestas_8h_ab1c701e604704a00979b81d562104684}{}\label{GestorApuestas_8h_ab1c701e604704a00979b81d562104684}
+
+\item 
+typedef struct \hyperlink{struct__recursosGestor}{\+\_\+recursos\+Gestor} {\bfseries recursos\+Gestor}\hypertarget{GestorApuestas_8h_a50ae915da469e86e399f3bd4a57eab9b}{}\label{GestorApuestas_8h_a50ae915da469e86e399f3bd4a57eab9b}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{GestorApuestas_8h_aa8e2ee3313912f227bff1d4b20b626bc}{inicializa\+Recursos\+Gestor} (\hyperlink{struct__recursosGestor}{recursos\+Gestor} $\ast$recs)
+\begin{DoxyCompactList}\small\item\em Funcion que inicializa los recursos que empleara el monitor y el gestor, entre ellos esta la memoria compartida, el array de semaforos para la memoria compartida y el report y la cola de mensajes. \end{DoxyCompactList}\item 
+int \hyperlink{GestorApuestas_8h_ab428e03cad59b3279e342974545d2e52}{liberar\+Recursos\+Gestor} (\hyperlink{struct__recursosGestor}{recursos\+Gestor} $\ast$recs)
+\begin{DoxyCompactList}\small\item\em Funcion que libera los recursos que empleara el monitor y el gestor, entre ellos esta la memoria compartida, el array de semaforos para la memoria compartida y el report y la cola de mensajes. \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{GestorApuestas_8h_aeff22d3d195931d619894d182f0195e2}{ventanilla} (void $\ast$recs)
+\begin{DoxyCompactList}\small\item\em Funcion se encarga de recibir los mensajes de apuesta de la cola de mensajes y procesarlos actualizando las cotizaciones de cada caballo, lo que se pafar a cada apostador si gana..., e imprime en el report los datos de las apuestas. \end{DoxyCompactList}\item 
+void \hyperlink{GestorApuestas_8h_a07c2a804d8e670924d3c1512633c938c}{crear\+Ventanillas} (int N, pthread\+\_\+t $\ast$h, \hyperlink{struct__recursosGestor}{recursos\+Gestor} $\ast$recs)
+\begin{DoxyCompactList}\small\item\em Funcion que crea los threads que ejecutaran las distintas ventanillas de apuestas. \end{DoxyCompactList}\item 
+void \hyperlink{GestorApuestas_8h_ab684d22ff520700c35ed6c3b4cd6cc17}{esperar\+Ventanillas} (int N, pthread\+\_\+t $\ast$h)
+\begin{DoxyCompactList}\small\item\em Funcion que espera a que se finalice la ejecucion de los threads. \end{DoxyCompactList}\item 
+void \hyperlink{GestorApuestas_8h_a663c0e5b1f198325f3461fedf9db0d9b}{apostador} (int num\+Caballos, int num\+Apostadores, int max\+Apuesta, \hyperlink{struct__recursosGestor}{recursos\+Gestor} $\ast$recs)
+\begin{DoxyCompactList}\small\item\em Funcion que ejecutara el proceso apostador, genera una apuesta de valor aleatorio para un caballo aleatorio cada segundo y la sube a la cola de mensajes para que las ventanillas la procesen. \end{DoxyCompactList}\item 
+void \hyperlink{GestorApuestas_8h_a58d61a8b7a12f491539016686b4a4279}{salida} ()\hypertarget{GestorApuestas_8h_a58d61a8b7a12f491539016686b4a4279}{}\label{GestorApuestas_8h_a58d61a8b7a12f491539016686b4a4279}
+
+\begin{DoxyCompactList}\small\item\em Funcion de control de la senal S\+I\+G\+U\+S\+R1 pra el proceso gestor para que este salga con exito. \end{DoxyCompactList}\item 
+void \hyperlink{GestorApuestas_8h_aca85434c6d92bef2b62b2ec41fb18314}{gestor} (int num\+Caballos, int num\+Apostadores, int num\+Ventanillas, \hyperlink{struct__recursosGestor}{recursos\+Gestor} $\ast$recs)
+\begin{DoxyCompactList}\small\item\em Funcion que ejecutara el proceso gestor, inicializa todos los datos de la memoria compartida a sus datos iniciales, crea los threds para las ventanillas y espera a que se ejecuten hasta recibir la senal S\+I\+G\+U\+S\+R1. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+libreria del gestor de apuestas del Proyecto Final. 
+
+\begin{DoxyAuthor}{Author}
+\href{mailto:Javier.delgadod@estudiante.uam.es}{\tt Javier.\+delgadod@estudiante.\+uam.\+es} 
+
+\href{mailto:Javier.lopezcano@estudiante.uam.es}{\tt Javier.\+lopezcano@estudiante.\+uam.\+es} 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{Gestor\+Apuestas.\+h@{Gestor\+Apuestas.\+h}!apostador@{apostador}}
+\index{apostador@{apostador}!Gestor\+Apuestas.\+h@{Gestor\+Apuestas.\+h}}
+\subsubsection[{\texorpdfstring{apostador(int num\+Caballos, int num\+Apostadores, int max\+Apuesta, recursos\+Gestor $\ast$recs)}{apostador(int numCaballos, int numApostadores, int maxApuesta, recursosGestor *recs)}}]{\setlength{\rightskip}{0pt plus 5cm}void apostador (
+\begin{DoxyParamCaption}
+\item[{int}]{num\+Caballos, }
+\item[{int}]{num\+Apostadores, }
+\item[{int}]{max\+Apuesta, }
+\item[{{\bf recursos\+Gestor} $\ast$}]{recs}
+\end{DoxyParamCaption}
+)}\hypertarget{GestorApuestas_8h_a663c0e5b1f198325f3461fedf9db0d9b}{}\label{GestorApuestas_8h_a663c0e5b1f198325f3461fedf9db0d9b}
+
+
+Funcion que ejecutara el proceso apostador, genera una apuesta de valor aleatorio para un caballo aleatorio cada segundo y la sube a la cola de mensajes para que las ventanillas la procesen. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+Caballos} & int que indica el numero de caballos que participan en la carrera. \\
+\hline
+{\em num\+Apostadores} & int que indica el numero de apostadores para la carrera. \\
+\hline
+{\em max\+Apuesta} & int que indica el dinero del que disponen los apostadores. \\
+\hline
+{\em recs} & Estructura en la que se guardan los ids de la memoria compartida, el array de semaforos y el de la cola de mensajes. \\
+\hline
+\end{DoxyParams}
+\index{Gestor\+Apuestas.\+h@{Gestor\+Apuestas.\+h}!crear\+Ventanillas@{crear\+Ventanillas}}
+\index{crear\+Ventanillas@{crear\+Ventanillas}!Gestor\+Apuestas.\+h@{Gestor\+Apuestas.\+h}}
+\subsubsection[{\texorpdfstring{crear\+Ventanillas(int N, pthread\+\_\+t $\ast$h, recursos\+Gestor $\ast$recs)}{crearVentanillas(int N, pthread_t *h, recursosGestor *recs)}}]{\setlength{\rightskip}{0pt plus 5cm}void crear\+Ventanillas (
+\begin{DoxyParamCaption}
+\item[{int}]{N, }
+\item[{pthread\+\_\+t $\ast$}]{h, }
+\item[{{\bf recursos\+Gestor} $\ast$}]{recs}
+\end{DoxyParamCaption}
+)}\hypertarget{GestorApuestas_8h_a07c2a804d8e670924d3c1512633c938c}{}\label{GestorApuestas_8h_a07c2a804d8e670924d3c1512633c938c}
+
+
+Funcion que crea los threads que ejecutaran las distintas ventanillas de apuestas. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em N} & int que indica el numero de ventanillas a crear. \\
+\hline
+{\em h,array} & de los threads a crear. \\
+\hline
+{\em recs} & Estructura en la que se guardan los ids de la memoria compartida, el array de semaforos y el de la cola de mensajes. \\
+\hline
+\end{DoxyParams}
+\index{Gestor\+Apuestas.\+h@{Gestor\+Apuestas.\+h}!esperar\+Ventanillas@{esperar\+Ventanillas}}
+\index{esperar\+Ventanillas@{esperar\+Ventanillas}!Gestor\+Apuestas.\+h@{Gestor\+Apuestas.\+h}}
+\subsubsection[{\texorpdfstring{esperar\+Ventanillas(int N, pthread\+\_\+t $\ast$h)}{esperarVentanillas(int N, pthread_t *h)}}]{\setlength{\rightskip}{0pt plus 5cm}void esperar\+Ventanillas (
+\begin{DoxyParamCaption}
+\item[{int}]{N, }
+\item[{pthread\+\_\+t $\ast$}]{h}
+\end{DoxyParamCaption}
+)}\hypertarget{GestorApuestas_8h_ab684d22ff520700c35ed6c3b4cd6cc17}{}\label{GestorApuestas_8h_ab684d22ff520700c35ed6c3b4cd6cc17}
+
+
+Funcion que espera a que se finalice la ejecucion de los threads. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em N} & int que indica el numero de ventanillas a crear. \\
+\hline
+{\em h,array} & de los threads creados. \\
+\hline
+\end{DoxyParams}
+\index{Gestor\+Apuestas.\+h@{Gestor\+Apuestas.\+h}!gestor@{gestor}}
+\index{gestor@{gestor}!Gestor\+Apuestas.\+h@{Gestor\+Apuestas.\+h}}
+\subsubsection[{\texorpdfstring{gestor(int num\+Caballos, int num\+Apostadores, int num\+Ventanillas, recursos\+Gestor $\ast$recs)}{gestor(int numCaballos, int numApostadores, int numVentanillas, recursosGestor *recs)}}]{\setlength{\rightskip}{0pt plus 5cm}void gestor (
+\begin{DoxyParamCaption}
+\item[{int}]{num\+Caballos, }
+\item[{int}]{num\+Apostadores, }
+\item[{int}]{num\+Ventanillas, }
+\item[{{\bf recursos\+Gestor} $\ast$}]{recs}
+\end{DoxyParamCaption}
+)}\hypertarget{GestorApuestas_8h_aca85434c6d92bef2b62b2ec41fb18314}{}\label{GestorApuestas_8h_aca85434c6d92bef2b62b2ec41fb18314}
+
+
+Funcion que ejecutara el proceso gestor, inicializa todos los datos de la memoria compartida a sus datos iniciales, crea los threds para las ventanillas y espera a que se ejecuten hasta recibir la senal S\+I\+G\+U\+S\+R1. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+Caballos} & int que indica el numero de caballos que participan en la carrera. \\
+\hline
+{\em num\+Apostadores} & int que indica el numero de apostadores para la carrera. \\
+\hline
+{\em num\+Ventanillas} & int que indica el numero de threads a crear para las ventanillas. \\
+\hline
+{\em recs} & Estructura en la que se guardan los ids de la memoria compartida, el array de semaforos y el de la cola de mensajes. \\
+\hline
+\end{DoxyParams}
+\index{Gestor\+Apuestas.\+h@{Gestor\+Apuestas.\+h}!inicializa\+Recursos\+Gestor@{inicializa\+Recursos\+Gestor}}
+\index{inicializa\+Recursos\+Gestor@{inicializa\+Recursos\+Gestor}!Gestor\+Apuestas.\+h@{Gestor\+Apuestas.\+h}}
+\subsubsection[{\texorpdfstring{inicializa\+Recursos\+Gestor(recursos\+Gestor $\ast$recs)}{inicializaRecursosGestor(recursosGestor *recs)}}]{\setlength{\rightskip}{0pt plus 5cm}int inicializa\+Recursos\+Gestor (
+\begin{DoxyParamCaption}
+\item[{{\bf recursos\+Gestor} $\ast$}]{recs}
+\end{DoxyParamCaption}
+)}\hypertarget{GestorApuestas_8h_aa8e2ee3313912f227bff1d4b20b626bc}{}\label{GestorApuestas_8h_aa8e2ee3313912f227bff1d4b20b626bc}
+
+
+Funcion que inicializa los recursos que empleara el monitor y el gestor, entre ellos esta la memoria compartida, el array de semaforos para la memoria compartida y el report y la cola de mensajes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em recs} & Estructura en la que se guardan los ids de la memoria compartida, el array de semaforos y el de la cola de mensajes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int indicando si la funcion se ha ejecutado con éxito. 
+\end{DoxyReturn}
+\index{Gestor\+Apuestas.\+h@{Gestor\+Apuestas.\+h}!liberar\+Recursos\+Gestor@{liberar\+Recursos\+Gestor}}
+\index{liberar\+Recursos\+Gestor@{liberar\+Recursos\+Gestor}!Gestor\+Apuestas.\+h@{Gestor\+Apuestas.\+h}}
+\subsubsection[{\texorpdfstring{liberar\+Recursos\+Gestor(recursos\+Gestor $\ast$recs)}{liberarRecursosGestor(recursosGestor *recs)}}]{\setlength{\rightskip}{0pt plus 5cm}int liberar\+Recursos\+Gestor (
+\begin{DoxyParamCaption}
+\item[{{\bf recursos\+Gestor} $\ast$}]{recs}
+\end{DoxyParamCaption}
+)}\hypertarget{GestorApuestas_8h_ab428e03cad59b3279e342974545d2e52}{}\label{GestorApuestas_8h_ab428e03cad59b3279e342974545d2e52}
+
+
+Funcion que libera los recursos que empleara el monitor y el gestor, entre ellos esta la memoria compartida, el array de semaforos para la memoria compartida y el report y la cola de mensajes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em recs} & Estructura en la que se guardan los ids de la memoria compartida, el array de semaforos y el de la cola de mensajes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int indicando si la funcion se ha ejecutado con éxito. 
+\end{DoxyReturn}
+\index{Gestor\+Apuestas.\+h@{Gestor\+Apuestas.\+h}!ventanilla@{ventanilla}}
+\index{ventanilla@{ventanilla}!Gestor\+Apuestas.\+h@{Gestor\+Apuestas.\+h}}
+\subsubsection[{\texorpdfstring{ventanilla(void $\ast$recs)}{ventanilla(void *recs)}}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ ventanilla (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{res\+Gestor}
+\end{DoxyParamCaption}
+)}\hypertarget{GestorApuestas_8h_aeff22d3d195931d619894d182f0195e2}{}\label{GestorApuestas_8h_aeff22d3d195931d619894d182f0195e2}
+
+
+Funcion se encarga de recibir los mensajes de apuesta de la cola de mensajes y procesarlos actualizando las cotizaciones de cada caballo, lo que se pafar a cada apostador si gana..., e imprime en el report los datos de las apuestas. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em res\+Gestor} & Estructura en la que se guardan los ids de la memoria compartida, el array de semaforos y el de la cola de mensajes. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void$\ast$ Debe ser void$\ast$ pues la empleara un thread, pero no se emplea para nada asi que es N\+U\+LL. 
+\end{DoxyReturn}

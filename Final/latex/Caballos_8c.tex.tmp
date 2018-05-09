@@ -1,0 +1,175 @@
+\hypertarget{Caballos_8c}{}\section{Caballos.\+c File Reference}
+\label{Caballos_8c}\index{Caballos.\+c@{Caballos.\+c}}
+
+
+Caballos de la practica final.  
+
+
+{\ttfamily \#include \char`\"{}Caballos.\+h\char`\"{}}\\*
+{\ttfamily \#include \char`\"{}Utils.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$errno.\+h$>$}\\*
+Include dependency graph for Caballos.\+c\+:
+% FIG 0
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{Caballos_8c_a0b7d1679dc3472adadbbb7c64d0c534b}{caballo\+Avanza} (int modo)
+\begin{DoxyCompactList}\small\item\em Funcion que nos devuelve el numero de casillas que tiene que avanzar un caballo segun su relativa posicion en la lista. \end{DoxyCompactList}\item 
+void \hyperlink{Caballos_8c_a77fa3d47439bf93fcf68b83c7e87f274}{carrera} (int num\+Caballos, int long\+Carrera, int semid, int memid)
+\begin{DoxyCompactList}\small\item\em Funcion llamada por el proceso principal para hacer la carrera de los caballos. \end{DoxyCompactList}\item 
+int \hyperlink{Caballos_8c_a09d367cda6c1886da87f8bdb0f49e65e}{inicializa\+Recursos\+Caballo} (\hyperlink{struct__recursosCaballo}{recursos\+Caballo} $\ast$r, int num\+Caballos)
+\begin{DoxyCompactList}\small\item\em Funcion que permite inicializar los recursos de los caballos. \end{DoxyCompactList}\item 
+int \hyperlink{Caballos_8c_af311c9fa52181851f7d6f3e2695b424b}{liberar\+Recursos\+Caballo} (\hyperlink{struct__recursosCaballo}{recursos\+Caballo} $\ast$r)
+\begin{DoxyCompactList}\small\item\em Funcion que permite inicializar los recursos de los caballos. \end{DoxyCompactList}\item 
+int \hyperlink{Caballos_8c_ac516a27a7aba9ba14e6c5e6fed1e4c53}{posicion\+Caballo} (int num, int $\ast$lista, int num\+Caballos)
+\begin{DoxyCompactList}\small\item\em Dada la lista de caballos, nos permite saber si un caballo esta en el medio, al final o al principio. \end{DoxyCompactList}\item 
+void \hyperlink{Caballos_8c_a444d1eb6c5a4912f60d06bffd9a24e95}{caballo} (int numero, int pipe\mbox{[}2\mbox{]}, int pipe2\mbox{[}2\mbox{]}, int lon\+Carrera)
+\begin{DoxyCompactList}\small\item\em Funcion que ejecuta un caballo. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Caballos de la practica final. 
+
+\begin{DoxyAuthor}{Author}
+\href{mailto:Javier.delgadod@estudiante.uam.es}{\tt Javier.\+delgadod@estudiante.\+uam.\+es} 
+
+\href{mailto:Javier.lopezcano@estudiante.uam.es}{\tt Javier.\+lopezcano@estudiante.\+uam.\+es} 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{Caballos.\+c@{Caballos.\+c}!caballo@{caballo}}
+\index{caballo@{caballo}!Caballos.\+c@{Caballos.\+c}}
+\subsubsection[{\texorpdfstring{caballo(int numero, int pipe[2], int pipe2[2], int lon\+Carrera)}{caballo(int numero, int pipe[2], int pipe2[2], int lonCarrera)}}]{\setlength{\rightskip}{0pt plus 5cm}void caballo (
+\begin{DoxyParamCaption}
+\item[{int}]{numero, }
+\item[{int}]{pipe\mbox{[}2\mbox{]}, }
+\item[{int}]{pipe2\mbox{[}2\mbox{]}, }
+\item[{int}]{lon\+Carrera}
+\end{DoxyParamCaption}
+)}\hypertarget{Caballos_8c_a444d1eb6c5a4912f60d06bffd9a24e95}{}\label{Caballos_8c_a444d1eb6c5a4912f60d06bffd9a24e95}
+
+
+Funcion que ejecuta un caballo. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em numero} & numero del caballo \\
+\hline
+{\em pipe} & Pipe que usa el caballo para leer \\
+\hline
+{\em pipe} & Pipe2 que usa el caballo para escribir \\
+\hline
+{\em lon\+Carrera} & longitud de la carrera \\
+\hline
+\end{DoxyParams}
+\index{Caballos.\+c@{Caballos.\+c}!caballo\+Avanza@{caballo\+Avanza}}
+\index{caballo\+Avanza@{caballo\+Avanza}!Caballos.\+c@{Caballos.\+c}}
+\subsubsection[{\texorpdfstring{caballo\+Avanza(int modo)}{caballoAvanza(int modo)}}]{\setlength{\rightskip}{0pt plus 5cm}int caballo\+Avanza (
+\begin{DoxyParamCaption}
+\item[{int}]{modo}
+\end{DoxyParamCaption}
+)}\hypertarget{Caballos_8c_a0b7d1679dc3472adadbbb7c64d0c534b}{}\label{Caballos_8c_a0b7d1679dc3472adadbbb7c64d0c534b}
+
+
+Funcion que nos devuelve el numero de casillas que tiene que avanzar un caballo segun su relativa posicion en la lista. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em modo} & Posicion relativa en la lista \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+numero de casillas que avanza 
+\end{DoxyReturn}
+\index{Caballos.\+c@{Caballos.\+c}!carrera@{carrera}}
+\index{carrera@{carrera}!Caballos.\+c@{Caballos.\+c}}
+\subsubsection[{\texorpdfstring{carrera(int num\+Caballos, int long\+Carrera, int semid, int memid)}{carrera(int numCaballos, int longCarrera, int semid, int memid)}}]{\setlength{\rightskip}{0pt plus 5cm}void carrera (
+\begin{DoxyParamCaption}
+\item[{int}]{num\+Caballos, }
+\item[{int}]{long\+Carrera, }
+\item[{int}]{semid, }
+\item[{int}]{memid}
+\end{DoxyParamCaption}
+)}\hypertarget{Caballos_8c_a77fa3d47439bf93fcf68b83c7e87f274}{}\label{Caballos_8c_a77fa3d47439bf93fcf68b83c7e87f274}
+
+
+Funcion llamada por el proceso principal para hacer la carrera de los caballos. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+Caballos} & numero de caballos de la carrera \\
+\hline
+{\em long\+Carrera} & longitud de la carrera \\
+\hline
+{\em semid} & id del array de semaforos que controla los caballos \\
+\hline
+{\em memid} & id de la memoria compartida de los caballos \\
+\hline
+\end{DoxyParams}
+\index{Caballos.\+c@{Caballos.\+c}!inicializa\+Recursos\+Caballo@{inicializa\+Recursos\+Caballo}}
+\index{inicializa\+Recursos\+Caballo@{inicializa\+Recursos\+Caballo}!Caballos.\+c@{Caballos.\+c}}
+\subsubsection[{\texorpdfstring{inicializa\+Recursos\+Caballo(recursos\+Caballo $\ast$r, int num\+Caballos)}{inicializaRecursosCaballo(recursosCaballo *r, int numCaballos)}}]{\setlength{\rightskip}{0pt plus 5cm}int inicializa\+Recursos\+Caballo (
+\begin{DoxyParamCaption}
+\item[{{\bf recursos\+Caballo} $\ast$}]{r, }
+\item[{int}]{num\+Caballos}
+\end{DoxyParamCaption}
+)}\hypertarget{Caballos_8c_a09d367cda6c1886da87f8bdb0f49e65e}{}\label{Caballos_8c_a09d367cda6c1886da87f8bdb0f49e65e}
+
+
+Funcion que permite inicializar los recursos de los caballos. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em recursos\+Caballo} & puntero a la estructura donde se guardaran los recursos \\
+\hline
+{\em num\+Caballos} & numero de caballos \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 si todo ha ido bien, -\/1 si hay algun error 
+\end{DoxyReturn}
+\index{Caballos.\+c@{Caballos.\+c}!liberar\+Recursos\+Caballo@{liberar\+Recursos\+Caballo}}
+\index{liberar\+Recursos\+Caballo@{liberar\+Recursos\+Caballo}!Caballos.\+c@{Caballos.\+c}}
+\subsubsection[{\texorpdfstring{liberar\+Recursos\+Caballo(recursos\+Caballo $\ast$r)}{liberarRecursosCaballo(recursosCaballo *r)}}]{\setlength{\rightskip}{0pt plus 5cm}int liberar\+Recursos\+Caballo (
+\begin{DoxyParamCaption}
+\item[{{\bf recursos\+Caballo} $\ast$}]{r}
+\end{DoxyParamCaption}
+)}\hypertarget{Caballos_8c_af311c9fa52181851f7d6f3e2695b424b}{}\label{Caballos_8c_af311c9fa52181851f7d6f3e2695b424b}
+
+
+Funcion que permite inicializar los recursos de los caballos. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em recursos\+Caballo} & puntero a la estructura con los recursos a liberar \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 si todo ha ido bien, -\/1 si hay algun error 
+\end{DoxyReturn}
+\index{Caballos.\+c@{Caballos.\+c}!posicion\+Caballo@{posicion\+Caballo}}
+\index{posicion\+Caballo@{posicion\+Caballo}!Caballos.\+c@{Caballos.\+c}}
+\subsubsection[{\texorpdfstring{posicion\+Caballo(int num, int $\ast$lista, int num\+Caballos)}{posicionCaballo(int num, int *lista, int numCaballos)}}]{\setlength{\rightskip}{0pt plus 5cm}int posicion\+Caballo (
+\begin{DoxyParamCaption}
+\item[{int}]{num, }
+\item[{int $\ast$}]{lista, }
+\item[{int}]{num\+Caballos}
+\end{DoxyParamCaption}
+)}\hypertarget{Caballos_8c_ac516a27a7aba9ba14e6c5e6fed1e4c53}{}\label{Caballos_8c_ac516a27a7aba9ba14e6c5e6fed1e4c53}
+
+
+Dada la lista de caballos, nos permite saber si un caballo esta en el medio, al final o al principio. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num} & numero del caballo \\
+\hline
+{\em lista} & Lista de las posiciones de los caballos \\
+\hline
+{\em num\+Caballos} & numero de caballos \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+M\+E\+D\+IO, P\+R\+I\+M\+E\+RO o U\+L\+T\+I\+MO 
+\end{DoxyReturn}

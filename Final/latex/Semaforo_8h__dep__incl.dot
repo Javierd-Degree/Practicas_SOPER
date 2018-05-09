@@ -1,0 +1,26 @@
+digraph "Semaforo.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="Semaforo.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node2 [label="Caballos.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$Caballos_8h.html",tooltip="Caballos de la practica final. "];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node3 [label="Caballos.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$Caballos_8c.html",tooltip="Caballos de la practica final. "];
+  Node2 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node4 [label="GestorApuestas.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$GestorApuestas_8h.html",tooltip="libreria del gestor de apuestas del Proyecto Final. "];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node5 [label="GestorApuestas.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$GestorApuestas_8c.html",tooltip="Gestor de apuestas del Proyecto Final. "];
+  Node4 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node6 [label="main.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$main_8c.html",tooltip="main del Proyecto Final. "];
+  Node2 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node7 [label="Monitor.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$Monitor_8h.html",tooltip="libreria del monitor del Proyecto Final. "];
+  Node7 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node7 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node7 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node8 [label="Monitor.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$Monitor_8c.html",tooltip="Monitor del Proyecto Final. "];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node1 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid"];
+  Node9 [label="Semaforo.c",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$Semaforo_8c.html",tooltip="libreria de semaforos. "];
+}

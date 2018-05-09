@@ -1,0 +1,229 @@
+\hypertarget{Semaforo_8h}{}\section{Semaforo.\+h File Reference}
+\label{Semaforo_8h}\index{Semaforo.\+h@{Semaforo.\+h}}
+
+
+libreria de semaforos.  
+
+
+{\ttfamily \#include $<$sys/sem.\+h$>$}\\*
+Include dependency graph for Semaforo.\+h\+:
+% FIG 0
+This graph shows which files directly or indirectly include this file\+:
+% FIG 1
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bfseries S\+E\+M\+K\+EY}~75798\hypertarget{Semaforo_8h_ada831b9e37399bf906c8184a888e28cd}{}\label{Semaforo_8h_ada831b9e37399bf906c8184a888e28cd}
+
+\item 
+\#define {\bfseries E\+R\+R\+OR}~-\/1\hypertarget{Semaforo_8h_a8fe83ac76edc595f6b98cd4a4127aed5}{}\label{Semaforo_8h_a8fe83ac76edc595f6b98cd4a4127aed5}
+
+\item 
+\#define {\bfseries OK}~0\hypertarget{Semaforo_8h_aba51915c87d64af47fb1cc59348961c9}{}\label{Semaforo_8h_aba51915c87d64af47fb1cc59348961c9}
+
+\item 
+\#define {\bfseries C\+R\+E\+A\+DO}~1\hypertarget{Semaforo_8h_a00182e3826731997fd4a69a493fac3dd}{}\label{Semaforo_8h_a00182e3826731997fd4a69a493fac3dd}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{Semaforo_8h_a4af104b0ed37e6ae0289a1059bc6e990}{Inicializar\+\_\+\+Semaforo} (int semid, unsigned short $\ast$array)
+\begin{DoxyCompactList}\small\item\em Función que inicializa un array de semaforos con id semid y con los valores que se pasan a traves del array de shorts. \end{DoxyCompactList}\item 
+int \hyperlink{Semaforo_8h_a731339337960a681efa435a10f12c312}{Borrar\+\_\+\+Semaforo} (int semid)
+\begin{DoxyCompactList}\small\item\em Función que elimina un array de semaforos. \end{DoxyCompactList}\item 
+int \hyperlink{Semaforo_8h_a16b16dd895b5f4cbe48f1ac8977e8b35}{Crear\+\_\+\+Semaforo} (key\+\_\+t key, int size, int $\ast$semid)
+\begin{DoxyCompactList}\small\item\em Funcion que crea un array de semaforos. \end{DoxyCompactList}\item 
+int \hyperlink{Semaforo_8h_a883244cd3b83c42cda23687da1b63369}{Down\+\_\+\+Semaforo} (int id, int num\+\_\+sem, int undo)
+\begin{DoxyCompactList}\small\item\em Funcion que baja un semaforo. \end{DoxyCompactList}\item 
+int \hyperlink{Semaforo_8h_ab375ebfc38acbdced46e062a689d5fad}{Down\+Multiple\+\_\+\+Semaforo} (int id, int size, int undo, int $\ast$active)
+\begin{DoxyCompactList}\small\item\em Funcion que baja varios semaforos de un array llamando varias veces a Down\+\_\+\+Semaforo. \end{DoxyCompactList}\item 
+int \hyperlink{Semaforo_8h_a2d5e735aecee4f493898b3d4ebab1a10}{Up\+\_\+\+Semaforo} (int id, int num\+\_\+sem, int undo)
+\begin{DoxyCompactList}\small\item\em Funcion que sube un semaforo. \end{DoxyCompactList}\item 
+int \hyperlink{Semaforo_8h_a943759695f018d64a94b8a2c49308092}{Up\+Multiple\+\_\+\+Semaforo} (int id, int size, int undo, int $\ast$active)
+\begin{DoxyCompactList}\small\item\em Funcion que sube varios semaforos de un array llamando varias veces a Up\+\_\+\+Semaforo. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+libreria de semaforos. 
+
+\begin{DoxyAuthor}{Author}
+\href{mailto:Javier.delgadod@estudiante.uam.es}{\tt Javier.\+delgadod@estudiante.\+uam.\+es} 
+
+\href{mailto:Javier.lopezcano@estudiante.uam.es}{\tt Javier.\+lopezcano@estudiante.\+uam.\+es} 
+\end{DoxyAuthor}
+
+
+\subsection{Function Documentation}
+\index{Semaforo.\+h@{Semaforo.\+h}!Borrar\+\_\+\+Semaforo@{Borrar\+\_\+\+Semaforo}}
+\index{Borrar\+\_\+\+Semaforo@{Borrar\+\_\+\+Semaforo}!Semaforo.\+h@{Semaforo.\+h}}
+\subsubsection[{\texorpdfstring{Borrar\+\_\+\+Semaforo(int semid)}{Borrar_Semaforo(int semid)}}]{\setlength{\rightskip}{0pt plus 5cm}int Borrar\+\_\+\+Semaforo (
+\begin{DoxyParamCaption}
+\item[{int}]{semid}
+\end{DoxyParamCaption}
+)}\hypertarget{Semaforo_8h_a731339337960a681efa435a10f12c312}{}\label{Semaforo_8h_a731339337960a681efa435a10f12c312}
+
+
+Función que elimina un array de semaforos. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em semid} & Int que es el id del array de semáforos. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int que determina si la funcion se ha ejecutado o no con exito. 
+\end{DoxyReturn}
+\index{Semaforo.\+h@{Semaforo.\+h}!Crear\+\_\+\+Semaforo@{Crear\+\_\+\+Semaforo}}
+\index{Crear\+\_\+\+Semaforo@{Crear\+\_\+\+Semaforo}!Semaforo.\+h@{Semaforo.\+h}}
+\subsubsection[{\texorpdfstring{Crear\+\_\+\+Semaforo(key\+\_\+t key, int size, int $\ast$semid)}{Crear_Semaforo(key_t key, int size, int *semid)}}]{\setlength{\rightskip}{0pt plus 5cm}int Crear\+\_\+\+Semaforo (
+\begin{DoxyParamCaption}
+\item[{key\+\_\+t}]{key, }
+\item[{int}]{size, }
+\item[{int $\ast$}]{semid}
+\end{DoxyParamCaption}
+)}\hypertarget{Semaforo_8h_a16b16dd895b5f4cbe48f1ac8977e8b35}{}\label{Semaforo_8h_a16b16dd895b5f4cbe48f1ac8977e8b35}
+
+
+Funcion que crea un array de semaforos. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & Identificador de I\+PC. \\
+\hline
+{\em size} & Tamano del array de semaforos que se quiere crear. \\
+\hline
+{\em semid} & Int que es el id del array de semáforos. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int que determina si la funcion se ha ejecutado o no con exito. 
+\end{DoxyReturn}
+\index{Semaforo.\+h@{Semaforo.\+h}!Down\+\_\+\+Semaforo@{Down\+\_\+\+Semaforo}}
+\index{Down\+\_\+\+Semaforo@{Down\+\_\+\+Semaforo}!Semaforo.\+h@{Semaforo.\+h}}
+\subsubsection[{\texorpdfstring{Down\+\_\+\+Semaforo(int id, int num\+\_\+sem, int undo)}{Down_Semaforo(int id, int num_sem, int undo)}}]{\setlength{\rightskip}{0pt plus 5cm}int Down\+\_\+\+Semaforo (
+\begin{DoxyParamCaption}
+\item[{int}]{id, }
+\item[{int}]{num\+\_\+sem, }
+\item[{int}]{undo}
+\end{DoxyParamCaption}
+)}\hypertarget{Semaforo_8h_a883244cd3b83c42cda23687da1b63369}{}\label{Semaforo_8h_a883244cd3b83c42cda23687da1b63369}
+
+
+Funcion que baja un semaforo. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & Int con el id del array de semaforos. \\
+\hline
+{\em num\+\_\+sem} & Int con el indice del semaforo que se quiere bajar. \\
+\hline
+{\em undo} & Int que es la bandera que hay que usar en la estructura sem\+\_\+oper. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int que determina si la funcion se ha ejecutado o no con exito. 
+\end{DoxyReturn}
+\index{Semaforo.\+h@{Semaforo.\+h}!Down\+Multiple\+\_\+\+Semaforo@{Down\+Multiple\+\_\+\+Semaforo}}
+\index{Down\+Multiple\+\_\+\+Semaforo@{Down\+Multiple\+\_\+\+Semaforo}!Semaforo.\+h@{Semaforo.\+h}}
+\subsubsection[{\texorpdfstring{Down\+Multiple\+\_\+\+Semaforo(int id, int size, int undo, int $\ast$active)}{DownMultiple_Semaforo(int id, int size, int undo, int *active)}}]{\setlength{\rightskip}{0pt plus 5cm}int Down\+Multiple\+\_\+\+Semaforo (
+\begin{DoxyParamCaption}
+\item[{int}]{id, }
+\item[{int}]{size, }
+\item[{int}]{undo, }
+\item[{int $\ast$}]{active}
+\end{DoxyParamCaption}
+)}\hypertarget{Semaforo_8h_ab375ebfc38acbdced46e062a689d5fad}{}\label{Semaforo_8h_ab375ebfc38acbdced46e062a689d5fad}
+
+
+Funcion que baja varios semaforos de un array llamando varias veces a Down\+\_\+\+Semaforo. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & Int con el id del array de semaforos. \\
+\hline
+{\em size} & Int con el tamano del array de semaforos. \\
+\hline
+{\em undo} & Int que es la bandera que hay que usar en la estructura sem\+\_\+oper. \\
+\hline
+{\em active} & Array de int con los indices de los semaforos que se quiere bajar. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int que determina si la funcion se ha ejecutado o no con exito. 
+\end{DoxyReturn}
+\index{Semaforo.\+h@{Semaforo.\+h}!Inicializar\+\_\+\+Semaforo@{Inicializar\+\_\+\+Semaforo}}
+\index{Inicializar\+\_\+\+Semaforo@{Inicializar\+\_\+\+Semaforo}!Semaforo.\+h@{Semaforo.\+h}}
+\subsubsection[{\texorpdfstring{Inicializar\+\_\+\+Semaforo(int semid, unsigned short $\ast$array)}{Inicializar_Semaforo(int semid, unsigned short *array)}}]{\setlength{\rightskip}{0pt plus 5cm}int Inicializar\+\_\+\+Semaforo (
+\begin{DoxyParamCaption}
+\item[{int}]{semid, }
+\item[{unsigned short $\ast$}]{array}
+\end{DoxyParamCaption}
+)}\hypertarget{Semaforo_8h_a4af104b0ed37e6ae0289a1059bc6e990}{}\label{Semaforo_8h_a4af104b0ed37e6ae0289a1059bc6e990}
+
+
+Función que inicializa un array de semaforos con id semid y con los valores que se pasan a traves del array de shorts. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em semid} & Int que es el id del array de semaforos. \\
+\hline
+{\em array} & Array de shorts con la informacion para inicializar los semaforos. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int que determina si la funcion se ha ejecutado o no con exito. 
+\end{DoxyReturn}
+\index{Semaforo.\+h@{Semaforo.\+h}!Up\+\_\+\+Semaforo@{Up\+\_\+\+Semaforo}}
+\index{Up\+\_\+\+Semaforo@{Up\+\_\+\+Semaforo}!Semaforo.\+h@{Semaforo.\+h}}
+\subsubsection[{\texorpdfstring{Up\+\_\+\+Semaforo(int id, int num\+\_\+sem, int undo)}{Up_Semaforo(int id, int num_sem, int undo)}}]{\setlength{\rightskip}{0pt plus 5cm}int Up\+\_\+\+Semaforo (
+\begin{DoxyParamCaption}
+\item[{int}]{id, }
+\item[{int}]{num\+\_\+sem, }
+\item[{int}]{undo}
+\end{DoxyParamCaption}
+)}\hypertarget{Semaforo_8h_a2d5e735aecee4f493898b3d4ebab1a10}{}\label{Semaforo_8h_a2d5e735aecee4f493898b3d4ebab1a10}
+
+
+Funcion que sube un semaforo. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & Int con el id del array de semaforos. \\
+\hline
+{\em num\+\_\+sem} & Int con el indice del semaforo que se quiere subir. \\
+\hline
+{\em undo} & Int que es la bandera que hay que usar en la estructura sem\+\_\+oper. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int que determina si la funcion se ha ejecutado o no con exito. 
+\end{DoxyReturn}
+\index{Semaforo.\+h@{Semaforo.\+h}!Up\+Multiple\+\_\+\+Semaforo@{Up\+Multiple\+\_\+\+Semaforo}}
+\index{Up\+Multiple\+\_\+\+Semaforo@{Up\+Multiple\+\_\+\+Semaforo}!Semaforo.\+h@{Semaforo.\+h}}
+\subsubsection[{\texorpdfstring{Up\+Multiple\+\_\+\+Semaforo(int id, int size, int undo, int $\ast$active)}{UpMultiple_Semaforo(int id, int size, int undo, int *active)}}]{\setlength{\rightskip}{0pt plus 5cm}int Up\+Multiple\+\_\+\+Semaforo (
+\begin{DoxyParamCaption}
+\item[{int}]{id, }
+\item[{int}]{size, }
+\item[{int}]{undo, }
+\item[{int $\ast$}]{active}
+\end{DoxyParamCaption}
+)}\hypertarget{Semaforo_8h_a943759695f018d64a94b8a2c49308092}{}\label{Semaforo_8h_a943759695f018d64a94b8a2c49308092}
+
+
+Funcion que sube varios semaforos de un array llamando varias veces a Up\+\_\+\+Semaforo. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & Int con el id del array de semaforos. \\
+\hline
+{\em size} & Int con el tamano del array de semaforos. \\
+\hline
+{\em undo} & Int que es la bandera que hay que usar en la estructura sem\+\_\+oper. \\
+\hline
+{\em active} & Array de int con los indices de los semaforos que se quiere subir. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int que determina si la funcion se ha ejecutado o no con exito. 
+\end{DoxyReturn}
